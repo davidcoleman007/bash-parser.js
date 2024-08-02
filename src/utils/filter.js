@@ -1,8 +1,17 @@
 'use strict';
-const filterIterator = require('filter-iterator');
-const reverse = require('reverse-arguments');
-const curry = require('curry');
 
-const filter = curry.to(2, reverse(filterIterator));
+function filter(predicate) {
+  return function(iterable) {
+    const result = [];
+
+    for (const item of iterable) {
+      if (predicate(item)) {
+        result.push(item);
+      }
+    }
+
+    return result;
+  };
+}
 
 module.exports = filter;

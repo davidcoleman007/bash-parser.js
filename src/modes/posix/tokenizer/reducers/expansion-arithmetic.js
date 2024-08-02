@@ -1,6 +1,6 @@
 'use strict';
 
-const last = require('array-last');
+const last = require('../../../../utils/last');
 const t = require('../../../../utils/tokens');
 
 const continueToken = t.continueToken;

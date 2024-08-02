@@ -1,11 +1,12 @@
 'use strict';
-const hasOwnProperty = require('has-own-property');
-const filter = require('filter-obj');
+
 const operators = require('../modes/posix/enums/operators');
 
 class Token {
 	constructor(fields) {
-		const definedFields = filter(fields, (key, value) => value !== undefined);
+		const definedFields = Object.fromEntries(
+			Object.entries(fields).filter(([key, value]) => value !== undefined)
+		);
 		Object.assign(this, definedFields);
 
 		if (this._ === undefined) {
@@ -123,20 +124,20 @@ exports.isPartOfOperator = function isPartOfOperator(text) {
 };
 
 exports.isOperator = function isOperator(text) {
-	return hasOwnProperty(operators, text);
+    return text in operators;
 };
 
 exports.applyTokenizerVisitor = visitor => (tk, idx, iterable) => {
-	if (hasOwnProperty(visitor, tk.type)) {
-		const visit = visitor[tk.type];
+    if (tk.type in visitor) {
+        const visit = visitor[tk.type];
 
-		return visit(tk, iterable);
-	}
+        return visit(tk, iterable);
+    }
 
-	if (hasOwnProperty(visitor, 'defaultMethod')) {
-		const visit = visitor.defaultMethod;
-		return visit(tk, iterable);
-	}
+    if ('defaultMethod' in visitor) {
+        const visit = visitor.defaultMethod;
+        return visit(tk, iterable);
+    }
 
-	return tk;
+    return tk;
 };

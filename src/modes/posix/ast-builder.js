@@ -1,5 +1,7 @@
 'use strict';
 
+const last = require('../../utils/last');
+
 module.exports = options => {
 	const builder = {};
 	mkListHelper(builder, 'caseList');
@@ -59,7 +61,7 @@ module.exports = options => {
 		return separator.text.indexOf('&') !== -1;
 	}
 
-	const last = require('array-last');
+
 
 	builder.checkAsync = (list, separator) => {
 		if (isAsyncSeparator(separator)) {

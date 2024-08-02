@@ -1,6 +1,5 @@
 'use strict';
-const hasOwnProperty = require('has-own-property');
-const values = require('object-values');
+
 const compose = require('compose-function');
 const map = require('map-iterable');
 const lookahead = require('iterable-lookahead');
@@ -22,7 +21,7 @@ function isValidReservedWordPosition(tk, iterable, words) {
 		last.is('OR_IF') || last.is('PIPE') || last.is('AND_IF')
 	);
 
-	const lastIsReservedWord = (!last.value === 'for' && !last.value === 'in' && !last.value === 'case' && values(words).some(word => last.is(word)));
+	const lastIsReservedWord = (!last.value === 'for' && !last.value === 'in' && !last.value === 'case' && Object.values(words).some(word => last.is(word)));
 
 	const thirdInCase = twoAgo.value === 'case' && tk.is('TOKEN') && tk.value.toLowerCase() === 'in';
 	const thirdInFor = twoAgo.value === 'for' && tk.is('TOKEN') &&
@@ -38,8 +37,8 @@ module.exports = function reservedWords(options, mode) {
 		// TOKEN tokens consisting of a reserved word
 		// are converted to their own token types
 		// console.log({tk, v:isValidReservedWordPosition(tk, iterable)})
-		if (isValidReservedWordPosition(tk, iterable, mode.enums.reservedWords) && hasOwnProperty(mode.enums.reservedWords, tk.value)) {
-			return tk.changeTokenType(mode.enums.reservedWords[tk.value], tk.value);
+				if (isValidReservedWordPosition(tk, iterable, mode.enums.reservedWords) && tk.value in mode.enums.reservedWords) {
+				return tk.changeTokenType(mode.enums.reservedWords[tk.value], tk.value);
 		}
 
 		// otherwise, TOKEN tokens are converted to

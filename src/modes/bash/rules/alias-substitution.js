@@ -1,9 +1,7 @@
 'use strict';
 
 const compose = require('compose-function');
-const identity = require('identity-function');
 const map = require('map-iterable');
-const values = require('object-values');
 const merge = require('transform-spread-iterable');
 const tokens = require('../../../utils/tokens');
 
@@ -46,11 +44,11 @@ const expandAlias = (preAliasLexer, resolveAlias, reservedWords) => {
 
 module.exports = (options, mode, previousPhases) => {
 	if (typeof options.resolveAlias !== 'function') {
-		return identity;
+		return (x) => x;
 	}
 
 	const preAliasLexer = compose.apply(null, previousPhases.reverse());
-	const visitor = expandAlias(preAliasLexer, options.resolveAlias, values(mode.enums.reservedWords));
+	const visitor = expandAlias(preAliasLexer, options.resolveAlias, Object.values(mode.enums.reservedWords));
 
 	return compose(
 		merge,

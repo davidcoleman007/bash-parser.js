@@ -1,6 +1,6 @@
 'use strict';
 
-const last = require('array-last');
+const last = require('../../../../utils/last');
 
 module.exports = function expansionParameter(state, source, reducers) {
 	const char = source && source.shift();

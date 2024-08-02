@@ -1,25 +1,26 @@
 'use strict';
-const mapObj = require('map-obj');
-const filter = require('filter-obj');
+
 const map = require('map-iterable');
-const pairs = require('object-pairs');
 const MagicString = require('magic-string');
 const tokens = require('../../../utils/tokens');
 const fieldSplitting = require('./field-splitting');
 
 const handleParameter = (obj, match) => {
-	const ret = mapObj(obj, (k, v) => {
-		if (typeof v === 'function') {
-			const val = v(match);
-			return [k, val];
-		}
 
-		if (typeof v === 'object' && k !== 'expand') {
-			return [k, handleParameter(v, match)];
-		}
+	const ret = Object.fromEntries(
+		Object.entries(obj).map(([k, v]) => {
+			if (typeof v === 'function') {
+				const val = v(match);
+				return [k, val];
+			}
 
-		return [k, v];
-	});
+			if (typeof v === 'object' && k !== 'expand') {
+				return [k, handleParameter(v, match)];
+			}
+
+			return [k, v];
+		})
+	);
 
 	if (ret.expand) {
 		const bashParser = require('../../../index');
@@ -37,7 +38,7 @@ const handleParameter = (obj, match) => {
 function expandParameter(xp, enums) {
 	let parameter = xp.parameter;
 
-	for (const pair of pairs(enums.parameterOperators)) {
+	for (const pair of Object.entries(enums.parameterOperators)) {
 		const re = new RegExp(pair[0]);
 
 		const match = parameter.match(re);
@@ -45,10 +46,11 @@ function expandParameter(xp, enums) {
 		if (match) {
 			const opProps = handleParameter(pair[1], match);
 
-			return filter(Object.assign(
-				xp,
-				opProps
-			), (k, v) => v !== undefined);
+			const mergedObject = Object.assign({}, xp, opProps);
+			const filteredObject = Object.fromEntries(
+				Object.entries(mergedObject).filter(([k, v]) => v !== undefined)
+			);
+			return filteredObject;
 		}
 	}
 
