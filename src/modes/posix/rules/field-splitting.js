@@ -2,7 +2,7 @@
 
 const map = require('map-iterable');
 const merge = require('transform-spread-iterable');
-const compose = require('compose-function');
+const compose = require('../../../utils/compose');
 const mkFieldSplitToken = require('../../../utils/tokens').mkFieldSplitToken;
 
 exports.mark = function markFieldSplitting(result, text, options) {

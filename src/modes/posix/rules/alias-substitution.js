@@ -1,6 +1,6 @@
 'use strict';
 
-const compose = require('compose-function');
+const compose = require('../../../utils/compose');
 const map = require('map-iterable');
 const merge = require('transform-spread-iterable');
 const tokens = require('../../../utils/tokens');

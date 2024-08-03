@@ -6,12 +6,13 @@
   "repository": "vorpaljs/bash-parser",
   "license": "MIT",
   "author": "vorpal-js",
+  "type": "module",
   "scripts": {
     "doc": "doctoc",
     "test": "npm run test-unit && npm run test-format",
     "test-unit": "ava",
     "test-format": "xo --ignore **/built-grammar.js",
-    "build": "mgb ./src/modes posix && mgb ./src/modes bash && mgb ./src/modes word-expansion",
+    "build": "node ./src/mgb/index.js ./src/modes posix && node ./src/mgb/index.js ./src/modes bash && node ./src/mgb/index.js ./src/modes word-expansion",
     "cover-test": "nyc ava && xo --ignore **/built-grammar.js",
     "cover-publish": "nyc report --reporter=text-lcov | coveralls"
   },
@@ -24,7 +25,7 @@
     "coveralls": "^3.1.1",
     "doctoc": "^1.2.0",
     "json5": "^2.2.3",
-    "mode-grammar-builder": "^0.6.0",
+    "jison": "^0.4.17",
     "nyc": "^7.0.0",
     "xo": "^0.59.3"
   },
@@ -39,7 +40,6 @@
   },
   "dependencies": {
     "babylon": "^6.9.1",
-    "compose-function": "^3.0.3",
     "iterable-lookahead": "^1.0.0",
     "iterable-transform-replace": "^1.1.1",
     "magic-string": "^0.16.0",

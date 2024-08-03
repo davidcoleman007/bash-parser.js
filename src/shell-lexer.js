@@ -1,5 +1,5 @@
 'use strict';
-const compose = require('compose-function');
+const compose = require('./utils/compose');
 
 const posixShellLexer = (mode, options) => ({
 	lex() {
