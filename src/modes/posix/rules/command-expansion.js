@@ -1,18 +1,20 @@
-'use strict';
 
-const map = require('map-iterable');
-const MagicString = require('magic-string');
-const tokensUtils = require('../../../utils/tokens');
-const fieldSplitting = require('./field-splitting');
 
-function setCommandExpansion(xp, token) {
+import map from 'map-iterable';
+import MagicString from 'magic-string';
+import tokensUtils from '../../../utils/tokens.js';
+import fieldSplitting from './field-splitting.js';
+
+import bashParser from '../../../index.js';
+
+const setCommandExpansion = (xp, token) => {
 	let command = xp.command;
 
 	if (token.value[xp.loc.start - 1] === '`') {
 		command = command.replace(/\\`/g, '`');
 	}
 
-	const bashParser = require('../../../index');
+
 
 	const commandAST = bashParser(command);
 
@@ -26,22 +28,22 @@ function setCommandExpansion(xp, token) {
 // Expansion) from their introductory unquoted character sequences: '$' or "${", "$("
 // or '`', and "$((", respectively.
 
-const commandExpansion = () => map(token => {
+const commandExpansion = () => (map((token) => {
 	if (token.is('WORD') || token.is('ASSIGNMENT_WORD')) {
 		if (!token.expansion || token.expansion.length === 0) {
 			return token;
 		}
 
-		return tokensUtils.setExpansions(token, token.expansion.map(xp => {
+		return tokensUtils.setExpansions(token, (token.expansion.map((xp) => {
 			if (xp.type === 'command_expansion') {
 				return setCommandExpansion(xp, token);
 			}
 
 			return xp;
-		}));
+		})));
 	}
 	return token;
-});
+}));
 
 commandExpansion.resolve = options => map(token => {
 	if (options.execCommand && token.expansion) {
@@ -66,4 +68,4 @@ commandExpansion.resolve = options => map(token => {
 	return token;
 });
 
-module.exports = commandExpansion;
+export default commandExpansion;

@@ -1,8 +1,8 @@
-'use strict';
 
-const last = require('../../utils/last');
 
-module.exports = options => {
+import last from '../../utils/last.js';
+
+export default options => {
 	const builder = {};
 	mkListHelper(builder, 'caseList');
 	mkListHelper(builder, 'pattern');

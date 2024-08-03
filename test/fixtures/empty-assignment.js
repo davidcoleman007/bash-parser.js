@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	sourceCode: "IFS= read -r var",
 	result: {
 		type: "Script",
@@ -28,4 +28,4 @@ module.exports = {
 			}
 		]
 	}
-}
+};

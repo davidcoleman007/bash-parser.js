@@ -1,6 +1,6 @@
-'use strict';
-const map = require('map-iterable');
-const tokens = require('../../../utils/tokens');
+
+import map from 'map-iterable';
+import tokens from '../../../utils/tokens.js';
 
 const replace = (text, resolveHomeUser) => {
 	let replaced = false;
@@ -18,7 +18,7 @@ const replace = (text, resolveHomeUser) => {
 	return result;
 };
 
-module.exports = options => map(token => {
+export default options => map(token => {
 	if (token.is('WORD') && typeof options.resolveHomeUser === 'function') {
 		return tokens.setValue(token, replace(token.value, options.resolveHomeUser));
 	}

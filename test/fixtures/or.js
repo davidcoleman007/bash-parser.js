@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	sourceCode: "until true || 1; do sleep 1;echo ciao; done",
 	result: {
 		type: "Script",
@@ -225,4 +225,4 @@ module.exports = {
 			}
 		}
 	}
-}
+};

@@ -1,11 +1,11 @@
-'use strict';
 /* eslint-disable camelcase */
 
-const test = require('ava');
-const bashParser = require('../src');
-const utils = require('./_utils');
+import test from 'ava';
 
-test('expand on a single word', t => {
+import bashParser from '../src/index.js';
+import utils from './_utils.js';
+
+test('expand on a single word', (t) => {
 	const result = bashParser('ls $var > res.txt', {
 		mode: 'word-expansion'
 	});

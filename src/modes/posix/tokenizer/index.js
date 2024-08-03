@@ -1,5 +1,6 @@
-'use strict';
-const last = require('../../../utils/last');
+
+import last from '../../../utils/last.js';
+import reducers from './reducers/index.js';
 
 const defaultFields = reducers => ({
 	current: '',
@@ -12,7 +13,7 @@ const defaultFields = reducers => ({
 	}
 });
 
-const mkImmutableState = reducers => class ImmutableState {
+const mkImmutableState = reducers => (class ImmutableState {
 	constructor(fields) {
 		Object.assign(this, fields || defaultFields(reducers));
 	}
@@ -83,9 +84,9 @@ const mkImmutableState = reducers => class ImmutableState {
 
 		return this.setLoc(loc);
 	}
-};
+});
 
-const mkMutableState = reducers => class {
+const mkMutableState = reducers => (class {
 	constructor(fields) {
 		Object.assign(this, fields || defaultFields(reducers));
 	}
@@ -174,24 +175,25 @@ const mkMutableState = reducers => class {
 
 		return this.setLoc(loc);
 	}
-};
+});
 
-module.exports = (options, reducers) => function * tokenizer(src) {
-	reducers = reducers || require('./reducers');
 
-	const State = process.env.NODE_NEV === 'development' ? mkImmutableState(reducers) : mkMutableState(reducers);
+const tok = (options, r) => (function* tokenizer(src) {
+	r = r || reducers;
+
+	const State = process.env.NODE_NEV === 'development' ? mkImmutableState(r) : mkMutableState(r);
 
 	let state = new State();
 
-	let reduction = reducers.start;
+	let reduction = r.start;
 	const source = Array.from(src);
 
 	while (typeof reduction === 'function') {
 		const char = source[0];
-		const r = reduction(state, source, reducers);
-		const nextReduction = r.nextReduction;
-		const tokensToEmit = r.tokensToEmit;
-		const nextState = r.nextState;
+		const r2 = reduction(state, source, r);
+		const nextReduction = r2.nextReduction;
+		const tokensToEmit = r2.tokensToEmit;
+		const nextState = r2.nextState;
 		if (tokensToEmit) {
 			yield * tokensToEmit;
 		}
@@ -208,6 +210,8 @@ module.exports = (options, reducers) => function * tokenizer(src) {
 
 		reduction = nextReduction;
 	}
-};
+});
 
-module.exports.reducers = require('./reducers');
+tok.reducers = reducers;
+
+export default tok;

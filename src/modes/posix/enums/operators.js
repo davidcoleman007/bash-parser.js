@@ -1,4 +1,4 @@
-'use strict';
+
 const operators = {
 	'&': 'AND',
 	'|': 'PIPE',
@@ -18,4 +18,4 @@ const operators = {
 	'>|': 'CLOBBER',
 	';': 'SEMICOLON'
 };
-module.exports = operators;
+export default operators;

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	sourceCode: "foo='hello ; rm -rf /'\ndest=bar\neval \"dest=foo\"",
 	result: {
 		type: "Script",
@@ -44,4 +44,4 @@ module.exports = {
 			}
 		]
 	}
-}
+};

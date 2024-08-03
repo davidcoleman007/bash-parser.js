@@ -1,11 +1,11 @@
-'use strict';
 
-const test = require('ava');
-const bashParser = require('../src');
-const utils = require('./_utils');
+
+import test from 'ava';
+import bashParser from '../src/index.js';
+import utils from './_utils.js';
 
 /* eslint-disable camelcase */
-test('Redirect should be allowed immediately following argument', t => {
+test('Redirect should be allowed immediately following argument', (t) => {
 	const result = bashParser('echo foo>file.txt');
 
 	utils.checkResults(t, result, {
@@ -25,7 +25,7 @@ test('Redirect should be allowed immediately following argument', t => {
 	});
 });
 
-test('Equal sign should be allowed in arguments', t => {
+test('Equal sign should be allowed in arguments', (t) => {
 	const result = bashParser('echo foo=bar');
 	utils.checkResults(t, result, {
 		type: 'Script',

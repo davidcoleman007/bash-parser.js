@@ -1,11 +1,13 @@
-'use strict';
+
+
 /* eslint-disable camelcase */
 
-const map = require('map-iterable');
-const babylon = require('babylon');
-const MagicString = require('magic-string');
-const tokens = require('../../../utils/tokens');
-const fieldSplitting = require('./field-splitting');
+import map from 'map-iterable';
+
+import babylon from 'babylon';
+import MagicString from 'magic-string';
+import tokens from '../../../utils/tokens.js';
+import fieldSplitting from './field-splitting.js';
 
 function parseArithmeticAST(xp) {
 	let AST;
@@ -63,4 +65,4 @@ arithmeticExpansion.resolve = options => map(token => {
 	return token;
 });
 
-module.exports = arithmeticExpansion;
+export default arithmeticExpansion;

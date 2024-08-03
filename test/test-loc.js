@@ -1,12 +1,12 @@
-'use strict';
 
-const test = require('ava');
-const bashParser = require('../src');
-const mkloc = require('./_utils').mkloc2;
-const utils = require('./_utils');
+
+import test from 'ava';
+import bashParser from '../src/index.js';
+import { mkloc2 as mkloc } from './_utils.js';
+import utils from './_utils.js';
 
 /* eslint-disable camelcase */
-test('syntax error contains line number', async t => {
+test('syntax error contains line number', t => {
 	const error = t.throws(() => bashParser('ecoh\necho <'));
 	t.true(
 		error.message.startsWith(
@@ -15,7 +15,7 @@ test('syntax error contains line number', async t => {
 	);
 });
 
-test('AST can include loc', t => {
+test('AST can include loc', (t) => {
 	const result = bashParser('echo', {insertLOC: true});
 	// utils.logResults(result)
 	utils.checkResults(t, result.commands[0].name, {
@@ -25,7 +25,7 @@ test('AST can include loc', t => {
 	});
 });
 
-test('subshell can include loc', t => {
+test('subshell can include loc', (t) => {
 	const result = bashParser('(echo)', {insertLOC: true});
 	// utils.logResults(result);
 	utils.checkResults(t, result, {
@@ -55,7 +55,7 @@ test('subshell can include loc', t => {
 	});
 });
 
-test('double command with only name', t => {
+test('double command with only name', (t) => {
 	const result = bashParser('echo; ciao;', {insertLOC: true});
 	// utils.logResults(result);
 	utils.checkResults(t, result, {
@@ -84,7 +84,7 @@ test('double command with only name', t => {
 	});
 });
 
-test('loc are composed by all tokens', t => {
+test('loc are composed by all tokens', (t) => {
 	const result = bashParser('echo 42', {insertLOC: true});
 	// console.log(JSON.stringify(result, null, 4));
 	utils.checkResults(t, result.commands[0], {
@@ -105,7 +105,7 @@ test('loc are composed by all tokens', t => {
 	});
 });
 
-test('loc works with multiple newlines', t => {
+test('loc works with multiple newlines', (t) => {
 	const result = bashParser('\n\n\necho 42', {insertLOC: true});
 	utils.checkResults(t, result.commands[0], {
 		type: 'Command',
@@ -125,7 +125,7 @@ test('loc works with multiple newlines', t => {
 	});
 });
 
-test('loc with LINEBREAK_IN statement', t => {
+test('loc with LINEBREAK_IN statement', (t) => {
 	const cmd = `for x
 	in ; do
 	echo $x;
@@ -245,7 +245,7 @@ done
 	utils.checkResults(t, result.commands[0], expected);
 });
 
-test('loc in multi line commands', t => {
+test('loc in multi line commands', (t) => {
 	const result = bashParser('echo;\nls;\n', {insertLOC: true});
 	// utils.logResults(result);
 	utils.checkResults(t, result, {

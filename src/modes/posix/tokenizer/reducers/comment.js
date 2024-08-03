@@ -1,8 +1,8 @@
-'use strict';
 
-const newLine = require('../../../../utils/tokens').newLine;
 
-module.exports = function comment(state, source, reducers) {
+import { newLine } from '../../../../utils/tokens.js';
+
+export default function comment(state, source, reducers) {
 	const char = source && source.shift();
 
 	if (char === undefined) {

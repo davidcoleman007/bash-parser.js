@@ -1,10 +1,8 @@
-'use strict';
+import test from 'ava';
+import bashParser from '../src/index.js';
+import utils from './_utils.js';
 
-const test = require('ava');
-const bashParser = require('../src');
-const utils = require('./_utils');
-
-test('alias on reserved word', t => {
+test('alias on reserved word', (t) => {
 	const result = bashParser('if world', {
 		mode: 'bash',
 		resolveAlias: name => {
@@ -21,8 +19,8 @@ test('alias on reserved word', t => {
 	});
 });
 
-test('parameter substitution with Substring Expansion', t => {
-	const result = bashParser('echo ${text:2:4}', {mode: 'bash'})
+test('parameter substitution with Substring Expansion', (t) => {
+	const result = (bashParser('echo ${text:2:4}', {mode: 'bash'}))
 		.commands[0].suffix[0].expansion[0];
 
 	utils.checkResults(t, result, {
@@ -38,8 +36,8 @@ test('parameter substitution with Substring Expansion', t => {
 	});
 });
 
-test('parameter substitution with prefix', t => {
-	const result = bashParser('echo ${!text*}', {mode: 'bash'})
+test('parameter substitution with prefix', (t) => {
+	const result = (bashParser('echo ${!text*}', {mode: 'bash'}))
 		.commands[0].suffix[0].expansion[0];
 	utils.checkResults(t, result, {
 		loc: {
@@ -53,8 +51,8 @@ test('parameter substitution with prefix', t => {
 	});
 });
 
-test('parameter substitution with prefix and word expansion', t => {
-	const result = bashParser('echo ${!text@}', {mode: 'bash'})
+test('parameter substitution with prefix and word expansion', (t) => {
+	const result = (bashParser('echo ${!text@}', {mode: 'bash'}))
 		.commands[0].suffix[0].expansion[0];
 
 	utils.checkResults(t, result, {
@@ -69,8 +67,8 @@ test('parameter substitution with prefix and word expansion', t => {
 	});
 });
 
-test('parameter substitution: length is optional', t => {
-	const result = bashParser('echo ${text:2}', {mode: 'bash'})
+test('parameter substitution: length is optional', (t) => {
+	const result = (bashParser('echo ${text:2}', {mode: 'bash'}))
 		.commands[0].suffix[0].expansion[0];
 
 	utils.checkResults(t, result, {
@@ -85,9 +83,11 @@ test('parameter substitution: length is optional', t => {
 	});
 });
 
-test('parameter substitution with string replacement', t => {
-	const result = bashParser('echo ${var/a/b}', {mode: 'bash'})
-		.commands[0].suffix[0].expansion[0];
+test('parameter substitution with string replacement', (t) => {
+	const result = (bashParser('echo ${var/a/b}', {mode: 'bash'}))
+		.commands[0]
+		.suffix[0]
+		.expansion[0];
 	utils.checkResults(t, result, {
 		loc: {
 			start: 0,
@@ -102,8 +102,8 @@ test('parameter substitution with string replacement', t => {
 	});
 });
 
-test('parameter substitution with string replacement - globally', t => {
-	const result = bashParser('echo ${var//a/b}', {mode: 'bash'})
+test('parameter substitution with string replacement - globally', (t) => {
+	const result = (bashParser('echo ${var//a/b}', {mode: 'bash'}))
 		.commands[0].suffix[0].expansion[0];
 	utils.checkResults(t, result, {
 		loc: {
@@ -119,8 +119,8 @@ test('parameter substitution with string replacement - globally', t => {
 	});
 });
 
-test('parameter substitution with array indices', t => {
-	const result = bashParser('echo ${!text[*]}', {mode: 'bash'})
+test('parameter substitution with array indices', (t) => {
+	const result = (bashParser('echo ${!text[*]}', {mode: 'bash'}))
 		.commands[0].suffix[0].expansion[0];
 
 	// utils.logResults(result);
@@ -137,8 +137,8 @@ test('parameter substitution with array indices', t => {
 	});
 });
 
-test('parameter substitution with array indices and word expansion', t => {
-	const result = bashParser('echo ${!text[@]}', {mode: 'bash'})
+test('parameter substitution with array indices and word expansion', (t) => {
+	const result = (bashParser('echo ${!text[@]}', {mode: 'bash'}))
 		.commands[0].suffix[0].expansion[0];
 
 	utils.checkResults(t, result, {
@@ -153,8 +153,8 @@ test('parameter substitution with array indices and word expansion', t => {
 	});
 });
 
-test('parameter substitution with case change upper case and pattern', t => {
-	const result = bashParser('echo ${text^t}', {mode: 'bash'})
+test('parameter substitution with case change upper case and pattern', (t) => {
+	const result = (bashParser('echo ${text^t}', {mode: 'bash'}))
 		.commands[0].suffix[0].expansion[0];
 	// utils.logResults(result);
 	utils.checkResults(t, result, {
@@ -171,8 +171,8 @@ test('parameter substitution with case change upper case and pattern', t => {
 	});
 });
 
-test('parameter substitution with case change upper case globally and pattern', t => {
-	const result = bashParser('echo ${text^^t}', {mode: 'bash'})
+test('parameter substitution with case change upper case globally and pattern', (t) => {
+	const result = (bashParser('echo ${text^^t}', {mode: 'bash'}))
 		.commands[0].suffix[0].expansion[0];
 	// utils.logResults(result);
 	utils.checkResults(t, result, {
@@ -189,8 +189,8 @@ test('parameter substitution with case change upper case globally and pattern', 
 	});
 });
 
-test('parameter substitution with case change lower case and pattern', t => {
-	const result = bashParser('echo ${text,t}', {mode: 'bash'})
+test('parameter substitution with case change lower case and pattern', (t) => {
+	const result = (bashParser('echo ${text,t}', {mode: 'bash'}))
 		.commands[0].suffix[0].expansion[0];
 	// utils.logResults(result);
 	utils.checkResults(t, result, {
@@ -207,8 +207,8 @@ test('parameter substitution with case change lower case and pattern', t => {
 	});
 });
 
-test('parameter substitution with case change lower case globally and pattern', t => {
-	const result = bashParser('echo ${text,,t}', {mode: 'bash'})
+test('parameter substitution with case change lower case globally and pattern', (t) => {
+	const result = (bashParser('echo ${text,,t}', {mode: 'bash'}))
 		.commands[0].suffix[0].expansion[0];
 	// utils.logResults(result);
 	utils.checkResults(t, result, {
@@ -225,8 +225,8 @@ test('parameter substitution with case change lower case globally and pattern', 
 	});
 });
 
-test('parameter substitution with case change upper case and default pattern', t => {
-	const result = bashParser('echo ${text^}', {mode: 'bash'})
+test('parameter substitution with case change upper case and default pattern', (t) => {
+	const result = (bashParser('echo ${text^}', {mode: 'bash'}))
 		.commands[0].suffix[0].expansion[0];
 	utils.checkResults(t, result, {
 		loc: {
@@ -242,8 +242,8 @@ test('parameter substitution with case change upper case and default pattern', t
 	});
 });
 
-test('parameter substitution with case change upper case globally and default pattern', t => {
-	const result = bashParser('echo ${text^^}', {mode: 'bash'})
+test('parameter substitution with case change upper case globally and default pattern', (t) => {
+	const result = (bashParser('echo ${text^^}', {mode: 'bash'}))
 		.commands[0].suffix[0].expansion[0];
 	// utils.logResults(result);
 	utils.checkResults(t, result, {
@@ -260,8 +260,8 @@ test('parameter substitution with case change upper case globally and default pa
 	});
 });
 
-test('parameter substitution with case change lower case and default pattern', t => {
-	const result = bashParser('echo ${text,}', {mode: 'bash'})
+test('parameter substitution with case change lower case and default pattern', (t) => {
+	const result = (bashParser('echo ${text,}', {mode: 'bash'}))
 		.commands[0].suffix[0].expansion[0];
 
 	utils.checkResults(t, result, {
@@ -278,8 +278,8 @@ test('parameter substitution with case change lower case and default pattern', t
 	});
 });
 
-test('parameter substitution with case change lower case globally and default pattern', t => {
-	const result = bashParser('echo ${text,,}', {mode: 'bash'})
+test('parameter substitution with case change lower case globally and default pattern', (t) => {
+	const result = (bashParser('echo ${text,,}', {mode: 'bash'}))
 		.commands[0].suffix[0].expansion[0];
 	utils.checkResults(t, result, {
 		loc: {
@@ -295,8 +295,8 @@ test('parameter substitution with case change lower case globally and default pa
 	});
 });
 
-test('parameter substitution with transformation:quoted', t => {
-	const result = bashParser('echo ${text@Q}', {mode: 'bash'})
+test('parameter substitution with transformation:quoted', (t) => {
+	const result = (bashParser('echo ${text@Q}', {mode: 'bash'}))
 		.commands[0].suffix[0].expansion[0];
 	utils.checkResults(t, result, {
 		loc: {
@@ -310,8 +310,8 @@ test('parameter substitution with transformation:quoted', t => {
 	});
 });
 
-test('parameter substitution with transformation:escape', t => {
-	const result = bashParser('echo ${text@E}', {mode: 'bash'})
+test('parameter substitution with transformation:escape', (t) => {
+	const result = (bashParser('echo ${text@E}', {mode: 'bash'}))
 		.commands[0].suffix[0].expansion[0];
 	utils.checkResults(t, result, {
 		loc: {
@@ -325,8 +325,8 @@ test('parameter substitution with transformation:escape', t => {
 	});
 });
 
-test('parameter substitution with transformation:prompt', t => {
-	const result = bashParser('echo ${text@P}', {mode: 'bash'})
+test('parameter substitution with transformation:prompt', (t) => {
+	const result = (bashParser('echo ${text@P}', {mode: 'bash'}))
 		.commands[0].suffix[0].expansion[0];
 	utils.checkResults(t, result, {
 		loc: {
@@ -340,8 +340,8 @@ test('parameter substitution with transformation:prompt', t => {
 	});
 });
 
-test('parameter substitution with transformation:assignment', t => {
-	const result = bashParser('echo ${text@A}', {mode: 'bash'})
+test('parameter substitution with transformation:assignment', (t) => {
+	const result = (bashParser('echo ${text@A}', {mode: 'bash'}))
 		.commands[0].suffix[0].expansion[0];
 	utils.checkResults(t, result, {
 		loc: {
@@ -355,8 +355,8 @@ test('parameter substitution with transformation:assignment', t => {
 	});
 });
 
-test('parameter substitution with transformation:flags', t => {
-	const result = bashParser('echo ${text@a}', {mode: 'bash'})
+test('parameter substitution with transformation:flags', (t) => {
+	const result = (bashParser('echo ${text@a}', {mode: 'bash'}))
 		.commands[0].suffix[0].expansion[0];
 	utils.checkResults(t, result, {
 		loc: {
@@ -370,8 +370,8 @@ test('parameter substitution with transformation:flags', t => {
 	});
 });
 
-test('parameter substitution with indirection', t => {
-	const result = bashParser('echo ${!text}', {mode: 'bash'})
+test('parameter substitution with indirection', (t) => {
+	const result = (bashParser('echo ${!text}', {mode: 'bash'}))
 		.commands[0].suffix[0].expansion[0];
 	utils.checkResults(t, result, {
 		loc: {

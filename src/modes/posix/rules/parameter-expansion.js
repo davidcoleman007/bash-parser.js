@@ -1,13 +1,15 @@
-'use strict';
 
-const map = require('map-iterable');
-const MagicString = require('magic-string');
-const tokens = require('../../../utils/tokens');
-const fieldSplitting = require('./field-splitting');
+
+import map from 'map-iterable';
+import MagicString from 'magic-string';
+import tokens from '../../../utils/tokens.js';
+import fieldSplitting from './field-splitting.js';
+import bashParser from '../../../index.js';
 
 const handleParameter = (obj, match) => {
 
 	const ret = Object.fromEntries(
+		(
 		Object.entries(obj).map(([k, v]) => {
 			if (typeof v === 'function') {
 				const val = v(match);
@@ -20,10 +22,11 @@ const handleParameter = (obj, match) => {
 
 			return [k, v];
 		})
+	)
 	);
 
 	if (ret.expand) {
-		const bashParser = require('../../../index');
+
 
 		for (const prop of ret.expand) {
 			const ast = bashParser(ret[prop], {mode: 'word-expansion'});
@@ -35,7 +38,7 @@ const handleParameter = (obj, match) => {
 	return ret;
 };
 
-function expandParameter(xp, enums) {
+const expandParameter = (xp, enums) => {
 	let parameter = xp.parameter;
 
 	for (const pair of Object.entries(enums.parameterOperators)) {
@@ -62,22 +65,22 @@ function expandParameter(xp, enums) {
 // command substitution (Command Substitution), or arithmetic expansion (Arithmetic
 // Expansion) from their introductory unquoted character sequences: '$' or "${", "$("
 // or '`', and "$((", respectively.
-const parameterExpansion = (options, mode) => map(token => {
+const parameterExpansion = (options, mode) => (map((token) => {
 	if (token.is('WORD') || token.is('ASSIGNMENT_WORD')) {
 		if (!token.expansion || token.expansion.length === 0) {
 			return token;
 		}
 
-		return tokens.setExpansions(token, token.expansion.map(xp => {
+		return tokens.setExpansions(token, (token.expansion.map((xp) => {
 			if (xp.type === 'parameter_expansion') {
 				return expandParameter(xp, mode.enums);
 			}
 
 			return xp;
-		}));
+		})));
 	}
 	return token;
-});
+}));
 
 parameterExpansion.resolve = options => map(token => {
 	if (token.is('WORD') || token.is('ASSIGNMENT_WORD')) {
@@ -104,4 +107,4 @@ parameterExpansion.resolve = options => map(token => {
 	return token;
 });
 
-module.exports = parameterExpansion;
+export default parameterExpansion;

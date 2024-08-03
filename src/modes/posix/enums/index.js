@@ -1,6 +1,13 @@
-'use strict';
 
-exports.IOFileOperators = require('./io-file-operators');
-exports.operators = require('./operators');
-exports.parameterOperators = require('./parameter-operators');
-exports.reservedWords = require('./reserved-words');
+
+import IOFileOperators from './io-file-operators.js';
+import operators from './operators.js';
+import parameterOperators from './parameter-operators.js';
+import reservedWords from './reserved-words.js';
+
+export default {
+  IOFileOperators,
+  operators,
+  parameterOperators,
+  reservedWords
+};

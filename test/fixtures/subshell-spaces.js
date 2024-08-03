@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	sourceCode: "( ls )",
 	result: {
 		type: "Script",
@@ -20,4 +20,4 @@ module.exports = {
 			}
 		]
 	}
-}
+};

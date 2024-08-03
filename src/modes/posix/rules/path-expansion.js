@@ -1,9 +1,9 @@
-'use strict';
 
-const map = require('map-iterable');
-const tokens = require('../../../utils/tokens');
 
-module.exports = options => map(token => {
+import map from 'map-iterable';
+import tokens from '../../../utils/tokens.js';
+
+export default options => map(token => {
 	if (token.is('WORD') && typeof options.resolvePath === 'function') {
 		return tokens.setValue(token, options.resolvePath(token.value));
 	}

@@ -1,11 +1,11 @@
-'use strict';
 
-const test = require('ava');
-const bashParser = require('../src');
-const utils = require('./_utils');
+
+import test from 'ava';
+import bashParser from '../src/index.js';
+import utils from './_utils.js';
 
 /* eslint-disable camelcase */
-test('parameter substitution in commands', t => {
+test('parameter substitution in commands', (t) => {
 	const result = bashParser('echo', {
 		resolvePath() {
 			return 'ciao';
@@ -17,7 +17,7 @@ test('parameter substitution in commands', t => {
 	});
 });
 
-test('parameter substitution in assignment', t => {
+test('parameter substitution in assignment', (t) => {
 	const result = bashParser('a=echo', {
 		resolvePath() {
 			return 'ciao';

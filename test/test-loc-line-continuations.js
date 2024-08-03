@@ -1,11 +1,11 @@
-'use strict';
 
-const test = require('ava');
-const bashParser = require('../src');
-const utils = require('./_utils');
+
+import test from 'ava';
+import bashParser from '../src/index.js';
+import utils from './_utils.js';
 // const mkloc = require('./_utils').mkloc2;
 
-test('empty line after line continuation', t => {
+test('empty line after line continuation', (t) => {
 	const cmd = `echo \\\n\n\necho there`;
 	const result = bashParser(cmd);
 	// utils.logResults(result);
@@ -37,7 +37,7 @@ test('empty line after line continuation', t => {
 	utils.checkResults(t, result, expected);
 });
 
-test('loc take into account line continuations', t => {
+test('loc take into account line continuations', (t) => {
 	const cmd = 'echo \\\nworld';
 	const result = bashParser(cmd, {insertLOC: true});
 	// utils.logResults(result);

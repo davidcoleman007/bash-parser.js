@@ -1,12 +1,8 @@
-'use strict';
 
-const t = require('../../../../utils/tokens');
 
-const tokenOrEmpty = t.tokenOrEmpty;
-const newLine = t.newLine;
-const isPartOfOperator = t.isPartOfOperator;
+import {tokenOrEmpty,newLine,isPartOfOperator} from '../../../../utils/tokens.js';
 
-module.exports = function start(state, source, reducers) {
+export default function start(state, source, reducers) {
 	const char = source && source.shift();
 
 	if (char === undefined) {

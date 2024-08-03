@@ -1,12 +1,12 @@
-'use strict';
 
-const test = require('ava');
-const posixLexer = require('../src/shell-lexer');
-const posixMode = require('../src/modes/posix');
-const utils = require('./_utils');
+
+import test from 'ava';
+import posixLexer from '../src/shell-lexer.js';
+import posixMode from '../src/modes/posix/index.js';
+import utils from './_utils.js';
 
 /* eslint-disable camelcase */
-function tokenize(text, rawTokens) {
+const tokenize = (text, rawTokens) => {
 	const lexer = posixLexer(posixMode.init(), {});
 	lexer.setInput(text);
 	const results = [];
@@ -38,7 +38,7 @@ function tokenize(text, rawTokens) {
 	return results;
 }
 
-test('parses parameter substitution', t => {
+test('parses parameter substitution', (t) => {
 	const result = tokenize('echo word${other}test', true);
 	utils.checkResults(t, result,
 		[{
@@ -67,7 +67,7 @@ test('parses parameter substitution', t => {
 	), '${other}');
 });
 
-test('parses unquoted parameter substitution', t => {
+test('parses unquoted parameter substitution', (t) => {
 	const result = tokenize('echo word$test', true);
 	// utils.logResults(result)
 	utils.checkResults(t, result,
@@ -91,7 +91,7 @@ test('parses unquoted parameter substitution', t => {
 	), '$test');
 });
 
-test('unquoted parameter delimited by symbol', t => {
+test('unquoted parameter delimited by symbol', (t) => {
 	const result = tokenize('echo word$test,,', true);
 	// utils.logResults(result);
 	utils.checkResults(t, result,
@@ -114,14 +114,14 @@ test('unquoted parameter delimited by symbol', t => {
 	), '$test');
 });
 
-test('parse single operator', t => {
+test('parse single operator', (t) => {
 	utils.checkResults(t,
 		tokenize('<<'),
 		[{token: 'DLESS', value: '<<'}]
 	);
 });
 
-test('parse redirections', t => {
+test('parse redirections', (t) => {
 	utils.checkResults(t,
 		tokenize('echo>ciao'),
 		[{token: 'WORD', value: 'echo'},
@@ -130,7 +130,7 @@ test('parse redirections', t => {
 	);
 });
 
-test('parse io-number redirections', t => {
+test('parse io-number redirections', (t) => {
 	utils.checkResults(t,
 		tokenize('echo 2> ciao'),
 		[{token: 'WORD', value: 'echo'},
@@ -140,7 +140,7 @@ test('parse io-number redirections', t => {
 	);
 });
 
-test('parse two operators on two lines', t => {
+test('parse two operators on two lines', (t) => {
 	utils.checkResults(t,
 		tokenize('<<\n>>'),
 		[{token: 'DLESS', value: '<<'},
@@ -149,7 +149,7 @@ test('parse two operators on two lines', t => {
 	);
 });
 
-test('parse two words', t => {
+test('parse two words', (t) => {
 	utils.checkResults(t,
 		tokenize('echo 42'),
 		[{token: 'WORD', value: 'echo'},
@@ -157,14 +157,14 @@ test('parse two words', t => {
 	);
 });
 
-test('support character escaping', t => {
+test('support character escaping', (t) => {
 	utils.checkResults(t,
 		tokenize('echo\\>23'),
 		[{token: 'WORD', value: 'echo>23'}]
 	);
 });
 
-test('support line continuations', t => { // not yet implemented
+test('support line continuations', (t) => { // not yet implemented
 	// utils.logResults(tokenize('echo\\\n23'))
 	utils.checkResults(t,
 		tokenize('echo\\\n23'),
@@ -172,7 +172,7 @@ test('support line continuations', t => { // not yet implemented
 	);
 });
 
-test('support single quotes', t => {
+test('support single quotes', (t) => {
 	utils.checkResults(t,
 		tokenize('echo \'CIAO 42\''),
 		[{token: 'WORD', value: 'echo'},
@@ -180,14 +180,14 @@ test('support single quotes', t => {
 	);
 });
 
-test('support &&', t => {
+test('support &&', (t) => {
 	utils.checkResults(t,
 		tokenize('run && stop'),
 		[{token: 'WORD', value: 'run'}, {token: 'AND_IF', value: '&&'}, {token: 'WORD', value: 'stop'}]
 	);
 });
 
-test('support &', t => {
+test('support &', (t) => {
 	// utils.logResults(tokenize('run &'));
 	utils.checkResults(t,
 		tokenize('run &'),
@@ -195,14 +195,14 @@ test('support &', t => {
 	);
 });
 
-test('support ||', t => {
+test('support ||', (t) => {
 	utils.checkResults(t,
 		tokenize('run || stop'),
 		[{token: 'WORD', value: 'run'}, {token: 'OR_IF', value: '||'}, {token: 'WORD', value: 'stop'}]
 	);
 });
 
-test('support for', t => {
+test('support for', (t) => {
 	utils.checkResults(t,
 		tokenize('for x in a b c; do echo x; done'),
 		[{token: 'For', value: 'for'}, {token: 'NAME', value: 'x'},
@@ -214,7 +214,7 @@ test('support for', t => {
 	);
 });
 
-test('support for with default sequence', t => {
+test('support for with default sequence', (t) => {
 	utils.checkResults(t,
 		tokenize('for x in; do echo x; done'),
 		[{token: 'For', value: 'for'}, {token: 'NAME', value: 'x'},
@@ -225,7 +225,7 @@ test('support for with default sequence', t => {
 	);
 });
 
-test('support double quotes', t => {
+test('support double quotes', (t) => {
 	utils.checkResults(t,
 		tokenize('echo "CIAO 42"'),
 		[{token: 'WORD', value: 'echo'},
@@ -233,7 +233,7 @@ test('support double quotes', t => {
 	);
 });
 
-test('support multiple commands', t => {
+test('support multiple commands', (t) => {
 	// utils.logResults(tokenize('echo; \nls;'));
 
 	utils.checkResults(t,
@@ -243,7 +243,7 @@ test('support multiple commands', t => {
 	);
 });
 
-test('support while', t => {
+test('support while', (t) => {
 	utils.checkResults(t,
 		tokenize('while [[ -e foo ]]; do sleep 1; done'),
 		[{token: 'While', value: 'while'}, {token: 'WORD', value: '[['},
@@ -255,7 +255,7 @@ test('support while', t => {
 	);
 });
 /*
-test('support function definition', t => {
+test('support function definition', (t) => {
 	utils.checkResults(t,
 		tokenize('foo () {command}'),
 		[{token: 'WORD', value: 'foo'}, {token: 'OPEN_PAREN', value: '('},

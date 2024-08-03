@@ -1,9 +1,9 @@
-'use strict';
 
-const test = require('ava');
-const rules = require('../src/modes/posix/rules');
-const enums = require('../src/modes/posix/enums');
-const utils = require('../src/utils');
+
+import test from 'ava';
+import rules from '../src/modes/posix/rules/index.js';
+import enums from '../src/modes/posix/enums/index.js';
+import utils from '../src/utils/index.js';
 // const _utils = require('./_utils');
 
 const token = utils.tokens.token;
@@ -18,14 +18,14 @@ function check(t, rule, actual, expected) {
 	);
 }
 
-test('operatorTokens - identify operator with their tokens', t => {
+test('operatorTokens - identify operator with their tokens', (t) => {
 	check(t, rules.operatorTokens,
 		[token({type: 'OPERATOR', value: '<<', loc: 42})],
 		[token({type: 'DLESS', value: '<<', loc: 42})]
 	);
 });
 
-test('reservedWords - identify reserved words or WORD', t => {
+test('reservedWords - identify reserved words or WORD', (t) => {
 	check(
 		t,
 		rules.reservedWords, [
@@ -38,7 +38,7 @@ test('reservedWords - identify reserved words or WORD', t => {
 	);
 });
 
-test('functionName - replace function name token as NAME', t => {
+test('functionName - replace function name token as NAME', (t) => {
 	const input = [
 		token({type: 'WORD', value: 'test', loc: 42, _: {maybeStartOfSimpleCommand: true}}),
 		token({type: 'OPEN_PAREN', value: '(', loc: 42}),

@@ -1,11 +1,11 @@
-'use strict';
 
-const test = require('ava');
-const bashParser = require('../src');
-const utils = require('./_utils');
+
+import test from 'ava';
+import bashParser from '../src/index.js';
+import utils from './_utils.js';
 
 /* eslint-disable camelcase */
-test('parse if elif else', t => {
+test('parse if elif else', (t) => {
 	const cmd = `if true; then
 	echo 1;
 elif false; then

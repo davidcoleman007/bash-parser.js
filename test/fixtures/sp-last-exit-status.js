@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	sourceCode: "echoword=$?",
 	result: {
 		type: "Script",
@@ -29,4 +29,4 @@ module.exports = {
 			}
 		]
 	}
-}
+};

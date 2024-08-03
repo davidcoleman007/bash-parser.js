@@ -1,10 +1,10 @@
-'use strict';
 
-const test = require('ava');
-const bashParser = require('../src');
-const utils = require('./_utils');
 
-test('arithmetic substitution', t => {
+import test from 'ava';
+import bashParser from '../src/index.js';
+import utils from './_utils.js';
+
+test('arithmetic substitution', (t) => {
 	const result = bashParser('variable=$((42 + 43))');
 	delete result.commands[0].prefix[0].expansion[0].arithmeticAST;
 	// console.log(JSON.stringify(result.commands[0].prefix[0]))
@@ -22,7 +22,7 @@ test('arithmetic substitution', t => {
 	});
 });
 
-test('arithmetic substitution skip single quoted words', t => {
+test('arithmetic substitution skip single quoted words', (t) => {
 	const result = bashParser('echo \'$((42 * 42))\'');
 	// utils.logResults(result)
 	utils.checkResults(t, result.commands[0].suffix, [{
@@ -31,7 +31,7 @@ test('arithmetic substitution skip single quoted words', t => {
 	}]);
 });
 
-test('arithmetic substitution skip escaped dollar', t => {
+test('arithmetic substitution skip escaped dollar', (t) => {
 	const result = bashParser('echo "\\$(\\(42 * 42))"');
 	// utils.logResults(result)
 	utils.checkResults(t, result.commands[0].suffix, [{
@@ -40,7 +40,7 @@ test('arithmetic substitution skip escaped dollar', t => {
 	}]);
 });
 
-test('arithmetic & parameter substitution', t => {
+test('arithmetic & parameter substitution', (t) => {
 	const result = bashParser('variable=$((42 + 43)) $ciao');
 
 	delete result.commands[0].prefix[0].expansion[0].arithmeticAST;
@@ -73,7 +73,7 @@ test('arithmetic & parameter substitution', t => {
 	});
 });
 
-test('arithmetic substitution in suffix', t => {
+test('arithmetic substitution in suffix', (t) => {
 	const result = bashParser('echo $((42 + 43))');
 	delete result.commands[0].suffix[0].expansion[0].arithmeticAST;
 	utils.checkResults(t, result.commands[0].suffix[0], {
@@ -90,19 +90,19 @@ test('arithmetic substitution in suffix', t => {
 	});
 });
 
-test('arithmetic substitution node applied to invalid expressions throws', async t => {
-	const result = await t.throws(() => bashParser('echo $((a b c d))'));
+test('arithmetic substitution node applied to invalid expressions throws', t => {
+	const result = t.throws(() => bashParser('echo $((a b c d))'));
 	const message = result.message.split('\n')[0];
 	t.is(message, 'Cannot parse arithmetic expression "a b c d": Unexpected token, expected ; (1:2)');
 });
 
-test('arithmetic substitution node applied to non expressions throws', async t => {
-	const result = await t.throws(() => bashParser('echo $((while(1);))'));
+test('arithmetic substitution node applied to non expressions throws', t => {
+	const result = t.throws(() => bashParser('echo $((while(1);))'));
 	const message = result.message.split('\n')[0];
 	t.is(message, 'Cannot parse arithmetic expression "while(1);": Not an expression');
 });
 
-test('arithmetic ast is parsed', t => {
+test('arithmetic ast is parsed', (t) => {
 	const result = bashParser('variable=$((42 + 43))')
 		.commands[0].prefix[0].expansion[0].arithmeticAST;
 	// utils.logResults(result)
@@ -164,7 +164,7 @@ test('arithmetic ast is parsed', t => {
 	});
 });
 
-test('resolve expression', t => {
+test('resolve expression', (t) => {
 	const result = bashParser('"foo $((42 * 42)) baz"', {
 		runArithmeticExpression() {
 			return '43';
@@ -192,7 +192,7 @@ test('resolve expression', t => {
 	});
 });
 
-test('field splitting', t => {
+test('field splitting', (t) => {
 	const result = bashParser('say $((other)) plz', {
 		runArithmeticExpression() {
 			return 'foo\tbar baz';

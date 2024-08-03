@@ -1,8 +1,8 @@
-'use strict';
-const map = require('map-iterable');
-const isValidName = require('../../../utils/is-valid-name');
 
-module.exports = function assignmentWord() {
+import map from 'map-iterable';
+import isValidName from '../../../utils/is-valid-name.js';
+
+export default function assignmentWord() {
 	return map((tk, idx, ctx) => {
 		// apply only on valid positions
 		// (start of simple commands)

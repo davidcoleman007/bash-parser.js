@@ -1,25 +1,31 @@
-'use strict';
 
-const shellLexer = require('./shell-lexer');
-const utils = require('./utils');
+
+import shellLexer from './shell-lexer.js';
+import utils from './utils/index.js';
+import modeBash from './modes/bash/index.js';
+import modePosix from './modes/posix/index.js';
+import modeWordExpansion from './modes/word-expansion/index.js';
 
 // preload all modes to have them browserified
-const modes = {
-	'bash': require('./modes/bash'),
-	'posix': require('./modes/posix'),
-	'word-expansion': require('./modes/word-expansion')
-};
 
-function loadPlugin(name) {
+
+export const loadPlugin = (name) => {
+	const modes = {
+		'bash': modeBash,
+		'posix': modePosix,
+		'word-expansion': modeWordExpansion
+	};
+
 	const modePlugin = modes[name];
 
 	if (modePlugin.inherits) {
 		return modePlugin.init(loadPlugin(modePlugin.inherits), utils);
 	}
+
 	return modePlugin.init(null, utils);
 }
 
-module.exports = function parse(sourceCode, options) {
+export const parse = (sourceCode, options) => {
 	try {
 		options = options || {};
 		options.mode = options.mode || 'posix';
@@ -52,3 +58,5 @@ module.exports = function parse(sourceCode, options) {
 		throw new Error(err.stack || err.message);
 	}
 };
+
+export default parse;

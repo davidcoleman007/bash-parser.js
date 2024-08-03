@@ -1,8 +1,8 @@
-'use strict';
 
-const test = require('ava');
-const bashParser = require('../src');
-const utils = require('./_utils');
+
+import test from 'ava';
+import bashParser from '../src/index.js';
+import utils from './_utils.js';
 
 function testUnclosed(cmd, char) {
 	return t => {
@@ -19,7 +19,7 @@ test('throws on unclosed backtick command subst', testUnclosed('echo `TEST1', '`
 test('throws on unclosed arhit subst', testUnclosed('echo $((TEST1', '$(('));
 test('throws on unclosed param subst', testUnclosed('echo ${TEST1', '${'));
 
-test('quotes within double quotes', t => {
+test('quotes within double quotes', (t) => {
 	const result = bashParser('echo "TEST1 \'TEST2"');
 	// utils.logResults(result)
 	utils.checkResults(t, result, {
@@ -32,7 +32,7 @@ test('quotes within double quotes', t => {
 	});
 });
 
-test('escaped double quotes within double quotes', t => {
+test('escaped double quotes within double quotes', (t) => {
 	const result = bashParser('echo "TEST1 \\"TEST2"');
 	// utils.logResults(result);
 	utils.checkResults(t, result, {
@@ -45,7 +45,7 @@ test('escaped double quotes within double quotes', t => {
 	});
 });
 
-test('double quotes within single quotes', t => {
+test('double quotes within single quotes', (t) => {
 	const result = bashParser('echo \'TEST1 "TEST2\'');
 	utils.checkResults(t, result, {
 		type: 'Script',
@@ -57,7 +57,7 @@ test('double quotes within single quotes', t => {
 	});
 });
 
-test('Partially quoted word', t => {
+test('Partially quoted word', (t) => {
 	const result = bashParser('echo TEST1\' TEST2 \'TEST3');
 	utils.checkResults(t, result, {
 		type: 'Script',
@@ -69,7 +69,7 @@ test('Partially quoted word', t => {
 	});
 });
 
-test('Partially double quoted word', t => {
+test('Partially double quoted word', (t) => {
 	const result = bashParser('echo TEST3" TEST4 "TEST5');
 	// utils.logResults(result);
 	utils.checkResults(t, result, {

@@ -1,24 +1,71 @@
-'use strict';
+import parameterExpansion from './parameter-expansion.js';
+import commandExpansion from './command-expansion.js';
+import arithmeticExpansion from './arithmetic-expansion.js';
+import aliasSubstitution from './alias-substitution.js';
+import defaultNodeType from './default-node-type.js';
+import fieldSplitting from './field-splitting.js';
+import tildeExpanding from './tilde-expanding.js';
+import pathExpansion from './path-expansion.js';
+import quoteRemoval from './quote-removal.js';
+import identifySimpleCommandNames from './identify-simplecommand-names.js';
+import identifyMaybeSimpleCommands from './identify-maybe-simple-commands.js';
+import operatorTokens from './operator-tokens.js';
+import reservedWords from './reserved-words.js';
+import separator from './separator.js';
+import linebreakIn from './linebreak-in.js';
+import forNameVariable from './for-name-variable.js';
+import functionName from './function-name.js';
+import ioNumber from './io-number.js';
 
-exports.parameterExpansion = require('./parameter-expansion');
-exports.commandExpansion = require('./command-expansion');
-exports.arithmeticExpansion = require('./arithmetic-expansion');
-exports.aliasSubstitution = require('./alias-substitution');
-exports.defaultNodeType = require('./default-node-type');
-exports.fieldSplitting = require('./field-splitting');
-exports.tildeExpanding = require('./tilde-expanding');
-exports.pathExpansion = require('./path-expansion');
-exports.quoteRemoval = require('./quote-removal');
-exports.identifySimpleCommandNames = require('./identify-simplecommand-names');
-exports.identifyMaybeSimpleCommands = require('./identify-maybe-simple-commands');
-exports.operatorTokens = require('./operator-tokens');
-exports.reservedWords = require('./reserved-words');
-exports.separator = require('./separator');
-exports.linebreakIn = require('./linebreak-in');
-exports.forNameVariable = require('./for-name-variable');
-exports.functionName = require('./function-name');
-exports.ioNumber = require('./io-number');
-// exports.removeTempObject = require('./remove-temp-object');
-exports.newLineList = require('./new-line-list');
-exports.assignmentWord = require('./assignment-word');
-exports.syntaxerrorOnContinue = require('./syntaxerror-oncontinue');
+// import removeTempObject from './remove-temp-object';
+import newLineList from './new-line-list.js';
+import assignmentWord from './assignment-word.js';
+import syntaxerrorOnContinue from './syntaxerror-oncontinue.js';
+
+export {
+  parameterExpansion,
+  commandExpansion,
+  arithmeticExpansion,
+  aliasSubstitution,
+  defaultNodeType,
+  fieldSplitting,
+  tildeExpanding,
+  pathExpansion,
+  quoteRemoval,
+  identifySimpleCommandNames,
+  identifyMaybeSimpleCommands,
+  operatorTokens,
+  reservedWords,
+  separator,
+  linebreakIn,
+  forNameVariable,
+  functionName,
+  ioNumber,
+  newLineList,
+  assignmentWord,
+  syntaxerrorOnContinue
+};
+
+export default {
+  parameterExpansion,
+  commandExpansion,
+  arithmeticExpansion,
+  aliasSubstitution,
+  defaultNodeType,
+  fieldSplitting,
+  tildeExpanding,
+  pathExpansion,
+  quoteRemoval,
+  identifySimpleCommandNames,
+  identifyMaybeSimpleCommands,
+  operatorTokens,
+  reservedWords,
+  separator,
+  linebreakIn,
+  forNameVariable,
+  functionName,
+  ioNumber,
+  newLineList,
+  assignmentWord,
+  syntaxerrorOnContinue
+};

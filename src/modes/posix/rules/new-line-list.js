@@ -1,9 +1,9 @@
-'use strict';
-const compose = require('../../../utils/compose');
-const map = require('map-iterable');
-const lookahead = require('iterable-lookahead');
-const tokens = require('../../../utils/tokens');
-const filterNonNull = require('../../../utils/non-null');
+
+import compose from '../../../utils/compose.js';
+import map from 'map-iterable';
+import lookahead from 'iterable-lookahead';
+import tokens from '../../../utils/tokens.js';
+import filterNonNull from '../../../utils/non-null.js';
 
 const SkipRepeatedNewLines = {
 	NEWLINE(tk, iterable) {
@@ -19,7 +19,7 @@ const SkipRepeatedNewLines = {
 
 /* resolve a conflict in grammar by tokenize multiple NEWLINEs as a
 newline_list token (it was a rule in POSIX grammar) */
-module.exports = () => compose(
+export default () => compose(
 	filterNonNull,
 	map(
 		tokens.applyTokenizerVisitor(SkipRepeatedNewLines)

@@ -1,7 +1,7 @@
-'use strict';
 
-const map = require('map-iterable');
-const tokenOrEmpty = require('../../utils/tokens').tokenOrEmpty;
+
+import map from 'map-iterable';
+import { tokenOrEmpty } from '../../utils/tokens.js';
 
 const convertToWord = () => map(tk => {
 	// TOKEN tokens are converted to WORD tokens
@@ -72,9 +72,9 @@ function start(state, source, reducers) {
 	};
 }
 
-module.exports = {
+export default {
 	inherits: 'posix',
-	init: posixMode => {
+	init: (posixMode) => {
 		const phaseCatalog = posixMode.phaseCatalog;
 		const lexerPhases = [
 			convertToWord,

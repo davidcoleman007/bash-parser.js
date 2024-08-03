@@ -1,5 +1,5 @@
 
-module.exports = function last(arr) {
+export default function last(arr) {
   if (!Array.isArray(arr)) {
     throw new Error('expected the first argument to be an array');
   }

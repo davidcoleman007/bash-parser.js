@@ -1,10 +1,10 @@
-'use strict';
 
-const test = require('ava');
-const bashParser = require('../src');
-const utils = require('./_utils');
 
-test('single quoted tokens are not parsed as reserved words', t => {
+import test from 'ava';
+import bashParser from '../src/index.js';
+import utils from './_utils.js';
+
+test('single quoted tokens are not parsed as reserved words', (t) => {
 	const result = bashParser('\'if\' true');
 	// utils.logResults(result);
 
@@ -28,7 +28,7 @@ test('single quoted tokens are not parsed as reserved words', t => {
 	});
 });
 
-test('double quoted tokens are not parsed as reserved words', t => {
+test('double quoted tokens are not parsed as reserved words', (t) => {
 	const result = bashParser('"if" true');
 	// utils.logResults(result);
 
@@ -52,7 +52,7 @@ test('double quoted tokens are not parsed as reserved words', t => {
 	});
 });
 
-test('partially double quoted tokens are not parsed as reserved words', t => {
+test('partially double quoted tokens are not parsed as reserved words', (t) => {
 	const result = bashParser('i"f" true');
 	// utils.logResults(result);
 
@@ -76,7 +76,7 @@ test('partially double quoted tokens are not parsed as reserved words', t => {
 	});
 });
 
-test('partially single quoted tokens are not parsed as reserved words', t => {
+test('partially single quoted tokens are not parsed as reserved words', (t) => {
 	const result = bashParser('i\'f\' true');
 	// utils.logResults(result);
 
@@ -100,7 +100,7 @@ test('partially single quoted tokens are not parsed as reserved words', t => {
 	});
 });
 
-test('tokens in invalid positions are not parsed as reserved words', t => {
+test('tokens in invalid positions are not parsed as reserved words', (t) => {
 	const result = bashParser('echo if');
 	// utils.logResults(result);
 

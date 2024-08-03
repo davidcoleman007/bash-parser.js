@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	sourceCode: "\"ec\\t\\nho\"",
 	result: {
 		type: "Script",
@@ -12,4 +12,4 @@ module.exports = {
 			}
 		]
 	}
-}
+};

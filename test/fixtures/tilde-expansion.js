@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	sourceCode: "a=~/subdir:~/othersubdir/ciao",
 	result: {
 		type: "Script",
@@ -18,4 +18,4 @@ module.exports = {
 			}
 		]
 	}
-}
+};

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	sourceCode: "case foo in\n\t* )\n\t\techo bar;;\nesac\n",
 	result: {
 		type: "Script",
@@ -149,4 +149,4 @@ module.exports = {
 			}
 		}
 	}
-}
+};

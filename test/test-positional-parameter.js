@@ -1,10 +1,10 @@
-'use strict';
 
-const test = require('ava');
-const bashParser = require('../src');
-const utils = require('./_utils');
 
-test('positional parameter with word following', t => {
+import test from 'ava';
+import bashParser from '../src/index.js';
+import utils from './_utils.js';
+
+test('positional parameter with word following', (t) => {
 	const result = bashParser('echoword=$1ciao')
 		.commands[0].prefix;
 
@@ -25,7 +25,7 @@ test('positional parameter with word following', t => {
 	}]);
 });
 
-test('positional parameter in braces', t => {
+test('positional parameter in braces', (t) => {
 	const result = bashParser('echoword=${11}test');
 	utils.checkResults(t, result, {
 		type: 'Script',
@@ -50,7 +50,7 @@ test('positional parameter in braces', t => {
 	});
 });
 
-test('positional parameter without braces', t => {
+test('positional parameter without braces', (t) => {
 	const result = bashParser('echoword=$1');
 	// console.log(JSON.stringify(result, null, 5))
 	utils.checkResults(t, result, {
@@ -74,7 +74,7 @@ test('positional parameter without braces', t => {
 	});
 });
 
-test('positional parameter without braces allow one digit only', t => {
+test('positional parameter without braces allow one digit only', (t) => {
 	const result = bashParser('echoword=$11');
 	// console.log(JSON.stringify(result, null, 5))
 	utils.checkResults(t, result, {

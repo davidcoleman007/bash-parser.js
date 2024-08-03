@@ -1,7 +1,7 @@
-'use strict';
 
-const test = require('ava');
-const tokenDelimiter = require('../src/modes/posix/tokenizer');
+
+import test from 'ava';
+import tokenDelimiter from '../src/modes/posix/tokenizer/index.js';
 
 const tokenizer = tokenDelimiter();
 
@@ -37,7 +37,7 @@ function tokenize(text, keepLoc) {
 	return results;
 }
 
-test('parse single operator', t => {
+test('parse single operator', (t) => {
 	const result = tokenize('<<');
 	t.deepEqual(
 		result, [
@@ -47,7 +47,7 @@ test('parse single operator', t => {
 	);
 });
 
-test('parse word', t => {
+test('parse word', (t) => {
 	const result = tokenize('abc');
 	t.deepEqual(
 		result, [
@@ -57,7 +57,7 @@ test('parse word', t => {
 	);
 });
 
-test('parse word followed by newline', t => {
+test('parse word followed by newline', (t) => {
 	const result = tokenize('abc\n');
 	t.deepEqual(
 		result, [
@@ -68,7 +68,7 @@ test('parse word followed by newline', t => {
 	);
 });
 
-test('parse invalid operator', t => {
+test('parse invalid operator', (t) => {
 	const result = tokenize('^');
 	t.deepEqual(
 		result, [
@@ -78,14 +78,14 @@ test('parse invalid operator', t => {
 	);
 });
 
-test('emit EOF at end', t => {
+test('emit EOF at end', (t) => {
 	t.deepEqual(
 		tokenize(''),
 		[{EOF: ''}]
 	);
 });
 
-test('parse new lines', t => {
+test('parse new lines', (t) => {
 	t.deepEqual(
 		tokenize('\n'), [
 			{NEWLINE: '\n'},
@@ -94,7 +94,7 @@ test('parse new lines', t => {
 	);
 });
 
-test('operator breaks words', t => {
+test('operator breaks words', (t) => {
 	t.deepEqual(
 		tokenize('e<'), [
 			{TOKEN: 'e'},
@@ -104,7 +104,7 @@ test('operator breaks words', t => {
 	);
 });
 
-test('double breaks', t => {
+test('double breaks', (t) => {
 	t.deepEqual(
 		tokenize('echo>ciao'), [
 			{TOKEN: 'echo'},
@@ -115,7 +115,7 @@ test('double breaks', t => {
 	);
 });
 
-test('word breaks operators', t => {
+test('word breaks operators', (t) => {
 	t.deepEqual(
 		tokenize('<e'), [
 			{LESS: '<'},
@@ -125,7 +125,7 @@ test('word breaks operators', t => {
 	);
 });
 
-test('parse two operators on two lines', t => {
+test('parse two operators on two lines', (t) => {
 	t.deepEqual(
 		tokenize('<<\n>>'), [
 			{DLESS: '<<'},
@@ -136,7 +136,7 @@ test('parse two operators on two lines', t => {
 	);
 });
 
-test('parse two operators on one line', t => {
+test('parse two operators on one line', (t) => {
 	t.deepEqual(
 		tokenize('<< >>'), [
 			{DLESS: '<<'},
@@ -146,7 +146,7 @@ test('parse two operators on one line', t => {
 	);
 });
 
-test('parse two tokens', t => {
+test('parse two tokens', (t) => {
 	t.deepEqual(
 		tokenize('echo 42'), [
 			{TOKEN: 'echo'},
@@ -156,7 +156,7 @@ test('parse two tokens', t => {
 	);
 });
 
-test('parse two tokens on two lines', t => {
+test('parse two tokens on two lines', (t) => {
 	t.deepEqual(
 		tokenize('echo\n42'), [
 			{TOKEN: 'echo'},
@@ -167,7 +167,7 @@ test('parse two tokens on two lines', t => {
 	);
 });
 
-test('keep multiple newlines', t => {
+test('keep multiple newlines', (t) => {
 	const result = tokenize('echo\n\n\n42');
 	t.deepEqual(
 		result, [
@@ -181,7 +181,7 @@ test('keep multiple newlines', t => {
 	);
 });
 
-test('support escaping chars', t => {
+test('support escaping chars', (t) => {
 	t.deepEqual(
 		tokenize('echo\\<'), [
 			{TOKEN: 'echo\\<'},
@@ -190,7 +190,7 @@ test('support escaping chars', t => {
 	);
 });
 
-test('character escaping is resetted on each char', t => {
+test('character escaping is resetted on each char', (t) => {
 	t.deepEqual(
 		tokenize('echo\\<<'), [
 			{TOKEN: 'echo\\<'},
@@ -200,7 +200,7 @@ test('character escaping is resetted on each char', t => {
 	);
 });
 
-test('support quoting with single', t => {
+test('support quoting with single', (t) => {
 	const result = tokenize('echo \'< world >\' other');
 
 	t.deepEqual(
@@ -213,7 +213,7 @@ test('support quoting with single', t => {
 	);
 });
 
-test('in single quote escaping single quotes is not working', t => {
+test('in single quote escaping single quotes is not working', (t) => {
 	const result = tokenize('\'\\\'\'');
 
 	t.deepEqual(
@@ -224,7 +224,7 @@ test('in single quote escaping single quotes is not working', t => {
 	);
 });
 
-test('single quote does not break words', t => {
+test('single quote does not break words', (t) => {
 	const result = tokenize('a\'b\'c');
 
 	t.deepEqual(
@@ -235,7 +235,7 @@ test('single quote does not break words', t => {
 	);
 });
 
-test('support quoting with double', t => {
+test('support quoting with double', (t) => {
 	t.deepEqual(
 		tokenize('echo "< world >" other'), [
 			{TOKEN: 'echo'},
@@ -246,7 +246,7 @@ test('support quoting with double', t => {
 	);
 });
 
-test('escaped double quotes within double quotes', t => {
+test('escaped double quotes within double quotes', (t) => {
 	const result = tokenize('echo "TEST1 \\"TEST2" ucci ucci');
 	t.deepEqual(
 		result, [
@@ -259,7 +259,7 @@ test('escaped double quotes within double quotes', t => {
 	);
 });
 
-test('escaped escape double quotes within double quotes', t => {
+test('escaped escape double quotes within double quotes', (t) => {
 	const result = tokenize('echo "TEST1 \\\\" TEST2 " u i"');
 	t.deepEqual(
 		result, [
@@ -272,7 +272,7 @@ test('escaped escape double quotes within double quotes', t => {
 	);
 });
 
-test('parse loc', t => {
+test('parse loc', (t) => {
 	const result = tokenize('abc', true);
 	t.deepEqual(
 		result, [
@@ -282,7 +282,7 @@ test('parse loc', t => {
 	);
 });
 
-test('reset start loc on each token', t => {
+test('reset start loc on each token', (t) => {
 	const result = tokenize('abc def', true);
 	t.deepEqual(
 		result, [
@@ -293,7 +293,7 @@ test('reset start loc on each token', t => {
 	);
 });
 
-test('loc on operators', t => {
+test('loc on operators', (t) => {
 	const result = tokenize('< <<', true);
 	// console.log(JSON.stringify(result, null, 4))
 	t.deepEqual(
@@ -305,7 +305,7 @@ test('loc on operators', t => {
 	);
 });
 
-test('loc on newlines', t => {
+test('loc on newlines', (t) => {
 	const result = tokenize('<\n<<', true);
 	t.deepEqual(
 		result, [
@@ -317,7 +317,7 @@ test('loc on newlines', t => {
 	);
 });
 
-test('loc on line continuations', t => {
+test('loc on line continuations', (t) => {
 	const result = tokenize('a\\\nbc', true);
 
 	t.deepEqual(
@@ -328,7 +328,7 @@ test('loc on line continuations', t => {
 	);
 });
 
-test('parse parameter expansion', t => {
+test('parse parameter expansion', (t) => {
 	const result = tokenize('a$b-c');
 	// utils.logResults(result);
 
@@ -346,7 +346,7 @@ test('parse parameter expansion', t => {
 	);
 });
 
-test('parse special parameter expansion', t => {
+test('parse special parameter expansion', (t) => {
 	const result = tokenize('a$@cd');
 	const expansion = [{
 		type: 'parameter_expansion',
@@ -361,7 +361,7 @@ test('parse special parameter expansion', t => {
 	);
 });
 
-test('parse extended parameter expansion', t => {
+test('parse extended parameter expansion', (t) => {
 	const result = tokenize('a${b}cd');
 	const expansion = [{
 		type: 'parameter_expansion',
@@ -376,7 +376,7 @@ test('parse extended parameter expansion', t => {
 	);
 });
 
-test('parse command expansion', t => {
+test('parse command expansion', (t) => {
 	const result = tokenize('a$(b)cd');
 	const expansion = [{
 		type: 'command_expansion',
@@ -391,7 +391,7 @@ test('parse command expansion', t => {
 	);
 });
 
-test('parse command with backticks', t => {
+test('parse command with backticks', (t) => {
 	const result = tokenize('a`b`cd');
 	const expansion = [{
 		type: 'command_expansion',
@@ -406,7 +406,7 @@ test('parse command with backticks', t => {
 	);
 });
 
-test('parse arithmetic expansion', t => {
+test('parse arithmetic expansion', (t) => {
 	const result = tokenize('a$((b))cd');
 	const expansion = [{
 		type: 'arithmetic_expansion',
@@ -422,7 +422,7 @@ test('parse arithmetic expansion', t => {
 	);
 });
 
-test('within double quotes parse parameter expansion', t => {
+test('within double quotes parse parameter expansion', (t) => {
 	const result = tokenize('"a$b-c"');
 	const expansion = [{
 		type: 'parameter_expansion',
@@ -438,7 +438,7 @@ test('within double quotes parse parameter expansion', t => {
 	);
 });
 
-test('within double quotes parse special parameter expansion', t => {
+test('within double quotes parse special parameter expansion', (t) => {
 	const result = tokenize('"a$@cd"');
 	const expansion = [{
 		type: 'parameter_expansion',
@@ -453,7 +453,7 @@ test('within double quotes parse special parameter expansion', t => {
 	);
 });
 
-test('within double quotes parse extended parameter expansion', t => {
+test('within double quotes parse extended parameter expansion', (t) => {
 	const result = tokenize('"a${b}cd"');
 	const expansion = [{
 		type: 'parameter_expansion',
@@ -468,7 +468,7 @@ test('within double quotes parse extended parameter expansion', t => {
 	);
 });
 
-test('within double quotes parse command expansion', t => {
+test('within double quotes parse command expansion', (t) => {
 	const result = tokenize('"a$(b)cd"');
 	const expansion = [{
 		type: 'command_expansion',
@@ -484,7 +484,7 @@ test('within double quotes parse command expansion', t => {
 	);
 });
 
-test('within double quotes parse command with backticks', t => {
+test('within double quotes parse command with backticks', (t) => {
 	const result = tokenize('"a`b`cd"');
 	const expansion = [{
 		type: 'command_expansion',
@@ -501,7 +501,7 @@ test('within double quotes parse command with backticks', t => {
 	);
 });
 
-test('within double quotes parse arithmetic expansion', t => {
+test('within double quotes parse arithmetic expansion', (t) => {
 	const result = tokenize('"a$((b))cd"');
 	const expansion = [{
 		type: 'arithmetic_expansion',

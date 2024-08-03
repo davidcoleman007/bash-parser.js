@@ -1,11 +1,11 @@
-'use strict';
 
-const test = require('ava');
-const bashParser = require('../src');
-const utils = require('./_utils');
+
+import test from 'ava';
+import bashParser from '../src/index.js';
+import utils from './_utils.js';
 
 /* eslint-disable camelcase */
-test('parse for', t => {
+test('parse for', (t) => {
 	const result = bashParser('for x in a b c; do echo $x; done');
 	// utils.logResults(result)
 	utils.checkResults(t,
@@ -39,7 +39,7 @@ test('parse for', t => {
 	);
 });
 
-test('parse for with default sequence', t => {
+test('parse for with default sequence', (t) => {
 	const result = bashParser('for x\n do echo $x\n done');
 	// utils.logResults(result)
 	utils.checkResults(t,
@@ -72,7 +72,7 @@ test('parse for with default sequence', t => {
 	);
 });
 
-test('parse for with default sequence - on one line', t => {
+test('parse for with default sequence - on one line', (t) => {
 	const result = bashParser('for x in; do echo $x; done');
 	// utils.logResults(result)
 	utils.checkResults(t,

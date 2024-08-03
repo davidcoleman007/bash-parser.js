@@ -1,6 +1,7 @@
-'use strict';
+
+
 //
-const bashParser = require('../lib');
+import bashParser from '../lib/index.js';
 
 const source = `
 	foo () {

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	sourceCode: "! run | cry",
 	result: {
 		type: "Script",
@@ -25,4 +25,4 @@ module.exports = {
 			}
 		]
 	}
-}
+};

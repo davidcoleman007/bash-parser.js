@@ -1,11 +1,11 @@
-'use strict';
 
-const test = require('ava');
-const bashParser = require('../src');
-const utils = require('./_utils');
-const mkloc = require('./_utils').mkloc2;
 
-test('case statement has loc', t => {
+import test from 'ava';
+import bashParser from '../src/index.js';
+import utils from './_utils.js';
+import { mkloc2 as mkloc } from './_utils.js';
+
+test('case statement has loc', (t) => {
 	const cmd =
 `case foo in
 	* )

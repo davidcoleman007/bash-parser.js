@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	sourceCode: "echo word${other}test",
 	result: {
 		type: "Script",
@@ -28,4 +28,4 @@ module.exports = {
 			}
 		]
 	}
-}
+};

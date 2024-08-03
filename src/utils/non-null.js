@@ -1,10 +1,10 @@
-'use strict';
 
-const filter = require('./filter');
+
+import filter from './filter.js';
 
 const nonNull = tk => {
 	return tk !== null;
 };
 
-module.exports = filter(nonNull);
+export default filter(nonNull);
 filter.predicate = nonNull;

@@ -1,10 +1,10 @@
-'use strict';
 
-const test = require('ava');
-const bashParser = require('../src');
-const utils = require('./_utils');
 
-test('command substitution', t => {
+import test from 'ava';
+import bashParser from '../src/index.js';
+import utils from './_utils.js';
+
+test('command substitution', (t) => {
 	const result = bashParser('variable=$(echo ciao)');
 	// utils.logResults(result)
 	delete result.commands[0].prefix[0].expansion[0].commandAST;
@@ -22,7 +22,7 @@ test('command substitution', t => {
 	}]);
 });
 
-test('command substitution skip escaped dollar', t => {
+test('command substitution skip escaped dollar', (t) => {
 	const result = bashParser('echo "\\$\\(echo ciao)"');
 	// utils.logResults(result)
 	utils.checkResults(t, result.commands[0].suffix, [{
@@ -31,12 +31,12 @@ test('command substitution skip escaped dollar', t => {
 	}]);
 });
 
-test('command substitution skip escaped backtick', t => {
+test('command substitution skip escaped backtick', (t) => {
 	const err = t.throws(() => bashParser('echo "\\`echo ciao`"'));
 	t.is(err.message, 'Unclosed `');
 });
 
-test('command substitution skip single quoted words', t => {
+test('command substitution skip single quoted words', (t) => {
 	const result = bashParser('echo \'$(echo ciao)\'');
 	// utils.logResults(result)
 	utils.checkResults(t, result.commands[0].suffix, [{
@@ -45,13 +45,13 @@ test('command substitution skip single quoted words', t => {
 	}]);
 });
 
-test('command substitution with backticks skip single quoted words', t => {
+test('command substitution with backticks skip single quoted words', (t) => {
 	const result = bashParser('echo \'`echo ciao`\'');
 	// utils.logResults(result)
 	utils.checkResults(t, result.commands[0].suffix, [{type: 'Word', text: '`echo ciao`'}]);
 });
 
-test('command substitution in suffix', t => {
+test('command substitution in suffix', (t) => {
 	const result = bashParser('echo $(ciao)');
 	delete result.commands[0].suffix[0].expansion[0].commandAST;
 	utils.checkResults(t, result.commands[0].suffix, [{
@@ -68,7 +68,7 @@ test('command substitution in suffix', t => {
 	}]);
 });
 
-test('command substitution in suffix with backticks', t => {
+test('command substitution in suffix with backticks', (t) => {
 	const result = bashParser('echo `ciao`');
 	delete result.commands[0].suffix[0].expansion[0].commandAST;
 
@@ -86,7 +86,7 @@ test('command substitution in suffix with backticks', t => {
 	}]);
 });
 
-test('command ast is recursively parsed', t => {
+test('command ast is recursively parsed', (t) => {
 	const result = bashParser('variable=$(echo ciao)')
 		.commands[0].prefix[0].expansion[0].commandAST;
 
@@ -102,7 +102,7 @@ test('command ast is recursively parsed', t => {
 	});
 });
 
-test('command substitution with backticks', t => {
+test('command substitution with backticks', (t) => {
 	const result = bashParser('variable=`echo ciao`');
 	delete result.commands[0].prefix[0].expansion[0].commandAST;
 
@@ -120,7 +120,7 @@ test('command substitution with backticks', t => {
 	}]);
 });
 
-test('quoted backtick are removed within command substitution with backticks', t => {
+test('quoted backtick are removed within command substitution with backticks', (t) => {
 	const result = bashParser('variable=`echo \\`echo ciao\\``');
 	delete result.commands[0].prefix[0].expansion[0].commandAST;
 	// utils.logResults(result);
@@ -139,7 +139,7 @@ test('quoted backtick are removed within command substitution with backticks', t
 	}]);
 });
 
-test('quoted backtick are not removed within command substitution with parenthesis', t => {
+test('quoted backtick are not removed within command substitution with parenthesis', (t) => {
 	const result = bashParser('variable=$(echo \\`echo ciao\\`)');
 	delete result.commands[0].prefix[0].expansion[0].commandAST;
 	utils.checkResults(t, result.commands[0].prefix, [{
@@ -156,7 +156,7 @@ test('quoted backtick are not removed within command substitution with parenthes
 	}]);
 });
 
-test('resolve double command', t => {
+test('resolve double command', (t) => {
 	const result = bashParser('"foo $(other) $(one) baz"', {
 		execCommand() {
 			return 'bar';
@@ -188,7 +188,7 @@ test('resolve double command', t => {
 	});
 });
 
-test('resolve double command with backticks', t => {
+test('resolve double command with backticks', (t) => {
 	const result = bashParser('"foo `other` `one` baz"', {
 		execCommand() {
 			return 'bar';
@@ -219,7 +219,7 @@ test('resolve double command with backticks', t => {
 	});
 });
 
-test('last newlines are removed from command output', t => {
+test('last newlines are removed from command output', (t) => {
 	const result = bashParser('"foo $(other) baz"', {
 		execCommand() {
 			return 'bar\n\n';
@@ -243,7 +243,7 @@ test('last newlines are removed from command output', t => {
 	});
 });
 
-test('field splitting', t => {
+test('field splitting', (t) => {
 	const result = bashParser('say $(other) plz', {
 		execCommand() {
 			return 'foo\tbar baz';

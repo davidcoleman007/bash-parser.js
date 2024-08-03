@@ -1,11 +1,13 @@
-'use strict';
+
+
 /* eslint-disable camelcase */
 
-const test = require('ava');
-const bashParser = require('../src');
-const utils = require('./_utils');
+import test from 'ava';
 
-test('command with one argument', t => {
+import bashParser from '../src/index.js';
+import utils from './_utils.js';
+
+test('command with one argument', (t) => {
 	const result = bashParser('echo world');
 	// utils.logResults(result)
 	utils.checkResults(t, result, {
@@ -18,7 +20,7 @@ test('command with one argument', t => {
 	});
 });
 
-test('command with multiple new lines', t => {
+test('command with multiple new lines', (t) => {
 	const result = bashParser('\n\n\necho world');
 	utils.checkResults(t, result, {
 		type: 'Script',
@@ -30,7 +32,7 @@ test('command with multiple new lines', t => {
 	});
 });
 
-test('command with multiple lines continuation', t => {
+test('command with multiple lines continuation', (t) => {
 	const result = bashParser('echo \\\n\\\n\\\n\\\nthere');
 	// utils.logResults(result);
 	utils.checkResults(t, result.commands[0].suffix[0], {
@@ -39,7 +41,7 @@ test('command with multiple lines continuation', t => {
 	});
 });
 
-test('command with pre-assignment', t => {
+test('command with pre-assignment', (t) => {
 	const result = bashParser('TEST=1 run');
 	utils.checkResults(t, result, {
 		type: 'Script',
@@ -51,7 +53,7 @@ test('command with pre-assignment', t => {
 	});
 });
 
-test('assignment alone', t => {
+test('assignment alone', (t) => {
 	const result = bashParser('TEST=1');
 	utils.checkResults(t, result, {
 		type: 'Script',
@@ -62,7 +64,7 @@ test('assignment alone', t => {
 	});
 });
 
-test('commands with AND', t => {
+test('commands with AND', (t) => {
 	const result = bashParser('run && stop');
 	// utils.logResults(result)
 	utils.checkResults(t, result, {
@@ -76,7 +78,7 @@ test('commands with AND', t => {
 	});
 });
 
-test('commands with AND \\n', t => {
+test('commands with AND \\n', (t) => {
 	const result = bashParser('run && \n stop');
 	// console.log(inspect(result, {depth: null}))
 	utils.checkResults(t, result, {
@@ -90,7 +92,7 @@ test('commands with AND \\n', t => {
 	});
 });
 
-test('commands with OR', t => {
+test('commands with OR', (t) => {
 	const result = bashParser('run || cry');
 	utils.checkResults(t, result, {
 		type: 'Script',
@@ -103,7 +105,7 @@ test('commands with OR', t => {
 	});
 });
 
-test('pipelines', t => {
+test('pipelines', (t) => {
 	const result = bashParser('run | cry');
 	// console.log(inspect(result, {depth: null}));
 	utils.checkResults(t, result, {
@@ -118,7 +120,7 @@ test('pipelines', t => {
 	});
 });
 
-test('bang pipelines', t => {
+test('bang pipelines', (t) => {
 	const result = bashParser('! run | cry');
 	utils.checkResults(t, result, {
 		type: 'Script',
@@ -133,7 +135,7 @@ test('bang pipelines', t => {
 	});
 });
 
-test('no pre-assignment on suffix', t => {
+test('no pre-assignment on suffix', (t) => {
 	const result = bashParser('echo TEST=1');
 	utils.checkResults(t, result, {
 		type: 'Script',
@@ -145,7 +147,7 @@ test('no pre-assignment on suffix', t => {
 	});
 });
 
-test('command with multiple prefixes', t => {
+test('command with multiple prefixes', (t) => {
 	const result = bashParser('TEST1=1 TEST2=2 echo world');
 	// utils.logResults(result)
 	utils.checkResults(t, result, {
@@ -162,7 +164,7 @@ test('command with multiple prefixes', t => {
 	});
 });
 
-test('multi line commands', t => {
+test('multi line commands', (t) => {
 	const result = bashParser('echo; \nls;\n');
 	utils.checkResults(t, result, {
 		type: 'Script',
@@ -176,7 +178,7 @@ test('multi line commands', t => {
 	});
 });
 
-test('Compound list', t => {
+test('Compound list', (t) => {
 	const result = bashParser('{ echo; ls; }');
 	// utils.logResults(result);
 	utils.checkResults(t, result, {
@@ -194,7 +196,7 @@ test('Compound list', t => {
 	});
 });
 
-test('Compound list with redirections', t => {
+test('Compound list with redirections', (t) => {
 	const result = bashParser('{ echo; ls; } > file.txt');
 	utils.checkResults(t, result, {
 		type: 'Script',
@@ -216,7 +218,7 @@ test('Compound list with redirections', t => {
 	});
 });
 
-test('command with multiple redirections', t => {
+test('command with multiple redirections', (t) => {
 	const result = bashParser('echo world > file.txt < input.dat');
 
 	utils.checkResults(t, result, {
@@ -240,7 +242,7 @@ test('command with multiple redirections', t => {
 	});
 });
 
-test('Compound list with multiple redirections', t => {
+test('Compound list with multiple redirections', (t) => {
 	const result = bashParser('{ echo; ls; } > file.txt < input.dat');
 	utils.checkResults(t, result, {
 		type: 'Script',
@@ -266,7 +268,7 @@ test('Compound list with multiple redirections', t => {
 	});
 });
 
-test('single line commands', t => {
+test('single line commands', (t) => {
 	const result = bashParser('echo;ls');
 	// utils.logResults(result)
 	utils.checkResults(t, result, {
@@ -281,7 +283,7 @@ test('single line commands', t => {
 	});
 });
 
-test('single line commands separated by &', t => {
+test('single line commands separated by &', (t) => {
 	const result = bashParser('echo&ls');
 	// utils.logResults(result)
 	utils.checkResults(t, result, {
@@ -297,7 +299,7 @@ test('single line commands separated by &', t => {
 	});
 });
 
-test('LogicalExpression separated by &', t => {
+test('LogicalExpression separated by &', (t) => {
 	const result = bashParser('echo && ls &');
 	// utils.logResults(result)
 	utils.checkResults(t, result, {
@@ -326,7 +328,7 @@ test('LogicalExpression separated by &', t => {
 	});
 });
 
-test('LogicalExpressions separated by &', t => {
+test('LogicalExpressions separated by &', (t) => {
 	const result = bashParser('echo && ls & ciao');
 	utils.checkResults(t, result, {
 		type: 'Script',
@@ -361,7 +363,7 @@ test('LogicalExpressions separated by &', t => {
 	});
 });
 
-test('single line commands separated by &;', t => {
+test('single line commands separated by &;', (t) => {
 	const result = bashParser('echo&;ls');
 	// utils.logResults(result)
 	utils.checkResults(t, result, {
@@ -377,7 +379,7 @@ test('single line commands separated by &;', t => {
 	});
 });
 
-test('command with redirection to file', t => {
+test('command with redirection to file', (t) => {
 	const result = bashParser('ls > file.txt');
 	utils.checkResults(t, result, {
 		type: 'Script',
@@ -393,7 +395,7 @@ test('command with redirection to file', t => {
 	});
 });
 
-test('parse multiple suffix', t => {
+test('parse multiple suffix', (t) => {
 	const result = bashParser('command foo --lol');
 	utils.checkResults(t,
 		result, {
@@ -407,7 +409,7 @@ test('parse multiple suffix', t => {
 	);
 });
 
-test('command with stderr redirection to file', t => {
+test('command with stderr redirection to file', (t) => {
 	const result = bashParser('ls 2> file.txt');
 	// utils.logResults(result);
 	utils.checkResults(t, result, {
@@ -425,7 +427,7 @@ test('command with stderr redirection to file', t => {
 	});
 });
 
-test('parse subshell', t => {
+test('parse subshell', (t) => {
 	const result = bashParser('( ls )');
 
 	utils.checkResults(t, result, {

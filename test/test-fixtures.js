@@ -1,12 +1,12 @@
-'use strict';
 
-const test = require('ava');
-const bashParser = require('../src');
-const utils = require('./_utils');
+
+import test from 'ava';
+import bashParser from '../src/index.js';
+import utils from './_utils.js';
 
 // various example taken from http://www.etalabs.net/sh_tricks.html
 
-test('2', t => {
+test('2', (t) => {
 	const result = bashParser('echo () { printf %s\\n "$*" ; }');
 	// utils.logResults(result);
 	utils.checkResults(t, result, {
@@ -55,7 +55,7 @@ test('2', t => {
 		]});
 });
 
-test('3', t => {
+test('3', (t) => {
 	const result = bashParser('IFS= read -r var');
 	utils.checkResults(t, result, {
 		type: 'Script',
@@ -68,7 +68,7 @@ test('3', t => {
 	});
 });
 
-test('4', t => {
+test('4', (t) => {
 	const result = bashParser('foo | IFS= read var');
 	// console.log(inspect(result, {depth: null}));
 
@@ -89,7 +89,7 @@ test('4', t => {
 	});
 });
 
-test('5', t => {
+test('5', (t) => {
 	const result = bashParser(
 `foo='hello ; rm -rf /'
 dest=bar

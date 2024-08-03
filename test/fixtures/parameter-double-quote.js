@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	sourceCode: "\"foo ${other} baz\"",
 	result: {
 		type: "Script",
@@ -24,4 +24,4 @@ module.exports = {
 			}
 		]
 	}
-}
+};

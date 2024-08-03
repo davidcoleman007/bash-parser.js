@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	sourceCode: "for x\n do echo $x\n done",
 	result: {
 		type: "Script",
@@ -40,4 +40,4 @@ module.exports = {
 			}
 		]
 	}
-}
+};

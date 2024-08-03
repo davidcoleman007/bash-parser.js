@@ -1,11 +1,11 @@
-'use strict';
 
-const test = require('ava');
-const bashParser = require('../src');
-const utils = require('./_utils');
+
+import test from 'ava';
+import bashParser from '../src/index.js';
+import utils from './_utils.js';
 
 /* eslint-disable camelcase */
-test('parse while', t => {
+test('parse while', (t) => {
 	const result = bashParser('while true; do sleep 1; done');
 
 	utils.checkResults(t,
@@ -33,7 +33,7 @@ test('parse while', t => {
 	);
 });
 
-test('parse until', t => {
+test('parse until', (t) => {
 	const result = bashParser('until true; do sleep 1; done');
  //	console.log(inspect(result, {depth:null}))
 	utils.checkResults(t,

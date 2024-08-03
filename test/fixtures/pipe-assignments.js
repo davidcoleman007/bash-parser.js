@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	sourceCode: "foo | IFS= read var",
 	result: {
 		type: "Script",
@@ -36,4 +36,4 @@ module.exports = {
 			}
 		]
 	}
-}
+};

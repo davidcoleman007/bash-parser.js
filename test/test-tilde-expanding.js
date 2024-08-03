@@ -1,11 +1,11 @@
-'use strict';
 
-const test = require('ava');
-const bashParser = require('../src');
-const utils = require('./_utils');
+
+import test from 'ava';
+import bashParser from '../src/index.js';
+import utils from './_utils.js';
 
 /* eslint-disable camelcase */
-test('resolve tilde to current user home', t => {
+test('resolve tilde to current user home', (t) => {
 	const result = bashParser('echo ~/subdir', {
 		resolveHomeUser() {
 			return '/home/current';
@@ -27,7 +27,7 @@ test('resolve tilde to current user home', t => {
 	});
 });
 
-test('resolve one tilde only in normal WORD tokens', t => {
+test('resolve one tilde only in normal WORD tokens', (t) => {
 	const result = bashParser('echo ~/subdir/~other/', {
 		resolveHomeUser() {
 			return '/home/current';
@@ -49,7 +49,7 @@ test('resolve one tilde only in normal WORD tokens', t => {
 	});
 });
 
-test('resolve multiple tilde in assignments', t => {
+test('resolve multiple tilde in assignments', (t) => {
 	const result = bashParser('a=~/subdir:~/othersubdir/ciao', {
 		resolveHomeUser() {
 			return '/home/current';
@@ -62,7 +62,7 @@ test('resolve multiple tilde in assignments', t => {
 	});
 });
 
-test('resolve tilde to any user home', t => {
+test('resolve tilde to any user home', (t) => {
 	const result = bashParser('echo ~username/subdir', {
 		resolveHomeUser() {
 			return '/home/username';

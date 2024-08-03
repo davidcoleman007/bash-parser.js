@@ -1,11 +1,9 @@
-'use strict';
 
-const last = require('../../../../utils/last');
-const t = require('../../../../utils/tokens');
 
-const continueToken = t.continueToken;
+import last from '../../../../utils/last.js';
+import  {continueToken} from '../../../../utils/tokens.js';
 
-module.exports = function expansionCommandOrArithmetic(state, source, reducers) {
+export default function expansionCommandOrArithmetic(state, source, reducers) {
 	const char = source && source.shift();
 	const xp = last(state.expansion);
 

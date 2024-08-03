@@ -1,9 +1,9 @@
-'use strict';
 
-const toPascal = require('to-pascal-case');
-const map = require('map-iterable');
 
-module.exports = () => map(token => {
+import toPascal from 'to-pascal-case';
+import map from 'map-iterable';
+
+export default () => map(token => {
 	const tk = Object.assign({}, token);
 	if (tk.type) {
 		tk.originalType = token.type;

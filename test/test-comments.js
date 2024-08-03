@@ -1,10 +1,10 @@
-'use strict';
 
-const test = require('ava');
-const bashParser = require('../src');
-const utils = require('./_utils');
 
-test('loc take into account line continuations', t => {
+import test from 'ava';
+import bashParser from '../src/index.js';
+import utils from './_utils.js';
+
+test('loc take into account line continuations', (t) => {
 	const cmd = 'echo world #this is a comment\necho ciao';
 	const result = bashParser(cmd);
 

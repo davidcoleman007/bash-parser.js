@@ -1,4 +1,4 @@
-'use strict';
+
 
 const name = '[a-zA-Z_][a-zA-Z0-9_]*';
 
@@ -130,5 +130,5 @@ const parameterOps = {
 	}
 };
 
-module.exports = parameterOps;
+export default parameterOps;
 

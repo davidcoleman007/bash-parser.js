@@ -1,6 +1,6 @@
-'use strict';
-const map = require('map-iterable');
-const tokens = require('../../../utils/tokens');
+
+import map from 'map-iterable';
+import tokens from '../../../utils/tokens.js';
 
 const reduceToOperatorTokenVisitor = operators => ({
     OPERATOR(tk) {
@@ -15,6 +15,6 @@ const reduceToOperatorTokenVisitor = operators => ({
     }
 });
 
-module.exports = (options, mode) => map(
+export default (options, mode) => map(
     tokens.applyTokenizerVisitor(reduceToOperatorTokenVisitor(mode.enums.operators))
 );

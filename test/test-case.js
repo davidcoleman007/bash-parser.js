@@ -1,11 +1,13 @@
-'use strict';
+
+
 /* eslint-disable camelcase */
 
-const test = require('ava');
-const bashParser = require('../src');
-const utils = require('./_utils');
+import test from 'ava';
 
-test('parse case', t => {
+import bashParser from '../src/index.js';
+import utils from './_utils.js';
+
+test('parse case', (t) => {
 	const result = bashParser('case foo in * ) echo bar;; esac');
 	// utils.logResults(result);
 	const expected = {
@@ -36,7 +38,7 @@ test('parse case', t => {
 	utils.checkResults(t, result, expected);
 });
 /*
-test.skip('parse case with compound list', t => {
+test.skip('parse case with compound list', (t) => {
 	const result = bashParser('case foo in * ) echo foo;echo bar;; esac');
 	// utils.logResults(result);
 	const expected = {

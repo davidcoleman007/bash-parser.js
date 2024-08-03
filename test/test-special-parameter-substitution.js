@@ -1,10 +1,10 @@
-'use strict';
 
-const test = require('ava');
-const bashParser = require('../src');
-const utils = require('./_utils');
 
-test('parameter with use default value', t => {
+import test from 'ava';
+import bashParser from '../src/index.js';
+import utils from './_utils.js';
+
+test('parameter with use default value', (t) => {
 	const result = bashParser('${other:-default_value}');
 
 	// utils.logResults(result.commands[0].name)
@@ -27,7 +27,7 @@ test('parameter with use default value', t => {
 	});
 });
 
-test('parameter with use default value if unset', t => {
+test('parameter with use default value if unset', (t) => {
 	const result = bashParser('${other-default_value}');
 
 	utils.checkResults(t, result.commands[0].name, {
@@ -49,7 +49,7 @@ test('parameter with use default value if unset', t => {
 	});
 });
 
-test('parameter with string length', t => {
+test('parameter with string length', (t) => {
 	const result = bashParser('${#default_value}');
 
 	utils.checkResults(t, result.commands[0].name, {
@@ -67,7 +67,7 @@ test('parameter with string length', t => {
 	});
 });
 
-test('parameter with assign default value', t => {
+test('parameter with assign default value', (t) => {
 	const result = bashParser('${other:=default_value}');
 	utils.checkResults(t, result.commands[0].name, {
 		type: 'Word',
@@ -88,7 +88,7 @@ test('parameter with assign default value', t => {
 	});
 });
 
-test('parameter with assign default value if unset', t => {
+test('parameter with assign default value if unset', (t) => {
 	const result = bashParser('${other=default_value}');
 	utils.checkResults(t, result.commands[0].name, {
 		type: 'Word',
@@ -109,7 +109,7 @@ test('parameter with assign default value if unset', t => {
 	});
 });
 
-test('parameter with other parameter in word', t => {
+test('parameter with other parameter in word', (t) => {
 	const result = bashParser('${other:=default$value}');
 	// utils.logResults(result)
 	utils.checkResults(t, JSON.parse(JSON.stringify(result.commands[0].name)), {
@@ -139,7 +139,7 @@ test('parameter with other parameter in word', t => {
 	});
 });
 
-test('parameter with indicate error if null', t => {
+test('parameter with indicate error if null', (t) => {
 	const result = bashParser('${other:?default_value}');
 	utils.checkResults(t, result.commands[0].name, {
 		text: '${other:?default_value}',
@@ -160,7 +160,7 @@ test('parameter with indicate error if null', t => {
 	});
 });
 
-test('parameter with indicate error if unset', t => {
+test('parameter with indicate error if unset', (t) => {
 	const result = bashParser('${other?default_value}');
 	utils.checkResults(t, result.commands[0].name, {
 		text: '${other?default_value}',
@@ -181,7 +181,7 @@ test('parameter with indicate error if unset', t => {
 	});
 });
 
-test('parameter with use alternative value', t => {
+test('parameter with use alternative value', (t) => {
 	const result = bashParser('${other:+default_value}');
 	utils.checkResults(t, result.commands[0].name, {
 		text: '${other:+default_value}',
@@ -202,7 +202,7 @@ test('parameter with use alternative value', t => {
 	});
 });
 
-test('parameter with use alternative value if unset', t => {
+test('parameter with use alternative value if unset', (t) => {
 	const result = bashParser('${other+default_value}');
 	utils.checkResults(t, result.commands[0].name, {
 		text: '${other+default_value}',
@@ -223,7 +223,7 @@ test('parameter with use alternative value if unset', t => {
 	});
 });
 
-test('parameter with Remove Smallest Suffix Pattern', t => {
+test('parameter with Remove Smallest Suffix Pattern', (t) => {
 	const result = bashParser('${other%default$value}');
 	// utils.logResults(result)
 	utils.checkResults(t, JSON.parse(JSON.stringify(result.commands[0].name)), {
@@ -253,7 +253,7 @@ test('parameter with Remove Smallest Suffix Pattern', t => {
 	});
 });
 
-test('parameter with Remove Smallest Prefix Pattern', t => {
+test('parameter with Remove Smallest Prefix Pattern', (t) => {
 	const result = bashParser('${other#default$value}');
 	// utils.logResults(result)
 	utils.checkResults(t, JSON.parse(JSON.stringify(result.commands[0].name)), {
@@ -283,7 +283,7 @@ test('parameter with Remove Smallest Prefix Pattern', t => {
 	});
 });
 
-test('parameter with Remove Largest Suffix Pattern', t => {
+test('parameter with Remove Largest Suffix Pattern', (t) => {
 	const result = bashParser('${other%%default$value}');
 	// utils.logResults(result)
 	utils.checkResults(t, JSON.parse(JSON.stringify(result.commands[0].name)), {
@@ -313,7 +313,7 @@ test('parameter with Remove Largest Suffix Pattern', t => {
 	});
 });
 
-test('parameter with Remove Largest Prefix Pattern', t => {
+test('parameter with Remove Largest Prefix Pattern', (t) => {
 	const result = bashParser('${other##default$value}');
 	// utils.logResults(result)
 	utils.checkResults(t, JSON.parse(JSON.stringify(result.commands[0].name)), {

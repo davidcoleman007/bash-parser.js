@@ -1,11 +1,11 @@
-'use strict';
 
-const test = require('ava');
-const bashParser = require('../src');
-const utils = require('./_utils');
+
+import test from 'ava';
+import bashParser from '../src/index.js';
+import utils from './_utils.js';
 
 /* eslint-disable camelcase */
-test('parameter substitution in assignment', t => {
+test('parameter substitution in assignment', (t) => {
 	const result = bashParser('echoword=${other}test');
 	// utils.logResults(result);
 	utils.checkResults(t, result.commands[0].prefix, [{
@@ -22,17 +22,17 @@ test('parameter substitution in assignment', t => {
 	}]);
 });
 
-test('parameter substitution skip escaped dollar', t => {
+test('parameter substitution skip escaped dollar', (t) => {
 	const result = bashParser('echo "\\$ciao"');
 	utils.checkResults(t, result.commands[0].suffix, [{type: 'Word', text: '\\$ciao'}]);
 });
 
-test('parameter substitution skip escaped dollar with braces', t => {
+test('parameter substitution skip escaped dollar with braces', (t) => {
 	const result = bashParser('echo "\\${ciao}"');
 	utils.checkResults(t, result.commands[0].suffix, [{type: 'Word', text: '\\${ciao}'}]);
 });
 
-test('parameter substitution skip single quoted words', t => {
+test('parameter substitution skip single quoted words', (t) => {
 	const result = bashParser('echo \'${echo } $ciao\'');
 	// utils.logResults(result)
 	utils.checkResults(t, result.commands[0].suffix, [{
@@ -41,7 +41,7 @@ test('parameter substitution skip single quoted words', t => {
 	}]);
 });
 
-test('parameter substitution and other words', t => {
+test('parameter substitution and other words', (t) => {
 	const result = bashParser('foo ${other} bar baz');
 	// utils.logResults(result);
 	utils.checkResults(t, result.commands[0].suffix, [{
@@ -64,7 +64,7 @@ test('parameter substitution and other words', t => {
 	}]);
 });
 
-test('multi-word parameter substitution', t => {
+test('multi-word parameter substitution', (t) => {
 	const result = bashParser('echoword=${other word}test');
 	// utils.logResults(result);
 
@@ -82,7 +82,7 @@ test('multi-word parameter substitution', t => {
 	}]);
 });
 
-test('parameter substitution', t => {
+test('parameter substitution', (t) => {
 	const result = bashParser('echo word${other}test');
 	utils.checkResults(t, result.commands[0].suffix, [{
 		type: 'Word',
@@ -98,7 +98,7 @@ test('parameter substitution', t => {
 	}]);
 });
 
-test('multiple parameter substitution', t => {
+test('multiple parameter substitution', (t) => {
 	const result = bashParser('echo word${other}t$est');
 	utils.checkResults(t, result.commands[0].suffix, [{
 		type: 'Word',
@@ -122,7 +122,7 @@ test('multiple parameter substitution', t => {
 	}]);
 });
 
-test('command consisting of only parameter substitution', t => {
+test('command consisting of only parameter substitution', (t) => {
 	const result = bashParser('$other');
 	// utils.logResults(result)
 	utils.checkResults(t, result.commands[0].name, {
@@ -139,7 +139,7 @@ test('command consisting of only parameter substitution', t => {
 	});
 });
 
-test('resolve parameter', t => {
+test('resolve parameter', (t) => {
 	const result = bashParser('"foo ${other} baz"', {
 		resolveParameter() {
 			return 'bar';
@@ -167,7 +167,7 @@ test('resolve parameter', t => {
 	});
 });
 
-test('resolve double parameter', t => {
+test('resolve double parameter', (t) => {
 	const result = bashParser('"foo ${other} ${one} baz"', {
 		resolveParameter() {
 			return 'bar';
@@ -201,7 +201,7 @@ test('resolve double parameter', t => {
 	});
 });
 
-test('field splitting', t => {
+test('field splitting', (t) => {
 	const result = bashParser('say ${other} plz', {
 		resolveParameter() {
 			return 'foo\tbar baz';
@@ -270,7 +270,7 @@ test('field splitting', t => {
 	});
 });
 
-test('field splitting not occurring within quoted words', t => {
+test('field splitting not occurring within quoted words', (t) => {
 	const result = bashParser('say "${other} plz"', {
 		resolveParameter() {
 			return 'foo\tbar baz';

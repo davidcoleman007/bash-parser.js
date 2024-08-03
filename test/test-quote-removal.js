@@ -1,10 +1,10 @@
-'use strict';
 
-const test = require('ava');
-const bashParser = require('../src');
-const utils = require('./_utils');
 
-test('remove double quote from string', t => {
+import test from 'ava';
+import bashParser from '../src/index.js';
+import utils from './_utils.js';
+
+test('remove double quote from string', (t) => {
 	const result = bashParser('"echo"');
 	utils.checkResults(t, result.commands[0].name, {
 		type: 'Word',
@@ -12,7 +12,7 @@ test('remove double quote from string', t => {
 	});
 });
 
-test('remove single quotes from string', t => {
+test('remove single quotes from string', (t) => {
 	const result = bashParser('\'echo\'');
 	utils.checkResults(t, result.commands[0].name, {
 		type: 'Word',
@@ -20,7 +20,7 @@ test('remove single quotes from string', t => {
 	});
 });
 
-test('remove unnecessary slashes from string', t => {
+test('remove unnecessary slashes from string', (t) => {
 	const result = bashParser('ec\\%ho');
 	utils.checkResults(t, result.commands[0].name, {
 		type: 'Word',
@@ -28,7 +28,7 @@ test('remove unnecessary slashes from string', t => {
 	});
 });
 
-test('not remove quotes from middle of string if escaped', t => {
+test('not remove quotes from middle of string if escaped', (t) => {
 	const result = bashParser('ec\\\'\\"ho');
 
 	utils.checkResults(t, result.commands[0].name, {
@@ -37,7 +37,7 @@ test('not remove quotes from middle of string if escaped', t => {
 	});
 });
 
-test('transform escaped characters', t => {
+test('transform escaped characters', (t) => {
 	const result = bashParser('"ec\\t\\nho"');
 
 	utils.checkResults(t, result.commands[0].name, {
@@ -46,7 +46,7 @@ test('transform escaped characters', t => {
 	});
 });
 
-test('not remove special characters', t => {
+test('not remove special characters', (t) => {
 	const result = bashParser('"ec\tho"');
 
 	utils.checkResults(t, result.commands[0].name, {
@@ -55,7 +55,7 @@ test('not remove special characters', t => {
 	});
 });
 
-test('remove quotes from middle of string', t => {
+test('remove quotes from middle of string', (t) => {
 	const result = bashParser('ec\'h\'o');
 	// utils.logResults(result)
 	utils.checkResults(t, result.commands[0].name, {
@@ -64,7 +64,7 @@ test('remove quotes from middle of string', t => {
 	});
 });
 
-test('remove quotes on assignment', t => {
+test('remove quotes on assignment', (t) => {
 	const result = bashParser('echo="ciao mondo"');
 
 	utils.checkResults(t, result.commands[0].prefix[0], {
@@ -73,7 +73,7 @@ test('remove quotes on assignment', t => {
 	});
 });
 
-test('remove quotes followed by single quotes', t => {
+test('remove quotes followed by single quotes', (t) => {
 	const result = bashParser('echo"ciao"\'mondo\'');
 
 	utils.checkResults(t, result.commands[0].name, {
@@ -82,7 +82,7 @@ test('remove quotes followed by single quotes', t => {
 	});
 });
 
-test('remove single quotes followed by quotes', t => {
+test('remove single quotes followed by quotes', (t) => {
 	const result = bashParser('echo\'ciao\'"mondo"');
 
 	utils.checkResults(t, result.commands[0].name, {

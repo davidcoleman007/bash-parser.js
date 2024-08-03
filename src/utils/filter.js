@@ -1,4 +1,4 @@
-'use strict';
+
 
 function filter(predicate) {
   return function(iterable) {
@@ -14,4 +14,4 @@ function filter(predicate) {
   };
 }
 
-module.exports = filter;
+export default filter;

@@ -1,11 +1,11 @@
-'use strict';
 
-const test = require('ava');
-const bashParser = require('../src');
-const utils = require('./_utils');
+
+import test from 'ava';
+import bashParser from '../src/index.js';
+import utils from './_utils.js';
 
 /* eslint-disable camelcase */
-test('parse if', t => {
+test('parse if', (t) => {
 	const result = bashParser('if true; then echo 1; fi');
 	// console.log(inspect(result, {depth:null}))
 	utils.checkResults(t,
@@ -33,7 +33,7 @@ test('parse if', t => {
 	);
 });
 
-test('parse if else', t => {
+test('parse if else', (t) => {
 	const result = bashParser('if true; then echo 1; else echo 2; fi');
 	// utils.logResults(result);
 	utils.checkResults(t,
@@ -69,7 +69,7 @@ test('parse if else', t => {
 	);
 });
 
-test('parse if else multiline', t => {
+test('parse if else multiline', (t) => {
 	const result = bashParser('if true; then \n echo 1;\n else\n echo 2;\n fi');
 	// console.log(inspect(result, {depth:null}))
 	utils.checkResults(t,
@@ -105,7 +105,7 @@ test('parse if else multiline', t => {
 	);
 });
 
-test('parse if elif else', t => {
+test('parse if elif else', (t) => {
 	const result = bashParser('if true; then echo 1; elif false; then echo 3; else echo 2; fi');
 	// utils.logResults(result);
 	const expected = {

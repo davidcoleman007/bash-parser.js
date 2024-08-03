@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	sourceCode: "\"foo $((42 * 42)) baz\"",
 	result: {
 		type: "Script",
@@ -80,4 +80,4 @@ module.exports = {
 			}
 		]
 	}
-}
+};

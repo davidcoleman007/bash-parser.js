@@ -1,11 +1,9 @@
-'use strict';
 
-const last = require('../../../../utils/last');
-const t = require('../../../../utils/tokens');
 
-const continueToken = t.continueToken;
+import last from '../../../../utils/last.js';
+import {continueToken} from '../../../../utils/tokens.js';
 
-module.exports = function expansionParameterExtended(state, source, reducers) {
+export default function expansionParameterExtended(state, source, reducers) {
 	const char = source && source.shift();
 
 	const xp = last(state.expansion);

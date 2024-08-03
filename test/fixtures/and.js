@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	sourceCode: "run && \n stop",
 	result: {
 		type: "Script",
@@ -23,4 +23,4 @@ module.exports = {
 			}
 		]
 	}
-}
+};

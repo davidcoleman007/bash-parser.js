@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	sourceCode: "for x\n\tin ; do\n\techo $x;\ndone\n",
 	result: {
 		type: "Script",
@@ -124,4 +124,4 @@ module.exports = {
 			}
 		}
 	}
-}
+};

@@ -1,11 +1,11 @@
-'use strict';
 
-const map = require('map-iterable');
-const merge = require('transform-spread-iterable');
-const compose = require('../../../utils/compose');
-const mkFieldSplitToken = require('../../../utils/tokens').mkFieldSplitToken;
 
-exports.mark = function markFieldSplitting(result, text, options) {
+import map from 'map-iterable';
+import merge from 'transform-spread-iterable';
+import compose from '../../../utils/compose.js';
+import { mkFieldSplitToken } from '../../../utils/tokens.js';
+
+export const mark = function markFieldSplitting(result, text, options) {
 	if (typeof options.resolveEnv === 'function' &&
 			text[0] !== '\'' && text[0] !== '"'
 		) {
@@ -19,7 +19,7 @@ exports.mark = function markFieldSplitting(result, text, options) {
 	return result;
 };
 
-exports.split = () => compose(
+export const split = () => compose(
 	merge,
 	map(token => {
 		if (token.is('WORD')) {
@@ -36,3 +36,7 @@ exports.split = () => compose(
 	})
 );
 
+export default {
+	mark,
+	split
+}

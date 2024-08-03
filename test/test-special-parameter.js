@@ -1,11 +1,11 @@
-'use strict';
 
-const test = require('ava');
-const bashParser = require('../src');
-const utils = require('./_utils');
+
+import test from 'ava';
+import bashParser from '../src/index.js';
+import utils from './_utils.js';
 
 /* eslint-disable camelcase */
-test('positional list paramter', t => {
+test('positional list paramter', (t) => {
 	const result = bashParser('echoword=$@');
 	// console.log(JSON.stringify(result, null, 5))
 	utils.checkResults(t, result, {
@@ -29,7 +29,7 @@ test('positional list paramter', t => {
 	});
 });
 
-test('positional string paramter', t => {
+test('positional string paramter', (t) => {
 	const result = bashParser('echoword=$*');
 	utils.checkResults(t, result, {
 		type: 'Script',
@@ -52,7 +52,7 @@ test('positional string paramter', t => {
 	});
 });
 
-test('positional count paramter', t => {
+test('positional count paramter', (t) => {
 	const result = bashParser('echoword=$#');
 	utils.checkResults(t, result, {
 		type: 'Script',
@@ -75,7 +75,7 @@ test('positional count paramter', t => {
 	});
 });
 
-test('last exit status', t => {
+test('last exit status', (t) => {
 	const result = bashParser('echoword=$?');
 	utils.checkResults(t, result, {
 		type: 'Script',
@@ -98,7 +98,7 @@ test('last exit status', t => {
 	});
 });
 
-test('current option flags', t => {
+test('current option flags', (t) => {
 	const result = bashParser('echoword=$-');
 	utils.checkResults(t, result, {
 		type: 'Script',
@@ -121,7 +121,7 @@ test('current option flags', t => {
 	});
 });
 
-test('shell process id', t => {
+test('shell process id', (t) => {
 	const result = bashParser('echoword=$$');
 	utils.checkResults(t, result, {
 		type: 'Script',
@@ -144,7 +144,7 @@ test('shell process id', t => {
 	});
 });
 
-test('last background pid', t => {
+test('last background pid', (t) => {
 	const result = bashParser('echoword=$!');
 	utils.checkResults(t, result, {
 		type: 'Script',
@@ -167,7 +167,7 @@ test('last background pid', t => {
 	});
 });
 
-test('shell script name', t => {
+test('shell script name', (t) => {
 	const result = bashParser('echoword=$0');
 	// logResults(result);
 	utils.checkResults(t, result, {

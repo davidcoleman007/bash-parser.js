@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	sourceCode: "\"if\" true",
 	result: {
 		type: "Script",
@@ -18,4 +18,4 @@ module.exports = {
 			}
 		]
 	}
-}
+};

@@ -1,10 +1,10 @@
-'use strict';
 
-const astBuilder = require('./ast-builder');
-const tokenizer = require('./tokenizer');
-const phaseCatalog = require('./rules');
-const grammarSource = require('./grammar');
-const enums = require('./enums');
+
+import astBuilder from './ast-builder.js';
+import tokenizer from './tokenizer/index.js';
+import phaseCatalog from './rules/index.js';
+import grammarSource from './grammar.js';
+import enums from './enums/index.js';
 
 const lexerPhases = () => [
 	phaseCatalog.newLineList,
@@ -36,13 +36,17 @@ const lexerPhases = () => [
 	// utils.loggerPhase('tokenizer'),
 ];
 
-module.exports = {
+import * as grammar from './built-grammar.js';
+
+export default {
 	inherits: null,
 	init: (posixMode, utils) => {
-		let grammar = null;
-		try {
-			grammar = require('./built-grammar');
-		} catch (err) {}
+		// let grammar = null;
+		// try {
+		// 	grammar = import('./built-grammar.js');
+		// } catch (err) {
+		// 	console.error('Error loading grammar:', err);
+		// }
 		return {
 			enums,
 			phaseCatalog,

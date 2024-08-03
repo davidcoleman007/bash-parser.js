@@ -1,8 +1,8 @@
-'use strict';
 
-const compose = require('../../../utils/compose');
-const map = require('map-iterable');
-const lookahead = require('iterable-lookahead');
+
+import compose from '../../../utils/compose.js';
+import map from 'map-iterable';
+import lookahead from 'iterable-lookahead';
 // const words = require('../enums/reserved-words');
 /*
 function defined(v) {
@@ -31,7 +31,7 @@ function isValidReservedWordPosition(tk, iterable, words) {
 	return tk.value === '}' || startOfCommand || lastIsReservedWord || thirdInFor || thirdInCase;
 }
 
-module.exports = function reservedWords(options, mode) {
+export default function reservedWords(options, mode) {
 	return compose(map((tk, idx, iterable) => {
 		// console.log(tk, isValidReservedWordPosition(tk, iterable), hasOwnProperty(words, tk.value))
 		// TOKEN tokens consisting of a reserved word

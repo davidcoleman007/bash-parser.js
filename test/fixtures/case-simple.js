@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	sourceCode: "case foo in * ) echo bar;; esac",
 	result: {
 		type: "Script",
@@ -41,4 +41,4 @@ module.exports = {
 			}
 		]
 	}
-}
+};

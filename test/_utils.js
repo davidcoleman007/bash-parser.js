@@ -1,22 +1,22 @@
-const json = require('json5');
+import json from 'json5';
 
-exports.mkloc = function mkloc(startLine, startColumn, endLine, endColumn) {
+export const mkloc = function mkloc(startLine, startColumn, endLine, endColumn) {
 	return {startLine, startColumn, endLine, endColumn};
 };
 
 // eslint-disable-next-line max-params
-exports.mkloc2 = function mkloc(startLine, startColumn, endLine, endColumn, startChar, endChar) {
+export const mkloc2 = function mkloc(startLine, startColumn, endLine, endColumn, startChar, endChar) {
 	return {
 		start: {row: startLine, col: startColumn, char: startChar},
 		end: {row: endLine, col: endColumn, char: endChar}
 	};
 };
 
-exports.logResults = function logResults(results) {
+export const logResults = function logResults(results) {
 	console.log(json.stringify(results, null, '\t').replace(/"/g, '\''));
 };
 
-exports.checkResults = function check(t, actual, expected) {
+export const checkResults = function check(t, actual, expected) {
 	/* if (Array.isArray(actual)) {
 		for (const item of actual) {
 			console.log(item.constructor.name)
@@ -39,4 +39,12 @@ exports.checkResults = function check(t, actual, expected) {
 	}*/
 	// exports.logResults(actual);
 	t.deepEqual(actual, expected);
+};
+
+
+export default {
+	mkloc,
+	mkloc2,
+	logResults,
+	checkResults
 };

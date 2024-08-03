@@ -1,11 +1,8 @@
-'use strict';
+import test from 'ava';
+import bashParser from '../src/index.js';
+import utils from './_utils.js';
 
-/* eslint-disable camelcase */
-const test = require('ava');
-const bashParser = require('../src');
-const utils = require('./_utils');
-
-test('alias with no argument', t => {
+test('alias with no argument', (t) => {
 	const result = bashParser('thisIsAlias world', {
 		resolveAlias: name => name === 'thisIsAlias' ? 'test-value' : undefined
 	});
@@ -19,7 +16,7 @@ test('alias with no argument', t => {
 	});
 });
 
-test('alias with duplicating stream redirection', t => {
+test('alias with duplicating stream redirection', (t) => {
 	const result = bashParser('2>&1 world', {
 		resolveAlias: name => name === 'world' ? 'test-value' : undefined
 	});
@@ -30,7 +27,7 @@ test('alias with duplicating stream redirection', t => {
 	);
 });
 
-test('alias with arguments', t => {
+test('alias with arguments', (t) => {
 	const result = bashParser('thisIsAlias world', {
 		resolveAlias: name => name === 'thisIsAlias' ? 'test-value earth' : undefined
 	});
@@ -47,7 +44,7 @@ test('alias with arguments', t => {
 	});
 });
 
-test('alias with prefixes', t => {
+test('alias with prefixes', (t) => {
 	const result = bashParser('thisIsAlias world', {
 		resolveAlias: name => name === 'thisIsAlias' ? 'a=42 test-value' : undefined
 	});
@@ -62,7 +59,7 @@ test('alias with prefixes', t => {
 	});
 });
 
-test('recursive alias with prefixes', t => {
+test('recursive alias with prefixes', (t) => {
 	const result = bashParser('thisIsAlias world', {
 		resolveAlias: name => {
 			if (name === 'thisIsAlias') {
@@ -89,7 +86,7 @@ test('recursive alias with prefixes', t => {
 	});
 });
 
-test('guarded against infinite loops', t => {
+test('guarded against infinite loops', (t) => {
 	const result = bashParser('thisIsAlias world', {
 		resolveAlias: name => {
 			if (name === 'thisIsAlias') {

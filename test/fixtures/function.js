@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	sourceCode: "foo () {\n\tcommand bar --lol;\n}\n",
 	result: {
 		type: "Script",
@@ -130,4 +130,4 @@ module.exports = {
 			}
 		}
 	}
-}
+};

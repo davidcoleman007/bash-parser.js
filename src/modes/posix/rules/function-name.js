@@ -1,25 +1,33 @@
-'use strict';
-const compose = require('../../../utils/compose');
+import compose from '../../../utils/compose.js';
+import map from 'map-iterable';
+import lookahead from 'iterable-lookahead';
 
-module.exports = function functionName() {
-    return function(iterable) {
-        const tokens = Array.from(iterable);
-        const transformedTokens = [];
+export default function functionName() {
+    return compose(map((tk, idx, iterable) => {
+        // apply only on valid positions
+        // (start of simple commands)
+        // if token can form the name of a function,
+        // type of token is changed from WORD to NAME
 
-        for (let i = 0; i < tokens.length; i++) {
-            let tk = tokens[i];
-            if (
-                tk._.maybeStartOfSimpleCommand &&
-                tk.is('WORD') &&
-                tokens[i + 2] &&
-                tokens[i + 1].is('OPEN_PAREN') &&
-                tokens[i + 2].is('CLOSE_PAREN')
-            ) {
-                tk = tk.changeTokenType('NAME', tk.value);
-            }
-            transformedTokens.push(tk);
+        /* console.log(
+            tk._.maybeStartOfSimpleCommand,
+            tk.is('WORD'),
+            iterable.ahead(1) &&
+                iterable.ahead(1).is('OPEN_PAREN'),
+            iterable.ahead(2) &&
+                iterable.ahead(2).is('CLOSE_PAREN')
+        );*/
+
+        if (
+            tk._.maybeStartOfSimpleCommand &&
+            tk.is('WORD') &&
+            iterable.ahead(2) &&
+            iterable.ahead(1).is('OPEN_PAREN') &&
+            iterable.ahead(2).is('CLOSE_PAREN')
+        ) {
+            tk = tk.changeTokenType('NAME', tk.value);
         }
 
-        return transformedTokens;
-    };
+        return tk;
+    }), lookahead.depth(2));
 };

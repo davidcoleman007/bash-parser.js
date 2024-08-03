@@ -1,6 +1,6 @@
-'use strict';
 
-const logger = name => () => function * (tokens) {
+
+const logger = name => () => (function*(tokens) {
 	for (const tk of tokens) {
 		if (!tk) {
 			console.log(`In ${name} token null.`);
@@ -13,6 +13,6 @@ const logger = name => () => function * (tokens) {
 		);
 		yield tk;
 	}
-};
+});
 
-module.exports = logger;
+export default logger;

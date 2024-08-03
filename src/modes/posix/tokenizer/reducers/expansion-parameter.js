@@ -1,8 +1,8 @@
-'use strict';
 
-const last = require('../../../../utils/last');
 
-module.exports = function expansionParameter(state, source, reducers) {
+import last from '../../../../utils/last.js';
+
+export default function expansionParameter(state, source, reducers) {
 	const char = source && source.shift();
 
 	const xp = last(state.expansion);

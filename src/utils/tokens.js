@@ -1,6 +1,4 @@
-'use strict';
-
-const operators = require('../modes/posix/enums/operators');
+import operators from '../modes/posix/enums/operators.js';
 
 class Token {
 	constructor(fields) {
@@ -38,9 +36,9 @@ class Token {
 	}
 }
 
-exports.token = args => new Token(args);
+export const token = args => new Token(args);
 
-function mkToken(type, value, loc, expansion) {
+export function mkToken(type, value, loc, expansion) {
 	const tk = new Token({type, value, loc});
 	if (expansion && expansion.length) {
 		tk.expansion = expansion;
@@ -49,9 +47,7 @@ function mkToken(type, value, loc, expansion) {
 	return tk;
 }
 
-exports.mkToken = mkToken;
-
-exports.mkFieldSplitToken = function mkFieldSplitToken(joinedTk, value, fieldIdx) {
+export const mkFieldSplitToken = function mkFieldSplitToken(joinedTk, value, fieldIdx) {
 	const tk = new Token({
 		type: joinedTk.type,
 		value,
@@ -65,14 +61,14 @@ exports.mkFieldSplitToken = function mkFieldSplitToken(joinedTk, value, fieldIdx
 	return tk;
 };
 
-exports.appendTo = (tk, chunk) => tk.appendTo(chunk);
-exports.changeTokenType = (tk, type, value) => tk.changeTokenType(type, value);
-exports.setValue = (tk, value) => tk.setValue(value);
-exports.alterValue = (tk, value) => tk.alterValue(value);
-exports.addExpansions = tk => tk.addExpansions();
-exports.setExpansions = (tk, expansion) => tk.setExpansions(expansion);
+export const appendTo = (tk, chunk) => tk.appendTo(chunk);
+export const changeTokenType = (tk, type, value) => tk.changeTokenType(type, value);
+export const setValue = (tk, value) => tk.setValue(value);
+export const alterValue = (tk, value) => tk.alterValue(value);
+export const addExpansions = tk => tk.addExpansions();
+export const setExpansions = (tk, expansion) => tk.setExpansions(expansion);
 
-exports.tokenOrEmpty = function tokenOrEmpty(state) {
+export const tokenOrEmpty = function tokenOrEmpty(state) {
 	if (state.current !== '' && state.current !== '\n') {
 		const expansion = (state.expansion || []).map(xp => {
 			// console.log('aaa', {token: state.loc, xp: xp.loc});
@@ -95,7 +91,7 @@ exports.tokenOrEmpty = function tokenOrEmpty(state) {
 	return [];
 };
 
-exports.operatorTokens = function operatorTokens(state) {
+export const operatorTokens = function operatorTokens(state) {
 	const token = mkToken(
 		operators[state.current],
 		state.current, {
@@ -107,27 +103,27 @@ exports.operatorTokens = function operatorTokens(state) {
 	return [token];
 };
 
-exports.newLine = function newLine() {
+export const newLine = function newLine() {
 	return mkToken('NEWLINE', '\n');
 };
 
-exports.continueToken = function continueToken(expectedChar) {
+export const continueToken = function continueToken(expectedChar) {
 	return mkToken('CONTINUE', expectedChar);
 };
 
-exports.eof = function eof() {
+export const eof = function eof() {
 	return mkToken('EOF', '');
 };
 
-exports.isPartOfOperator = function isPartOfOperator(text) {
+export const isPartOfOperator = function isPartOfOperator(text) {
 	return Object.keys(operators).some(op => op.slice(0, text.length) === text);
 };
 
-exports.isOperator = function isOperator(text) {
+export const isOperator = function isOperator(text) {
     return text in operators;
 };
 
-exports.applyTokenizerVisitor = visitor => (tk, idx, iterable) => {
+export const applyTokenizerVisitor = visitor => (tk, idx, iterable) => {
     if (tk.type in visitor) {
         const visit = visitor[tk.type];
 
@@ -141,3 +137,23 @@ exports.applyTokenizerVisitor = visitor => (tk, idx, iterable) => {
 
     return tk;
 };
+
+export default {
+	token,
+	mkToken,
+	mkFieldSplitToken,
+	appendTo,
+	changeTokenType,
+	setValue,
+	alterValue,
+	addExpansions,
+	setExpansions,
+	tokenOrEmpty,
+	operatorTokens,
+	newLine,
+	continueToken,
+	eof,
+	isPartOfOperator,
+	isOperator,
+	applyTokenizerVisitor
+}

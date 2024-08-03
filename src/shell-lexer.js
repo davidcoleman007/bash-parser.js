@@ -1,9 +1,14 @@
-'use strict';
-const compose = require('./utils/compose');
+
+import compose from './utils/compose.js';
 
 const posixShellLexer = (mode, options) => ({
 	lex() {
-		const item = this.tokenizer.next();
+		let item = this.tokenizer.next();
+
+		// if (item.done) {
+		// 	item = { value: { type: 'eof', value: '', originalType: 'EOF' }, done: false }
+		// }
+
 		const tk = item.value;
 		const tkType = tk.originalType;
 		const text = tk.value;
@@ -48,15 +53,15 @@ const posixShellLexer = (mode, options) => ({
 		const tokenizer = mode.tokenizer(options);
 		let previousPhases = [tokenizer];
 		const phases = [tokenizer]
-			.concat(mode.lexerPhases.map(phase => {
+			.concat((mode.lexerPhases.map((phase, index) => {
 				const ph = phase(options, mode, previousPhases);
 				previousPhases = previousPhases.concat(ph);
 				return ph;
-			}));
+			})));
 
 		const tokenize = compose.apply(null, phases.reverse());
 		this.tokenizer = tokenize(source);
 	}
 });
 
-module.exports = posixShellLexer;
+export default posixShellLexer;

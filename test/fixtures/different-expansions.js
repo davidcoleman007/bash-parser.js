@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	sourceCode: "variable=$((42 + 43)) $ciao",
 	result: {
 		type: "Script",
@@ -94,4 +94,4 @@ module.exports = {
 			}
 		]
 	}
-}
+};

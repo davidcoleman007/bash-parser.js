@@ -1,12 +1,12 @@
-'use strict';
 
-const test = require('ava');
-const bashParser = require('../src');
-const utils = require('./_utils');
+
+import test from 'ava';
+import bashParser from '../src/index.js';
+import utils from './_utils.js';
 
 /* eslint-disable camelcase */
 
-test('parse function declaration multiple lines', t => {
+test('parse function declaration multiple lines', (t) => {
 	const result = bashParser('foo () \n{\n command bar --lol;\n}');
 	// utils.logResults(result);
 	utils.checkResults(t,
@@ -28,7 +28,7 @@ test('parse function declaration multiple lines', t => {
 	);
 });
 
-test('parse function declaration with redirections', t => {
+test('parse function declaration with redirections', (t) => {
 	const src = `foo () {
 	 command bar --lol;
 	} > file.txt`;
@@ -59,7 +59,7 @@ test('parse function declaration with redirections', t => {
 	);
 });
 
-test('parse function declaration', t => {
+test('parse function declaration', (t) => {
 	const result = bashParser('foo	(){ command bar --lol;  }');
 
 	utils.checkResults(t,
