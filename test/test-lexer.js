@@ -1,266 +1,128 @@
-
-
-import test from 'ava';
-import posixLexer from '../src/shell-lexer.js';
-import posixMode from '../src/modes/posix/index.js';
+import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
+import bashParser from '../src/index.js';
 import utils from './_utils.js';
 
-/* eslint-disable camelcase */
-const tokenize = (text, rawTokens) => {
-	const lexer = posixLexer(posixMode.init(), {});
-	lexer.setInput(text);
-	const results = [];
-	let token = lexer.lex();
-	while (token !== 'EOF') {
-		delete token.type;
-
-		if (rawTokens) {
-			const value = JSON.parse(JSON.stringify(lexer.yytext));
-			delete value.type;
-			delete value.maybeSimpleCommandName;
-
-			results.push({token, value});
-		} else {
-			const value = lexer.yytext.text || lexer.yytext;
-			const expansion = lexer.expansion;
-			delete value.type;
-			delete value.maybeSimpleCommandName;
-
-			if (expansion) {
-				results.push({token, value, expansion});
-			} else {
-				results.push({token, value});
-			}
-		}
-
-		token = lexer.lex();
-	}
-	return results;
+Deno.test('loc in function declaration', () => {
+    const cmd =
+`foo () {
+ command bar --lol;
 }
+`;
+    const result = bashParser(cmd, {insertLOC: true});
+    // utils.logResults(result)
+    const expected = {
+        type: 'Function',
+        name: {
+            text: 'foo',
+            type: 'Name',
+            loc: {
+                start: {
+                    col: 1,
+                    row: 1,
+                    char: 0
+                },
+                end: {
+                    col: 3,
+                    row: 1,
+                    char: 2
+                }
+            }
+        },
+        body: {
+            type: 'CompoundList',
+            commands: [
+                {
+                    type: 'Command',
+                    name: {
+                        text: 'command',
+                        type: 'Word',
+                        loc: {
+                            start: {
+                                col: 2,
+                                row: 2,
+                                char: 10
+                            },
+                            end: {
+                                col: 8,
+                                row: 2,
+                                char: 16
+                            }
+                        }
+                    },
+                    loc: {
+                        start: {
+                            col: 2,
+                            row: 2,
+                            char: 10
+                        },
+                        end: {
+                            col: 18,
+                            row: 2,
+                            char: 26
+                        }
+                    },
+                    suffix: [
+                        {
+                            text: 'bar',
+                            type: 'Word',
+                            loc: {
+                                start: {
+                                    col: 10,
+                                    row: 2,
+                                    char: 18
+                                },
+                                end: {
+                                    col: 12,
+                                    row: 2,
+                                    char: 20
+                                }
+                            }
+                        },
+                        {
+                            text: '--lol',
+                            type: 'Word',
+                            loc: {
+                                start: {
+                                    col: 14,
+                                    row: 2,
+                                    char: 22
+                                },
+                                end: {
+                                    col: 18,
+                                    row: 2,
+                                    char: 26
+                                }
+                            }
+                        }
+                    ]
+                }
+            ],
+            loc: {
+                start: {
+                    col: 8,
+                    row: 1,
+                    char: 7
+                },
+                end: {
+                    col: 1,
+                    row: 3,
+                    char: 29
+                }
+            }
+        },
+        loc: {
+            start: {
+                col: 1,
+                row: 1,
+                char: 0
+            },
+            end: {
+                col: 1,
+                row: 3,
+                char: 29
+            }
+        }
+    };
 
-test('parses parameter substitution', (t) => {
-	const result = tokenize('echo word${other}test', true);
-	utils.checkResults(t, result,
-		[{
-			token: 'WORD',
-			value: {
-				text: 'echo'
-			}
-		}, {
-			token: 'WORD',
-			value: {
-				text: 'word${other}test',
-				expansion: [{
-					type: 'ParameterExpansion',
-					parameter: 'other',
-					loc: {
-						start: 4,
-						end: 11
-					}
-				}]
-			}
-		}]);
-
-	t.is(result[1].value.text.slice(
-		result[1].value.expansion[0].loc.start,
-		result[1].value.expansion[0].loc.end + 1
-	), '${other}');
+    utils.checkResults(result.commands[0], expected);
 });
-
-test('parses unquoted parameter substitution', (t) => {
-	const result = tokenize('echo word$test', true);
-	// utils.logResults(result)
-	utils.checkResults(t, result,
-		[{token: 'WORD', value: {text: 'echo'}},
-		{
-			token: 'WORD',
-			value: {
-				text: 'word$test',
-				expansion: [{
-					type: 'ParameterExpansion',
-					parameter: 'test',
-					loc: {start: 4, end: 8}
-				}]
-			}
-		}]
-	);
-
-	t.is(result[1].value.text.slice(
-		result[1].value.expansion[0].loc.start,
-		result[1].value.expansion[0].loc.end + 1
-	), '$test');
-});
-
-test('unquoted parameter delimited by symbol', (t) => {
-	const result = tokenize('echo word$test,,', true);
-	// utils.logResults(result);
-	utils.checkResults(t, result,
-		[{token: 'WORD', value: {text: 'echo'}},
-		{
-			token: 'WORD',
-			value: {
-				text: 'word$test,,',
-				expansion: [{
-					type: 'ParameterExpansion', parameter: 'test',
-					loc: {start: 4, end: 8}
-				}]
-			}
-		}]
-	);
-
-	t.is(result[1].value.text.slice(
-		result[1].value.expansion[0].loc.start,
-		result[1].value.expansion[0].loc.end + 1
-	), '$test');
-});
-
-test('parse single operator', (t) => {
-	utils.checkResults(t,
-		tokenize('<<'),
-		[{token: 'DLESS', value: '<<'}]
-	);
-});
-
-test('parse redirections', (t) => {
-	utils.checkResults(t,
-		tokenize('echo>ciao'),
-		[{token: 'WORD', value: 'echo'},
-		{token: 'GREAT', value: '>'},
-		{token: 'WORD', value: 'ciao'}]
-	);
-});
-
-test('parse io-number redirections', (t) => {
-	utils.checkResults(t,
-		tokenize('echo 2> ciao'),
-		[{token: 'WORD', value: 'echo'},
-		{token: 'IO_NUMBER', value: '2'},
-		{token: 'GREAT', value: '>'},
-		{token: 'WORD', value: 'ciao'}]
-	);
-});
-
-test('parse two operators on two lines', (t) => {
-	utils.checkResults(t,
-		tokenize('<<\n>>'),
-		[{token: 'DLESS', value: '<<'},
-		{token: 'NEWLINE_LIST', value: '\n'},
-		{token: 'DGREAT', value: '>>'}]
-	);
-});
-
-test('parse two words', (t) => {
-	utils.checkResults(t,
-		tokenize('echo 42'),
-		[{token: 'WORD', value: 'echo'},
-		{token: 'WORD', value: '42'}]
-	);
-});
-
-test('support character escaping', (t) => {
-	utils.checkResults(t,
-		tokenize('echo\\>23'),
-		[{token: 'WORD', value: 'echo>23'}]
-	);
-});
-
-test('support line continuations', (t) => { // not yet implemented
-	// utils.logResults(tokenize('echo\\\n23'))
-	utils.checkResults(t,
-		tokenize('echo\\\n23'),
-		[{token: 'WORD', value: 'echo23'}]
-	);
-});
-
-test('support single quotes', (t) => {
-	utils.checkResults(t,
-		tokenize('echo \'CIAO 42\''),
-		[{token: 'WORD', value: 'echo'},
-		{token: 'WORD', value: 'CIAO 42'}]
-	);
-});
-
-test('support &&', (t) => {
-	utils.checkResults(t,
-		tokenize('run && stop'),
-		[{token: 'WORD', value: 'run'}, {token: 'AND_IF', value: '&&'}, {token: 'WORD', value: 'stop'}]
-	);
-});
-
-test('support &', (t) => {
-	// utils.logResults(tokenize('run &'));
-	utils.checkResults(t,
-		tokenize('run &'),
-		[{token: 'WORD', value: 'run'}, {token: 'SEPARATOR_OP', value: '&'}]
-	);
-});
-
-test('support ||', (t) => {
-	utils.checkResults(t,
-		tokenize('run || stop'),
-		[{token: 'WORD', value: 'run'}, {token: 'OR_IF', value: '||'}, {token: 'WORD', value: 'stop'}]
-	);
-});
-
-test('support for', (t) => {
-	utils.checkResults(t,
-		tokenize('for x in a b c; do echo x; done'),
-		[{token: 'For', value: 'for'}, {token: 'NAME', value: 'x'},
-			{token: 'In', value: 'in'}, {token: 'WORD', value: 'a'},
-			{token: 'WORD', value: 'b'}, {token: 'WORD', value: 'c'},
-			{token: 'SEPARATOR_OP', value: ';'}, {token: 'Do', value: 'do'},
-			{token: 'WORD', value: 'echo'}, {token: 'WORD', value: 'x'},
-			{token: 'SEPARATOR_OP', value: ';'}, {token: 'Done', value: 'done'}]
-	);
-});
-
-test('support for with default sequence', (t) => {
-	utils.checkResults(t,
-		tokenize('for x in; do echo x; done'),
-		[{token: 'For', value: 'for'}, {token: 'NAME', value: 'x'},
-			{token: 'In', value: 'in'},
-			{token: 'SEPARATOR_OP', value: ';'}, {token: 'Do', value: 'do'},
-			{token: 'WORD', value: 'echo'}, {token: 'WORD', value: 'x'},
-			{token: 'SEPARATOR_OP', value: ';'}, {token: 'Done', value: 'done'}]
-	);
-});
-
-test('support double quotes', (t) => {
-	utils.checkResults(t,
-		tokenize('echo "CIAO 42"'),
-		[{token: 'WORD', value: 'echo'},
-		{token: 'WORD', value: 'CIAO 42'}]
-	);
-});
-
-test('support multiple commands', (t) => {
-	// utils.logResults(tokenize('echo; \nls;'));
-
-	utils.checkResults(t,
-		tokenize('echo; \nls;'),
-		[{token: 'WORD', value: 'echo'}, {token: 'SEPARATOR_OP', value: ';\n'},
-		{token: 'WORD', value: 'ls'}, {token: 'SEPARATOR_OP', value: ';'}]
-	);
-});
-
-test('support while', (t) => {
-	utils.checkResults(t,
-		tokenize('while [[ -e foo ]]; do sleep 1; done'),
-		[{token: 'While', value: 'while'}, {token: 'WORD', value: '[['},
-		{token: 'WORD', value: '-e'}, {token: 'WORD', value: 'foo'},
-		{token: 'WORD', value: ']]'}, {token: 'SEPARATOR_OP', value: ';'},
-		{token: 'Do', value: 'do'}, {token: 'WORD', value: 'sleep'},
-		{token: 'WORD', value: '1'}, {token: 'SEPARATOR_OP', value: ';'},
-		{token: 'Done', value: 'done'}]
-	);
-});
-/*
-test('support function definition', (t) => {
-	utils.checkResults(t,
-		tokenize('foo () {command}'),
-		[{token: 'WORD', value: 'foo'}, {token: 'OPEN_PAREN', value: '('},
-		{token: 'CLOSE_PAREN', value: ')'}, {token: 'Lbrace', value: '{'},
-		{token: 'WORD', value: 'command'}, {token: 'Rbrace', value: '}'}]
-	);
-});
-*/

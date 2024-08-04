@@ -1,0 +1,48 @@
+{
+  "name": "@mattiasrunge/bash-parser",
+  "exports": {
+    "./src/index.js": "./src/index.js"
+  },
+  "version": "0.6.0",
+  "main": "src/index.js",
+  "description": "Standard compliant bash parser",
+  "repository": "mattiasrunge/bash-parser",
+  "license": "MIT",
+  "author": "Mattias Runge-Broberg <mattias@runge.se>",
+  "type": "module",
+
+  "compilerOptions": {
+    "strict": true
+  },
+  "lint": {
+    "rules": {
+      "exclude": [
+        "require-await",
+        "no-explicit-any"
+      ]
+    }
+  },
+  "fmt": {
+    "lineWidth": 175,
+    "indentWidth": 2,
+    "singleQuote": true,
+    "proseWrap": "preserve"
+  },
+  "imports": {
+    "@std/path": "jsr:@std/path@0.225.2",
+    "jison": "npm:jison@^0.4.17",
+    "babylon": "npm:babylon@^6.9.1",
+    "shell-quote-word": "npm:shell-quote-word@^1.0.1",
+    "unescape-js": "npm:unescape-js@^1.0.5",
+    "iterable-lookahead": "npm:iterable-lookahead@^1.0.0",
+    "iterable-transform-replace": "npm:iterable-transform-replace@^1.1.1",
+    "map-iterable": "npm:map-iterable@^1.0.1",
+    "transform-spread-iterable": "npm:transform-spread-iterable@^1.1.0",
+    "~/": "./src/",
+    "grammar": "./gen/grammar.js"
+  },
+  "tasks": {
+    "test": "DENO_FUTURE=1 deno test test/test-*",
+    "build": "DENO_FUTURE=1 deno run --allow-read --allow-write src/builder/builder.ts"
+  }
+}

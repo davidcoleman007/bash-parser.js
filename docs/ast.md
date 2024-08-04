@@ -1,8 +1,6 @@
 # Bash parser AST types
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
 
 - [Introduction](#introduction)
 - [Script](#Script)
@@ -25,8 +23,6 @@
 - [CommandExpansion](#CommandExpansion)
 - [ParameterExpansion](#ParameterExpansion)
 - [Redirect](#Redirect)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Introduction
 
@@ -62,7 +58,6 @@ If the source is parsed specifing the `insertLOC` option, each node contins a `l
 ### Script
 
 > `Script` is the root node of the AST. It simply represent a list of commands that form the body of the script.
-
 
 ```js
 {
@@ -134,6 +129,7 @@ If the source is parsed specifing the `insertLOC` option, each node contins a `l
 ```
 
 ### Command
+
 > Represents a builtin or external command to execute. It could optionally have a list of arguments, stream redirection operation and environment variable assignments. `name` properties is a Word that represents the name of the command to execute. It is optional because Command could represents bare assignment, e.g. `VARNAME = 42;`. In this case, the command node has no name.
 
 ```js
@@ -149,7 +145,7 @@ If the source is parsed specifing the `insertLOC` option, each node contins a `l
 
 > `Function` represents the definition of a Function.
 
-> It is formed by the name of the Function  itself and a list of all command that forms the body of the Function. It can also contains a list of redirection that applies to all commands of the function body.
+> It is formed by the name of the Function itself and a list of all command that forms the body of the Function. It can also contains a list of redirection that applies to all commands of the function body.
 
 ```js
 {
@@ -390,4 +386,3 @@ Word and AssignmentWord could optionally contain a list of expansion to perform 
 	}
 }
 ```
-

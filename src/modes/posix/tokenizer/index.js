@@ -181,7 +181,8 @@ const mkMutableState = reducers => (class {
 const tok = (options, r) => (function* tokenizer(src) {
 	r = r || reducers;
 
-	const State = process.env.NODE_NEV === 'development' ? mkImmutableState(r) : mkMutableState(r);
+	// const State = process.env.NODE_NEV === 'development' ? mkImmutableState(r) : mkMutableState(r);
+	const State = mkMutableState(r);
 
 	let state = new State();
 

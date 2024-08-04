@@ -1,7 +1,7 @@
 
 
 import map from 'map-iterable';
-import MagicString from 'magic-string';
+import overwriteInString from '../../../utils/overwrite-in-string.js'
 import tokensUtils from '../../../utils/tokens.js';
 import fieldSplitting from './field-splitting.js';
 
@@ -47,15 +47,14 @@ const commandExpansion = () => (map((token) => {
 
 commandExpansion.resolve = options => map(token => {
 	if (options.execCommand && token.expansion) {
-		const value = token.value;
-
-		const magic = new MagicString(value);
+		let value = token.value;
 
 		for (const xp of token.expansion) {
 			if (xp.type === 'command_expansion') {
 				const result = options.execCommand(xp);
 				// console.log({value, xp})
-				magic.overwrite(
+				value = overwriteInString(
+					value,
 					xp.loc.start,
 					xp.loc.end + 1,
 					fieldSplitting.mark(result.replace(/\n+$/, ''), value, options)
@@ -63,7 +62,7 @@ commandExpansion.resolve = options => map(token => {
 				xp.resolved = true;
 			}
 		}
-		return token.alterValue(magic.toString());
+		return token.alterValue(value);
 	}
 	return token;
 });

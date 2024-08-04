@@ -1,7 +1,7 @@
 
 
 import map from 'map-iterable';
-import MagicString from 'magic-string';
+import overwriteInString from '../../../utils/overwrite-in-string.js'
 import tokens from '../../../utils/tokens.js';
 import fieldSplitting from './field-splitting.js';
 import bashParser from '../../../index.js';
@@ -88,21 +88,21 @@ parameterExpansion.resolve = options => map(token => {
 			return token;
 		}
 
-		const value = token.value;
+		let value = token.value;
 
-		const magic = new MagicString(value);
 		for (const xp of token.expansion) {
 			if (xp.type === 'parameter_expansion') {
 				const result = options.resolveParameter(xp);
 				xp.resolved = true;
-				magic.overwrite(
+				value = overwriteInString(
+					value,
 					xp.loc.start,
 					xp.loc.end + 1,
 					fieldSplitting.mark(result, value, options)
 				);
 			}
 		}
-		return tokens.alterValue(token, magic.toString());
+		return tokens.alterValue(token, value);
 	}
 	return token;
 });

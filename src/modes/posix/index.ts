@@ -1,10 +1,8 @@
-
-
 import astBuilder from './ast-builder.js';
 import tokenizer from './tokenizer/index.js';
 import phaseCatalog from './rules/index.js';
-import grammarSource from './grammar.js';
 import enums from './enums/index.js';
+import * as grammar from 'grammar';
 
 const lexerPhases = () => [
 	phaseCatalog.newLineList,
@@ -32,29 +30,20 @@ const lexerPhases = () => [
 	phaseCatalog.pathExpansion,
 	phaseCatalog.quoteRemoval,
 	phaseCatalog.syntaxerrorOnContinue,
-	phaseCatalog.defaultNodeType
+	phaseCatalog.defaultNodeType,
 	// utils.loggerPhase('tokenizer'),
 ];
-
-import * as grammar from './built-grammar.js';
 
 export default {
 	inherits: null,
 	init: (posixMode, utils) => {
-		// let grammar = null;
-		// try {
-		// 	grammar = import('./built-grammar.js');
-		// } catch (err) {
-		// 	console.error('Error loading grammar:', err);
-		// }
 		return {
 			enums,
 			phaseCatalog,
 			lexerPhases: lexerPhases(utils),
 			tokenizer,
-			grammarSource,
 			grammar,
-			astBuilder
+			astBuilder,
 		};
-	}
+	},
 };

@@ -1,6 +1,6 @@
 
 
-import toPascal from 'to-pascal-case';
+import toPascal from '../../../utils/to-pascal-case.js';
 import map from 'map-iterable';
 
 export default () => map(token => {

@@ -5,7 +5,7 @@
 import map from 'map-iterable';
 
 import babylon from 'babylon';
-import MagicString from 'magic-string';
+import overwriteInString from '../../../utils/overwrite-in-string.js'
 import tokens from '../../../utils/tokens.js';
 import fieldSplitting from './field-splitting.js';
 
@@ -44,14 +44,13 @@ const arithmeticExpansion = () => map(token => {
 
 arithmeticExpansion.resolve = options => map(token => {
 	if (options.runArithmeticExpression && token.expansion) {
-		const value = token.value;
-
-		const magic = new MagicString(value);
+		let value = token.value;
 
 		for (const xp of token.expansion) {
 			if (xp.type === 'arithmetic_expansion') {
 				const result = options.runArithmeticExpression(xp);
-				magic.overwrite(
+				value = overwriteInString(
+					value,
 					xp.loc.start,
 					xp.loc.end + 1,
 					fieldSplitting.mark(result, value, options)
@@ -60,7 +59,7 @@ arithmeticExpansion.resolve = options => map(token => {
 			}
 		}
 
-		return token.alterValue(magic.toString());
+		return token.alterValue(value);
 	}
 	return token;
 });

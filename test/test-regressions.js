@@ -1,38 +1,37 @@
-
-
-import test from 'ava';
+import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
 import bashParser from '../src/index.js';
 import utils from './_utils.js';
 
 /* eslint-disable camelcase */
-test('Redirect should be allowed immediately following argument', (t) => {
-	const result = bashParser('echo foo>file.txt');
 
-	utils.checkResults(t, result, {
-		type: 'Script',
-		commands: [{
-			type: 'Command',
-			name: {type: 'Word', text: 'echo'},
-			suffix: [
-				{type: 'Word', text: 'foo'},
-				{
-					type: 'Redirect',
-					op: {type: 'great', text: '>'},
-					file: {type: 'Word', text: 'file.txt'}
-				}
-			]
-		}]
-	});
+Deno.test('Redirect should be allowed immediately following argument', () => {
+    const result = bashParser('echo foo>file.txt');
+
+    utils.checkResults(result, {
+        type: 'Script',
+        commands: [{
+            type: 'Command',
+            name: {type: 'Word', text: 'echo'},
+            suffix: [
+                {type: 'Word', text: 'foo'},
+                {
+                    type: 'Redirect',
+                    op: {type: 'great', text: '>'},
+                    file: {type: 'Word', text: 'file.txt'}
+                }
+            ]
+        }]
+    });
 });
 
-test('Equal sign should be allowed in arguments', (t) => {
-	const result = bashParser('echo foo=bar');
-	utils.checkResults(t, result, {
-		type: 'Script',
-		commands: [{
-			type: 'Command',
-			name: {type: 'Word', text: 'echo'},
-			suffix: [{type: 'Word', text: 'foo=bar'}]
-		}]
-	});
+Deno.test('Equal sign should be allowed in arguments', () => {
+    const result = bashParser('echo foo=bar');
+    utils.checkResults(result, {
+        type: 'Script',
+        commands: [{
+            type: 'Command',
+            name: {type: 'Word', text: 'echo'},
+            suffix: [{type: 'Word', text: 'foo=bar'}]
+        }]
+    });
 });
