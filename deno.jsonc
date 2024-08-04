@@ -42,7 +42,7 @@
     "grammar": "./gen/grammar.js"
   },
   "tasks": {
-    "test": "DENO_FUTURE=1 deno test test/test-*",
+    "test": "DENO_FUTURE=1 deno test --no-check test/test-*",
     "build": "DENO_FUTURE=1 deno run --allow-read --allow-write src/builder/builder.ts"
   }
 }

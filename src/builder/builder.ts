@@ -1,6 +1,6 @@
 import * as path from '@std/path';
 import { Jison } from 'jison';
-import grammar from '~/modes/posix/grammar.js';
+import grammar from '~/modes/posix/grammar.ts';
 
 try {
   console.log(`Building grammar...`);
