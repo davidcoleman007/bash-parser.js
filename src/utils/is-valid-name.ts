@@ -1,8 +1,10 @@
 /*
-	Check if a string represents a valid POSIX shell name, as specified in
-	http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_231
+  Check if a string represents a valid POSIX shell name, as specified in
+  http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_231
 */
 
-export default function isValidName(text: string) {
-	return /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(text);
-}
+const isValidName = (text: string) => {
+  return /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(text);
+};
+
+export default isValidName;

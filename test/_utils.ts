@@ -1,49 +1,29 @@
-import { assertEquals } from 'https://deno.land/std/testing/asserts.ts';
+import { assertEquals } from '@std/assert';
+import type { Location } from '~/types.ts';
 
-export const mkloc = function mkloc(startLine, startColumn, endLine, endColumn) {
-    return { startLine, startColumn, endLine, endColumn };
+export const mkloc = function mkloc(startLine: number, startColumn: number, endLine: number, endColumn: number) {
+  return { startLine, startColumn, endLine, endColumn };
 };
 
-// eslint-disable-next-line max-params
-export const mkloc2 = function mkloc(startLine, startColumn, endLine, endColumn, startChar, endChar) {
-    return {
-        start: { row: startLine, col: startColumn, char: startChar },
-        end: { row: endLine, col: endColumn, char: endChar },
-    };
+export const mkloc2 = function mkloc(startLine: number, startColumn: number, endLine: number, endColumn: number, startChar: number, endChar: number): Location {
+  return {
+    start: { row: startLine, col: startColumn, char: startChar },
+    end: { row: endLine, col: endColumn, char: endChar },
+  };
 };
 
-export const logResults = function logResults(results) {
-    console.log(JSON.stringify(results, null, 4).replace(/"/g, "'"));
+export const logResults = function logResults(results: any) {
+  console.log(JSON.stringify(results, null, 4).replace(/"/g, "'"));
 };
 
-export const checkResults = function checkResults(actual, expected) {
-    /* if (Array.isArray(actual)) {
-        for (const item of actual) {
-            console.log(item.constructor.name)
-            if (item.constructor.name === 'Token') {
-                console.log('tttt')
-                Object.defineProperty(item, item.type, {
-                    enumerable: true,
-                    get() {
-                        const s = stack()[1];
-
-                        if (s.getFileName() !== '/Users/parroit/Desktop/repos/bash-parser/src/utils/tokens.ts' &&
-                            s.getFileName() !== '/Users/parroit/Desktop/repos/bash-parser/src/modes/posix/rules/default-node-type.ts')
-                                console.log(`${count++}: ${this.type} is deprectaed. Used ${s.getFileName()}:${s.getLineNumber()}`);
-                        return item.value;
-                    }
-                });
-            }
-
-        }
-    }*/
-    // exports.logResults(actual);
-    assertEquals(actual, expected);
+export const checkResults = (actual: any, expected: any) => {
+  // exports.logResults(actual);
+  assertEquals(actual, expected);
 };
 
 export default {
-    mkloc,
-    mkloc2,
-    logResults,
-    checkResults,
+  mkloc,
+  mkloc2,
+  logResults,
+  checkResults,
 };

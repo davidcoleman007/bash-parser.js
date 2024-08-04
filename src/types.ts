@@ -1,4 +1,22 @@
-export type Token = any; // TODO
+export type TokenIf = {
+  type: string;
+  value?: string;
+  joined?: string;
+  fieldIdx?: number;
+  loc: Location;
+  expansion?: Expansion[];
+  originalText?: string;
+  originalType?: string;
+  _: Record<string, any>;
+
+  is(type: string): boolean;
+  appendTo(chunk: string): TokenIf;
+  changeTokenType(type: string, value: string): TokenIf;
+  setValue(value: string): TokenIf;
+  alterValue(value: string): TokenIf;
+  addExpansions(): TokenIf;
+  setExpansions(expansion: Expansion[]): TokenIf;
+};
 
 export interface ReducerStateIf {
   current: string;
@@ -25,7 +43,7 @@ export interface ReducerStateIf {
 export type Reducer = (state: ReducerStateIf, source: string[], reducers: Reducers) => ReducerNextState;
 
 export type ReducerNextState = {
-  tokensToEmit?: Token[];
+  tokensToEmit?: TokenIf[];
   nextReduction: Reducer | null;
   nextState?: ReducerStateIf;
 };
@@ -44,7 +62,7 @@ export type Expansion = {
   expression?: string;
   value?: string;
   type?: string;
-  loc: { start?: number; end?: number };
+  loc: Partial<Location>;
 };
 
 export type Options = {
@@ -130,9 +148,9 @@ export type Options = {
  */
 export type LexerPhase = (
   options: Options,
+  mode: Mode,
   previousPhases: LexerPhase[],
-  utils: any,
-) => (tokens: Iterable<Token>) => Iterable<Token>;
+) => (tokens: Iterable<TokenIf>) => Iterable<TokenIf>;
 
 export type LexerPhases = Record<string, LexerPhase>;
 
@@ -150,7 +168,7 @@ export type Mode = {
    *
    * @returns A function that takes shell source code and returns an iterable of parsed tokens.
    */
-  tokenizer: (reducers?: Reducers) => (code: string) => Iterable<Token>;
+  tokenizer: (reducers?: Reducers) => (code: string) => Iterable<TokenIf>;
 
   /**
    * An array of transform functions that are applied, in order, to the iterable of tokens returned by the `tokenizer` function.
@@ -188,7 +206,7 @@ export type ModePlugin = {
    * @param parentMode - The parent mode to inherit from.
    * @returns The new mode object.
    */
-  init: (utils: any, parentMode?: Mode) => Mode;
+  init: (parentMode?: Mode) => Mode;
 };
 
 export type Separator = {

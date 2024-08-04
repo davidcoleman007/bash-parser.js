@@ -1,15 +1,15 @@
 export default {
-	sourceCode: "\"ec\\t\\nho\"",
-	result: {
-		type: "Script",
-		commands: [
-			{
-				type: "SimpleCommand",
-				name: {
-					text: "ec\t\nho",
-					type: "Word"
-				}
-			}
-		]
-	}
+  sourceCode: '"ec\\t\\nho"',
+  result: {
+    type: 'Script',
+    commands: [
+      {
+        type: 'SimpleCommand',
+        name: {
+          text: 'ec\t\nho',
+          type: 'Word',
+        },
+      },
+    ],
+  },
 };

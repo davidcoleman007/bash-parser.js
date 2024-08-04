@@ -1,21 +1,21 @@
 import map from 'map-iterable';
-import { LexerPhase } from '~/types.ts';
+import type { LexerPhase, TokenIf } from '~/types.ts';
 import tokens from '~/utils/tokens.ts';
 
-const reduceToOperatorTokenVisitor = (operators) => ({
-  OPERATOR(tk) {
-    if (tk.value in operators) {
+const reduceToOperatorTokenVisitor = (operators: Record<string, string>) => ({
+  OPERATOR(tk: TokenIf) {
+    if (tk.value! in operators) {
       return tokens.changeTokenType(
         tk,
-        operators[tk.value],
-        tk.value,
+        operators[tk.value!],
+        tk.value!,
       );
     }
     return tk;
   },
 });
 
-const operatorTokens: LexerPhase = (options, mode) =>
+const operatorTokens: LexerPhase = (_options, mode) =>
   map(
     tokens.applyTokenizerVisitor(reduceToOperatorTokenVisitor(mode.enums.operators)),
   );

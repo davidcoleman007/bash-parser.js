@@ -1,11 +1,11 @@
 import lookahead from 'iterable-lookahead';
 import map from 'map-iterable';
-import { LexerPhase } from '~/types.ts';
+import type { LexerPhase, TokenIf } from '~/types.ts';
 import compose from '~/utils/compose.ts';
 
 const functionName: LexerPhase = () => {
   return compose(
-    map((tk, idx, iterable) => {
+    map((tk: TokenIf, idx, iterable) => {
       // apply only on valitd positions
       // (start of simple commands)
       // if token can form the name of a function,
@@ -27,7 +27,7 @@ const functionName: LexerPhase = () => {
         iterable.ahead(1).is('OPEN_PAREN') &&
         iterable.ahead(2).is('CLOSE_PAREN')
       ) {
-        tk = tk.changeTokenType('NAME', tk.value);
+        tk = tk.changeTokenType('NAME', tk.value!);
       }
 
       return tk;

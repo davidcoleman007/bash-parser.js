@@ -1,8 +1,6 @@
-
-
-function filter(predicate) {
-  return function(iterable) {
-    const result = [];
+const filter = <T>(predicate: (item: T) => boolean) => {
+  return (iterable: Iterable<T>) => {
+    const result: T[] = [];
 
     for (const item of iterable) {
       if (predicate(item)) {
@@ -12,6 +10,6 @@ function filter(predicate) {
 
     return result;
   };
-}
+};
 
 export default filter;

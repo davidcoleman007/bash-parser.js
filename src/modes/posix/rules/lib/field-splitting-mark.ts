@@ -1,16 +1,18 @@
-export const fieldSplittingMark = (result, text, options) => {
-	if (
-		typeof options.resolveEnv === 'function' &&
-		text[0] !== "'" && text[0] !== '"'
-	) {
-		const ifs = options.resolveEnv('IFS');
+import type { Options } from '~/types.ts';
 
-		if (ifs !== null) {
-			return result.replace(new RegExp(`[${ifs}]+`, 'g'), '\0');
-		}
-	}
+export const fieldSplittingMark = (result: string, text: string, options: Options) => {
+  if (
+    typeof options.resolveEnv === 'function' &&
+    text[0] !== "'" && text[0] !== '"'
+  ) {
+    const ifs = options.resolveEnv('IFS');
 
-	return result;
+    if (ifs !== null) {
+      return result.replace(new RegExp(`[${ifs}]+`, 'g'), '\0');
+    }
+  }
+
+  return result;
 };
 
 export default fieldSplittingMark;

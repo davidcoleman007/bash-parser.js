@@ -1,12 +1,12 @@
 import lookahead from 'iterable-lookahead';
 import map from 'map-iterable';
-import { LexerPhase } from '~/types.ts';
+import type { LexerPhase, TokenIf } from '~/types.ts';
 import compose from '~/utils/compose.ts';
 import isValidName from '~/utils/is-valid-name.ts';
 
 // import isOperator from '../enums/io-file-operators.mjs';
 
-function couldEndSimpleCommand(scTk) {
+function couldEndSimpleCommand(scTk: TokenIf) {
   return scTk && (
     scTk.is('SEPARATOR_OP') ||
     scTk.is('NEWLINE') ||
@@ -19,13 +19,13 @@ function couldEndSimpleCommand(scTk) {
   );
 }
 
-function couldBeCommandName(tk) {
-  return tk && tk.is('WORD') && isValidName(tk.value);
+function couldBeCommandName(tk: TokenIf) {
+  return tk && tk.is('WORD') && isValidName(tk.value!);
 }
 
-const identifySimpleCommandNames: LexerPhase = (options, mode) =>
+const identifySimpleCommandNames: LexerPhase = (_options, mode) =>
   compose(
-    map((tk, idx, iterable) => {
+    map((tk: TokenIf, idx, iterable) => {
       if (tk._.maybeStartOfSimpleCommand) {
         if (couldBeCommandName(tk)) {
           tk._.maybeSimpleCommandName = true;

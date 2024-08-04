@@ -1,12 +1,12 @@
 import lookahead from 'iterable-lookahead';
 import map from 'map-iterable';
-import { LexerPhase } from '~/types.ts';
+import type { LexerPhase, TokenIf } from '~/types.ts';
 import compose from '~/utils/compose.ts';
 
-const identifyMaybeSimpleCommands: LexerPhase = (options, mode) => {
+const identifyMaybeSimpleCommands: LexerPhase = (_options, mode) => {
   return compose(
-    map((tk, idx, iterable) => {
-      const last = iterable.behind(1) || { EMPTY: true, is: (type) => type === 'EMPTY' };
+    map((tk: TokenIf, idx, iterable) => {
+      const last = iterable.behind(1) || { EMPTY: true, is: (type: string) => type === 'EMPTY' };
 
       // evaluate based on last token
       tk._.maybeStartOfSimpleCommand = Boolean(

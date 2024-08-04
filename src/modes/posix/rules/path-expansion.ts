@@ -1,19 +1,19 @@
 import map from 'map-iterable';
-import { LexerPhase } from '~/types.ts';
+import type { LexerPhase, TokenIf } from '~/types.ts';
 import tokens from '~/utils/tokens.ts';
 
 const pathExpansion: LexerPhase = (options) =>
-	map((token) => {
-		if (token.is('WORD') && typeof options.resolvePath === 'function') {
-			return tokens.setValue(token, options.resolvePath(token.value));
-		}
+  map((token: TokenIf) => {
+    if (token.is('WORD') && typeof options.resolvePath === 'function') {
+      return tokens.setValue(token, options.resolvePath(token.value!));
+    }
 
-		if (token.is('ASSIGNMENT_WORD') && typeof options.resolvePath === 'function') {
-			const parts = token.value.split('=');
-			return tokens.setValue(token, parts[0] + '=' + options.resolvePath(parts[1]));
-		}
+    if (token.is('ASSIGNMENT_WORD') && typeof options.resolvePath === 'function') {
+      const parts = token.value!.split('=');
+      return tokens.setValue(token, parts[0] + '=' + options.resolvePath(parts[1]));
+    }
 
-		return token;
-	});
+    return token;
+  });
 
 export default pathExpansion;

@@ -14,19 +14,19 @@ import singleQuoting from './single-quoting.ts';
 import start from './start.ts';
 
 const reducers: Reducers = {
-	end,
-	operator,
-	comment,
-	singleQuoting,
-	doubleQuoting,
-	expansionStart,
-	expansionCommandTick,
-	start,
-	expansionArithmetic,
-	expansionSpecialParameter,
-	expansionParameter,
-	expansionCommandOrArithmetic,
-	expansionParameterExtended,
+  end,
+  operator,
+  comment,
+  singleQuoting,
+  doubleQuoting,
+  expansionStart,
+  expansionCommandTick,
+  start,
+  expansionArithmetic,
+  expansionSpecialParameter,
+  expansionParameter,
+  expansionCommandOrArithmetic,
+  expansionParameterExtended,
 };
 
 export default reducers;

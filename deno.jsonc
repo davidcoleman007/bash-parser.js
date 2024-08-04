@@ -29,17 +29,18 @@
     "proseWrap": "preserve"
   },
   "imports": {
+    "@std/assert": "jsr:@std/assert@^1.0.2",
     "@std/path": "jsr:@std/path@0.225.2",
-    "jison": "npm:jison@^0.4.17",
     "babylon": "npm:babylon@^6.9.1",
-    "shell-quote-word": "npm:shell-quote-word@^1.0.1",
-    "unescape-js": "npm:unescape-js@^1.0.5",
+    "grammar": "./gen/grammar.js",
     "iterable-lookahead": "npm:iterable-lookahead@^1.0.0",
     "iterable-transform-replace": "npm:iterable-transform-replace@^1.1.1",
+    "jison": "npm:jison@^0.4.17",
     "map-iterable": "npm:map-iterable@^1.0.1",
+    "shell-quote-word": "npm:shell-quote-word@^1.0.1",
     "transform-spread-iterable": "npm:transform-spread-iterable@^1.1.0",
-    "~/": "./src/",
-    "grammar": "./gen/grammar.js"
+    "unescape-js": "npm:unescape-js@^1.0.5",
+    "~/": "./src/"
   },
   "tasks": {
     "test": "DENO_FUTURE=1 deno test --no-check test/test-*",

@@ -1,35 +1,35 @@
-import bashParser from '../src/parse.ts';
+import bashParser from '~/parse.ts';
 import utils from './_utils.ts';
 
 Deno.test('parse case', () => {
-    const result = bashParser('case foo in * ) echo bar;; esac');
-    // utils.logResults(result);
-    const expected = {
-        type: 'Script',
-        commands: [{
-            type: 'Case',
-            clause: {
-                type: 'Word',
-                text: 'foo',
-            },
-            cases: [{
-                type: 'CaseItem',
-                pattern: [{
-                    type: 'Word',
-                    text: '*',
-                }],
-                body: {
-                    type: 'CompoundList',
-                    commands: [{
-                        type: 'Command',
-                        name: { type: 'Word', text: 'echo' },
-                        suffix: [{ type: 'Word', text: 'bar' }],
-                    }],
-                },
-            }],
+  const result = bashParser('case foo in * ) echo bar;; esac');
+  // utils.logResults(result);
+  const expected = {
+    type: 'Script',
+    commands: [{
+      type: 'Case',
+      clause: {
+        type: 'Word',
+        text: 'foo',
+      },
+      cases: [{
+        type: 'CaseItem',
+        pattern: [{
+          type: 'Word',
+          text: '*',
         }],
-    };
-    utils.checkResults(result, expected);
+        body: {
+          type: 'CompoundList',
+          commands: [{
+            type: 'Command',
+            name: { type: 'Word', text: 'echo' },
+            suffix: [{ type: 'Word', text: 'bar' }],
+          }],
+        },
+      }],
+    }],
+  };
+  utils.checkResults(result, expected);
 });
 
 /*
