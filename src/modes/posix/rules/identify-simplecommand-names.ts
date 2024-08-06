@@ -1,12 +1,10 @@
-import lookahead from 'iterable-lookahead';
-import map from 'map-iterable';
 import type { LexerPhase, TokenIf } from '~/types.ts';
 import compose from '~/utils/compose.ts';
 import isValidName from '~/utils/is-valid-name.ts';
+import lookahead, { type LookaheadIterable } from '~/utils/iterable/lookahead.ts';
+import map from '~/utils/iterable/map.ts';
 
-// import isOperator from '../enums/io-file-operators.mjs';
-
-function couldEndSimpleCommand(scTk: TokenIf) {
+const couldEndSimpleCommand = (scTk: TokenIf) => {
   return scTk && (
     scTk.is('SEPARATOR_OP') ||
     scTk.is('NEWLINE') ||
@@ -17,20 +15,21 @@ function couldEndSimpleCommand(scTk: TokenIf) {
     scTk.is('PIPE') ||
     scTk.is('AND_IF')
   );
-}
+};
 
-function couldBeCommandName(tk: TokenIf) {
+const couldBeCommandName = (tk: TokenIf) => {
   return tk && tk.is('WORD') && isValidName(tk.value!);
-}
+};
 
 const identifySimpleCommandNames: LexerPhase = (_options, mode) =>
-  compose(
-    map((tk: TokenIf, idx, iterable) => {
+  compose<TokenIf>(
+    map((tk: TokenIf, _idx, iterable) => {
+      const it = iterable as LookaheadIterable<TokenIf>;
       if (tk._.maybeStartOfSimpleCommand) {
         if (couldBeCommandName(tk)) {
           tk._.maybeSimpleCommandName = true;
         } else {
-          const next = iterable.ahead(1);
+          const next = it.ahead(1);
           if (next && !couldEndSimpleCommand(next)) {
             next._.commandNameNotFoundYet = true;
           }
@@ -38,12 +37,12 @@ const identifySimpleCommandNames: LexerPhase = (_options, mode) =>
       }
 
       if (tk._.commandNameNotFoundYet) {
-        const last = iterable.behind(1);
+        const last = it.behind(1);
 
         if (!mode.enums.IOFileOperators.isOperator(last) && couldBeCommandName(tk)) {
           tk._.maybeSimpleCommandName = true;
         } else {
-          const next = iterable.ahead(1);
+          const next = it.ahead(1);
           if (next && !couldEndSimpleCommand(next)) {
             next._.commandNameNotFoundYet = true;
           }

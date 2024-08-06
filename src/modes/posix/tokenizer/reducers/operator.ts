@@ -1,4 +1,4 @@
-import type { Reducer, Token } from '~/types.ts';
+import type { Reducer, TokenIf } from '~/types.ts';
 import { isOperator, isPartOfOperator, operatorTokens } from '~/utils/tokens.ts';
 
 const operator: Reducer = (state, source, reducers) => {
@@ -24,7 +24,7 @@ const operator: Reducer = (state, source, reducers) => {
     };
   }
 
-  let tokens: Token[] = [];
+  let tokens: TokenIf[] = [];
   if (isOperator(state.current)) {
     // console.log('isOperator ', state.current)
     tokens = operatorTokens(state);

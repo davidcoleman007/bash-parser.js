@@ -1,12 +1,14 @@
 export type TokenIf = {
   type: string;
   value?: string;
+  text?: string;
   joined?: string;
   fieldIdx?: number;
   loc: Location;
   expansion?: Expansion[];
   originalText?: string;
   originalType?: string;
+  maybeSimpleCommandName?: string;
   _: Record<string, any>;
 
   is(type: string): boolean;
@@ -62,7 +64,8 @@ export type Expansion = {
   expression?: string;
   value?: string;
   type?: string;
-  loc: Partial<Location>;
+  resolved?: boolean;
+  loc?: Partial<Location>;
 };
 
 export type Options = {
@@ -146,13 +149,16 @@ export type Options = {
  *
  * Each phase is a function that accepts the parser option object, an array of all phases that precede it in the pipeline, and the utils object. The function returns another function that receives the iterable produced by the previous phase and returns the iterable to give to the subsequent one.
  */
+export type LexerPhaseFn = (...input: any[]) => Iterable<TokenIf>;
 export type LexerPhase = (
   options: Options,
   mode: Mode,
-  previousPhases: LexerPhase[],
+  previousPhases: LexerPhaseFn[],
 ) => (tokens: Iterable<TokenIf>) => Iterable<TokenIf>;
 
 export type LexerPhases = Record<string, LexerPhase>;
+
+export type Tokenizer = (code: string) => Iterable<TokenIf>;
 
 /**
  * A mode could optionally inherit an existing one. It specifies the mode to inherit in its
@@ -160,6 +166,22 @@ export type LexerPhases = Record<string, LexerPhase>;
  *
  * The `init` function must return a `Mode` object.
  */
+
+export interface LexerIf {
+  yytext?: any;
+  yylineno: number;
+  setInput(source: string): void;
+  lex(): string | undefined;
+}
+export interface Parser {
+  lexer: LexerIf;
+  yy: AstBuilder;
+  parse(source: string): NodeScript;
+}
+
+export type Grammar = {
+  Parser: new () => Parser;
+};
 export type Mode = {
   enums: any;
 
@@ -168,7 +190,7 @@ export type Mode = {
    *
    * @returns A function that takes shell source code and returns an iterable of parsed tokens.
    */
-  tokenizer: (reducers?: Reducers) => (code: string) => Iterable<TokenIf>;
+  tokenizer: (reducers?: Reducers) => Tokenizer;
 
   /**
    * An array of transform functions that are applied, in order, to the iterable of tokens returned by the `tokenizer` function.
@@ -178,12 +200,12 @@ export type Mode = {
   /**
    * A named map of all phases contained in the array. This can be used by child modes to access each phase by name and reuse them.
    */
-  phaseCatalog: { [id: string]: LexerPhase };
+  phaseCatalog: LexerPhases;
 
   /**
    * The grammar compiled function, usually imported from a Jison grammar and built using the `builder` CLI.
    */
-  grammar: any;
+  grammar: Grammar;
 
   /**
    * An object containing methods to build the final AST. This object is mixed into the Jison grammar, and any of its methods can be called directly from the grammar EBNF source.

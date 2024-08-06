@@ -1,7 +1,7 @@
-import map from 'map-iterable';
 import parse from 'shell-quote-word';
 import unescape from 'unescape-js';
 import type { Expansion, LexerPhase, TokenIf } from '~/types.ts';
+import map from '~/utils/iterable/map.ts';
 import tokens from '~/utils/tokens.ts';
 
 function unquote(text: string) {

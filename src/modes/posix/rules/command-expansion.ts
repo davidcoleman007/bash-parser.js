@@ -1,6 +1,6 @@
-import map from 'map-iterable';
 import bashParser from '~/parse.ts';
 import type { Expansion, LexerPhase, TokenIf } from '~/types.ts';
+import map from '~/utils/iterable/map.ts';
 import tokensUtils from '~/utils/tokens.ts';
 
 const setCommandExpansion = (xp: Expansion, token: TokenIf) => {

@@ -1,5 +1,5 @@
-import map from 'map-iterable';
 import type { LexerPhase, TokenIf } from '~/types.ts';
+import map from '~/utils/iterable/map.ts';
 
 const syntaxerrorOnContinue: LexerPhase = () => {
   return map((tk: TokenIf) => {

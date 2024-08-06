@@ -1,13 +1,15 @@
-import lookahead from 'iterable-lookahead';
-import map from 'map-iterable';
 import type { LexerPhase, TokenIf } from '~/types.ts';
 import compose from '~/utils/compose.ts';
 import isValidName from '~/utils/is-valid-name.ts';
+import lookahead, { type LookaheadIterable } from '~/utils/iterable/lookahead.ts';
+import map from '~/utils/iterable/map.ts';
+
 
 const forNameVariable: LexerPhase = () => {
-  return compose(
-    map((tk: TokenIf, idx, iterable) => {
-      const lastToken = iterable.behind(1) || { is: () => false };
+  return compose<TokenIf>(
+    map((tk: TokenIf, _idx, iterable) => {
+      const it = iterable as LookaheadIterable<TokenIf>;
+      const lastToken = it.behind(1) || { is: () => false };
 
       // if last token is For and current token form a valid name
       // type of token is changed from WORD to NAME

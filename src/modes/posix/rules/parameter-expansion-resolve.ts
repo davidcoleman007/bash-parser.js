@@ -1,6 +1,6 @@
-import map from 'map-iterable';
 import fieldSplittingMark from '~/modes/posix/rules/lib/field-splitting-mark.ts';
 import type { LexerPhase, TokenIf } from '~/types.ts';
+import map from '~/utils/iterable/map.ts';
 import overwriteInString from '~/utils/overwrite-in-string.ts';
 import tokens from '~/utils/tokens.ts';
 

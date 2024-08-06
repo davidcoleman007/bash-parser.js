@@ -1,15 +1,13 @@
-const last = <T>(arr: T[]): T | null => {
-  if (!Array.isArray(arr)) {
-    throw new Error('expected the first argument to be an array');
-  }
+import { assert } from '@std/assert';
 
-  const len = arr.length;
+const last = <T>(list: T[]): T | null => {
+  assert(Array.isArray(list), 'argument must be be an array');
 
-  if (len === 0) {
+  if (list.length === 0) {
     return null;
   }
 
-  return arr[len - 1];
+  return list[list.length - 1];
 };
 
 export default last;

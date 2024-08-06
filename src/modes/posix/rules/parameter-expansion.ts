@@ -1,5 +1,5 @@
-import map from 'map-iterable';
-import type { Expansion, LexerPhase, ParameterOp } from '~/types.ts';
+import type { Expansion, LexerPhase, ParameterOp, TokenIf } from '~/types.ts';
+import map from '~/utils/iterable/map.ts';
 import tokens from '~/utils/tokens.ts';
 import bashParser from '../../../parse.ts';
 
@@ -66,7 +66,7 @@ const parameterExpansion: LexerPhase = (_options, mode) => (map((token: TokenIf)
 
     return tokens.setExpansions(
       token,
-      token.expansion.map((xp: Expansion) => {
+      token.expansion!.map((xp: Expansion) => {
         if (xp.type === 'parameter_expansion') {
           return expandParameter(xp, mode.enums);
         }

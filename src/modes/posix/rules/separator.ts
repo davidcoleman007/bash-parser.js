@@ -1,7 +1,7 @@
-import lookahead from 'iterable-lookahead';
-import map from 'map-iterable';
 import type { LexerPhase, TokenIf } from '~/types.ts';
 import compose from '~/utils/compose.ts';
+import lookahead, { type LookaheadIterable } from '~/utils/iterable/lookahead.ts';
+import map from '~/utils/iterable/map.ts';
 import filterNonNull from '~/utils/non-null.ts';
 import tokens from '~/utils/tokens.ts';
 
@@ -15,7 +15,14 @@ const isSeparator = (tk: TokenIf) =>
     (tk.is('OPERATOR') && tk.value === '&')
   );
 
-const toSeparatorToken = (tk: TokenIf, iterable) => {
+const skipJoined = (tk: TokenIf) => {
+  if (tk._.joinedToSeparator) {
+    return null;
+  }
+  return tk;
+};
+
+const toSeparatorToken = (tk: TokenIf, iterable: LookaheadIterable<TokenIf>) => {
   if (skipJoined(tk) === null) {
     return null;
   }
@@ -28,21 +35,14 @@ const toSeparatorToken = (tk: TokenIf, iterable) => {
 
   let i = 1;
   let nextTk = iterable.ahead(i);
-  while (isSeparator(nextTk)) {
-    nextTk._.joinedToSeparator = true;
+  while (isSeparator(nextTk!)) {
+    nextTk!._.joinedToSeparator = true;
     i++;
-    newTk = newTk.appendTo(nextTk.value);
+    newTk = newTk.appendTo(nextTk!.value!);
 
     nextTk = iterable.ahead(i);
   }
   return newTk;
-};
-
-const skipJoined = (tk: TokenIf) => {
-  if (tk._.joinedToSeparator) {
-    return null;
-  }
-  return tk;
 };
 
 const AccumulateSeparators = {
@@ -50,7 +50,7 @@ const AccumulateSeparators = {
   NEWLINE_LIST: skipJoined,
   SEMICOLON: toSeparatorToken,
   AND: toSeparatorToken,
-  OPERATOR: (tk: TokenIf, iterable) => tk.value === '&' || tk.value === ';' ? toSeparatorToken(tk, iterable) : tk,
+  OPERATOR: (tk: TokenIf, iterable: LookaheadIterable<TokenIf>) => tk.value === '&' || tk.value === ';' ? toSeparatorToken(tk, iterable) : tk,
 };
 
 /*
@@ -70,7 +70,7 @@ separator : separator_op
          | NEWLINE_LIST
 */
 const separator: LexerPhase = () =>
-  compose(
+  compose<TokenIf>(
     filterNonNull,
     map(
       tokens.applyTokenizerVisitor(AccumulateSeparators),

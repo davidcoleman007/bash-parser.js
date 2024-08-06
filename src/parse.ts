@@ -1,12 +1,10 @@
 import type { Mode, ModePlugin, Options } from '~/types.ts';
-import modeBash from './modes/bash/index.ts';
 import modePosix from './modes/posix/index.ts';
 import modeWordExpansion from './modes/word-expansion/index.ts';
 import shellLexer from './shell-lexer.ts';
 
 const loadPlugin = (name: string): Mode => {
   const modes: Record<string, ModePlugin> = {
-    'bash': modeBash,
     'posix': modePosix,
     'word-expansion': modeWordExpansion,
   };
@@ -26,7 +24,6 @@ export const parse = (sourceCode: string, options?: Options) => {
     options.mode = options.mode || 'posix';
 
     const mode = loadPlugin(options.mode);
-
     const parser = new mode.grammar.Parser();
     parser.lexer = shellLexer(mode, options);
     parser.yy = mode.astBuilder(options);

@@ -1,6 +1,6 @@
-import map from 'map-iterable';
 import reducers from '~/modes/posix/tokenizer/reducers/mod.ts';
 import type { LexerPhase, ModePlugin, Reducer, TokenIf } from '~/types.ts';
+import map from '~/utils/iterable/map.ts';
 import { tokenOrEmpty } from '~/utils/tokens.ts';
 
 const convertToWord: LexerPhase = () =>
@@ -76,26 +76,28 @@ const start: Reducer = (state, source, reducers) => {
 const mode: ModePlugin = {
   inherits: 'posix',
   init: (posixMode) => {
-    const phaseCatalog = posixMode!.phaseCatalog;
     const lexerPhases = [
       convertToWord,
-      phaseCatalog.parameterExpansion,
-      phaseCatalog.arithmeticExpansion,
-      phaseCatalog.commandExpansion,
-      phaseCatalog.tildeExpanding,
-      phaseCatalog.parameterExpansionResolve,
-      phaseCatalog.commandExpansionResolve,
-      phaseCatalog.arithmeticExpansionResolve,
-      phaseCatalog.fieldSplitting,
-      phaseCatalog.pathExpansion,
-      phaseCatalog.quoteRemoval,
-      phaseCatalog.defaultNodeType,
+      posixMode!.phaseCatalog.parameterExpansion,
+      posixMode!.phaseCatalog.arithmeticExpansion,
+      posixMode!.phaseCatalog.commandExpansion,
+      posixMode!.phaseCatalog.tildeExpanding,
+      posixMode!.phaseCatalog.parameterExpansionResolve,
+      posixMode!.phaseCatalog.commandExpansionResolve,
+      posixMode!.phaseCatalog.arithmeticExpansionResolve,
+      posixMode!.phaseCatalog.fieldSplitting,
+      posixMode!.phaseCatalog.pathExpansion,
+      posixMode!.phaseCatalog.quoteRemoval,
+      posixMode!.phaseCatalog.defaultNodeType,
     ];
-    const customReducers = { ...reducers, start };
 
-    const tokenizer = () => posixMode!.tokenizer(customReducers);
+    const tokenizer = () => posixMode!.tokenizer({ ...reducers, start });
 
-    return Object.assign({}, posixMode, { lexerPhases, tokenizer });
+    return {
+      ...posixMode!,
+      lexerPhases,
+      tokenizer,
+    };
   },
 };
 

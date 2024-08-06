@@ -1,4 +1,4 @@
-import { TokenIf } from '~/types.ts';
+import type { TokenIf } from '~/types.ts';
 
 const logger = (name: string) => () => (function* (tokens: TokenIf[]) {
   for (const tk of tokens) {

@@ -1,16 +1,16 @@
-import lookahead from 'iterable-lookahead';
-import map from 'map-iterable';
 import type { LexerPhase, TokenIf } from '~/types.ts';
 import compose from '~/utils/compose.ts';
+import lookahead, { type LookaheadIterable } from '~/utils/iterable/lookahead.ts';
+import map from '~/utils/iterable/map.ts';
 // const words = require('../enums/reserved-words');
 /*
 function defined(v) {
   return v !== undefined;
 }
 */
-function isValidReservedWordPosition(tk: TokenIf, iterable, words) {
-  const last = iterable.behind(1) || { EMPTY: true, is: (type: string) => type === 'EMPTY' };
-  const twoAgo = iterable.behind(2) || { EMPTY: true, is: (type: string) => type === 'EMPTY' };
+function isValidReservedWordPosition(tk: TokenIf, iterable: LookaheadIterable<TokenIf>, words: Record<string, string>) {
+  const last = iterable.behind(1) || { EMPTY: true, is: (type: string) => type === 'EMPTY', value: '' };
+  const twoAgo = iterable.behind(2) || { EMPTY: true, is: (type: string) => type === 'EMPTY', value: '' };
 
   // evaluate based on last token
   const startOfCommand = last.is('EMPTY') || last.is('SEPARATOR_OP') || last.is('OPEN_PAREN') ||
@@ -29,13 +29,13 @@ function isValidReservedWordPosition(tk: TokenIf, iterable, words) {
 }
 
 const reservedWords: LexerPhase = (_options, mode) => {
-  return compose(
-    map((tk: TokenIf, idx, iterable) => {
+  return compose<TokenIf>(
+    map((tk: TokenIf, _idx, iterable) => {
       // console.log(tk, isValidReservedWordPosition(tk, iterable), hasOwnProperty(words, tk.value))
       // TOKEN tokens consisting of a reserved word
       // are converted to their own token types
       // console.log({tk, v:isValidReservedWordPosition(tk, iterable)})
-      if (isValidReservedWordPosition(tk, iterable, mode.enums.reservedWords) && tk.value! in mode.enums.reservedWords) {
+      if (isValidReservedWordPosition(tk, iterable as LookaheadIterable<TokenIf>, mode.enums.reservedWords) && tk.value! in mode.enums.reservedWords) {
         return tk.changeTokenType(mode.enums.reservedWords[tk.value!], tk.value!);
       }
 

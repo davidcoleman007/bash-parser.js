@@ -1,5 +1,5 @@
-import map from 'map-iterable';
 import type { LexerPhase, Options, TokenIf } from '~/types.ts';
+import map from '~/utils/iterable/map.ts';
 import tokens from '~/utils/tokens.ts';
 
 const replace = (text: string, resolveHomeUser: Options['resolveHomeUser']) => {

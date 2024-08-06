@@ -1,6 +1,6 @@
 import babylon from 'babylon';
-import map from 'map-iterable';
 import type { Expansion, LexerPhase, TokenIf } from '~/types.ts';
+import map from '~/utils/iterable/map.ts';
 import tokens from '~/utils/tokens.ts';
 
 function parseArithmeticAST(xp: Expansion) {

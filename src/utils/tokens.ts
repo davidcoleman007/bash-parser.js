@@ -142,7 +142,7 @@ export const isOperator = (text: string) => {
 	return text in operators;
 };
 
-const applyTokenizerVisitor = (visitor) => (tk: TokenIf, idx, iterable) => {
+const applyTokenizerVisitor = (visitor) => (tk: TokenIf, _idx: number, iterable: Iterable<TokenIf>) => {
 	if (tk.type in visitor) {
 		const visit = visitor[tk.type];
 

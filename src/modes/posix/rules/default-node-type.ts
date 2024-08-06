@@ -1,5 +1,5 @@
-import map from 'map-iterable';
 import type { LexerPhase, TokenIf } from '~/types.ts';
+import map from '~/utils/iterable/map.ts';
 import toPascal from '~/utils/to-pascal-case.ts';
 
 const defaultNodeType: LexerPhase = () =>

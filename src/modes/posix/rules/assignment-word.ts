@@ -1,9 +1,9 @@
-import map from 'map-iterable';
 import type { LexerPhase, TokenIf } from '~/types.ts';
 import isValidName from '~/utils/is-valid-name.ts';
+import map from '~/utils/iterable/map.ts';
 
 const assignmentWord: LexerPhase = () =>
-  map((tk: TokenIf, idx, ctx) => {
+  map((tk: TokenIf, _idx, ctx) => {
     // apply only on valid positions
     // (start of simple commands)
     if (tk._.maybeStartOfSimpleCommand) {
