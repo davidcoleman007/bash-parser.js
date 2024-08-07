@@ -12,4 +12,6 @@ Additional changes and modifications:
 
 Copyright (c) 2024 Mattias Runge-Broberg <mattias@runge.se>
 
+This project is a fork of the original **bash-parser**. For more information, visit the original project at: [bash-parser](https://github.com/vorpaljs/bash-parser).
+
 This project includes code from other sources. For detailed information, please refer to the `CREDITS` file.

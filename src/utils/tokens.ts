@@ -1,15 +1,15 @@
-import operators from '~/modes/posix/enums/operators.ts';
-import type { Expansion, Location, ReducerStateIf, TokenIf } from '~/types.ts';
+import type { Expansion, Location, ReducerStateIf, TokenIf, Visitor } from '~/types.ts';
+import operators from '../modes/bash/enums/operators.ts';
 
 class Token implements TokenIf {
 	type: string = '';
-	value: string | undefined;
-	joined: string | undefined;
-	fieldIdx: number | undefined;
-	loc: Location = { start: {}, end: {} };
-	expansion: Expansion[] | undefined;
-	originalText: string | undefined;
-	originalType: string | undefined;
+	// value: string | undefined;
+	// joined: string | undefined;
+	// fieldIdx: number | undefined;
+	// loc: Location = { start: {}, end: {} };
+	// expansion: Expansion[] | undefined;
+	// originalText: string | undefined;
+	// originalType: string | undefined;
 	_: Record<string, any> = {};
 
 	constructor(fields: Partial<TokenIf>) {
@@ -90,8 +90,8 @@ export const tokenOrEmpty = (state: ReducerStateIf) => {
 			// console.log('aaa', {token: state.loc, xp: xp.loc});
 			return Object.assign({}, xp, {
 				loc: {
-					start: xp.loc.start!.char! - state.loc.start!.char!,
-					end: xp.loc.end!.char! - state.loc.start!.char!,
+					start: xp.loc!.start!.char! - state.loc.start!.char!,
+					end: xp.loc!.end!.char! - state.loc.start!.char!,
 				},
 			});
 		});
@@ -111,7 +111,7 @@ export const tokenOrEmpty = (state: ReducerStateIf) => {
 
 export const operatorTokens = (state: ReducerStateIf) => {
 	const token = mkToken(
-		operators[state.current],
+		operators[state.current as keyof typeof operators],
 		state.current,
 		{
 			start: Object.assign({}, state.loc.start),
@@ -142,7 +142,7 @@ export const isOperator = (text: string) => {
 	return text in operators;
 };
 
-const applyTokenizerVisitor = (visitor) => (tk: TokenIf, _idx: number, iterable: Iterable<TokenIf>) => {
+const applyTokenizerVisitor = (visitor: Visitor) => (tk: TokenIf, _idx: number, iterable: Iterable<TokenIf>) => {
 	if (tk.type in visitor) {
 		const visit = visitor[tk.type];
 

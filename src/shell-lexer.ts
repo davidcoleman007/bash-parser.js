@@ -78,8 +78,8 @@ class ShellLexer implements LexerIf {
   }
 }
 
-const posixShellLexer = (mode: Mode, options: Options) => {
+const shellLexer = (mode: Mode, options: Options) => {
   return new ShellLexer(mode, options);
 };
 
-export default posixShellLexer;
+export default shellLexer;

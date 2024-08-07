@@ -20,6 +20,13 @@ export type TokenIf = {
   setExpansions(expansion: Expansion[]): TokenIf;
 };
 
+export type Enums = {
+  IOFileOperators: string[];
+  operators: Record<string, string>;
+  parameterOperators: Record<string, ParameterOp>;
+  reservedWords: Record<string, string>;
+};
+
 export interface ReducerStateIf {
   current: string;
   escaping: boolean;
@@ -65,7 +72,11 @@ export type Expansion = {
   value?: string;
   type?: string;
   resolved?: boolean;
-  loc?: Partial<Location>;
+  loc?: { start: number; end: number };
+};
+
+export type Visitor = {
+  [key: string]: (tk: TokenIf, iterable?: Iterable<TokenIf>) => TokenIf[] | TokenIf | null;
 };
 
 export type Options = {
@@ -183,7 +194,7 @@ export type Grammar = {
   Parser: new () => Parser;
 };
 export type Mode = {
-  enums: any;
+  enums: Enums;
 
   /**
    * A function that receives reducers and returns another function that, given shell source code, returns an iterable of parsed tokens.
@@ -266,6 +277,7 @@ export type Location = {
 export type Node = {
   type: string;
   loc?: Location;
+  async?: boolean; // TODO: Should this be on the base type?
 };
 
 /**

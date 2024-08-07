@@ -1,6 +1,6 @@
 import is from '~/utils/iterable/is.ts';
 
-export type MapFunction<T> = (value: T, idx: number, iter: Iterable<T>) => T;
+export type MapFunction<T> = (value: T, idx: number, iter: Iterable<T>) => T | T[] | null;
 export type MapperFunction<T> = (it: Iterable<T>) => Iterable<T>;
 
 const map = <T>(callback: MapFunction<T>): MapperFunction<T> => {
@@ -19,7 +19,8 @@ const map = <T>(callback: MapFunction<T>): MapperFunction<T> => {
             const item = dataIterator.next();
 
             if (!item.done) {
-              item.value = callback(item.value, idx++, it);
+              // TODO: As T, when is it T[] or null?
+              item.value = callback(item.value, idx++, it) as T;
             }
             return item;
           },

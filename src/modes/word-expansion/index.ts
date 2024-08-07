@@ -1,7 +1,7 @@
-import reducers from '~/modes/posix/tokenizer/reducers/mod.ts';
 import type { LexerPhase, ModePlugin, Reducer, TokenIf } from '~/types.ts';
 import map from '~/utils/iterable/map.ts';
 import { tokenOrEmpty } from '~/utils/tokens.ts';
+import reducers from '../bash/tokenizer/reducers/mod.ts';
 
 const convertToWord: LexerPhase = () =>
   map((tk: TokenIf) => {
@@ -74,27 +74,27 @@ const start: Reducer = (state, source, reducers) => {
 };
 
 const mode: ModePlugin = {
-  inherits: 'posix',
-  init: (posixMode) => {
+  inherits: 'bash',
+  init: (parentMode) => {
     const lexerPhases = [
       convertToWord,
-      posixMode!.phaseCatalog.parameterExpansion,
-      posixMode!.phaseCatalog.arithmeticExpansion,
-      posixMode!.phaseCatalog.commandExpansion,
-      posixMode!.phaseCatalog.tildeExpanding,
-      posixMode!.phaseCatalog.parameterExpansionResolve,
-      posixMode!.phaseCatalog.commandExpansionResolve,
-      posixMode!.phaseCatalog.arithmeticExpansionResolve,
-      posixMode!.phaseCatalog.fieldSplitting,
-      posixMode!.phaseCatalog.pathExpansion,
-      posixMode!.phaseCatalog.quoteRemoval,
-      posixMode!.phaseCatalog.defaultNodeType,
+      parentMode!.phaseCatalog.parameterExpansion,
+      parentMode!.phaseCatalog.arithmeticExpansion,
+      parentMode!.phaseCatalog.commandExpansion,
+      parentMode!.phaseCatalog.tildeExpanding,
+      parentMode!.phaseCatalog.parameterExpansionResolve,
+      parentMode!.phaseCatalog.commandExpansionResolve,
+      parentMode!.phaseCatalog.arithmeticExpansionResolve,
+      parentMode!.phaseCatalog.fieldSplitting,
+      parentMode!.phaseCatalog.pathExpansion,
+      parentMode!.phaseCatalog.quoteRemoval,
+      parentMode!.phaseCatalog.defaultNodeType,
     ];
 
-    const tokenizer = () => posixMode!.tokenizer({ ...reducers, start });
+    const tokenizer = () => parentMode!.tokenizer({ ...reducers, start });
 
     return {
-      ...posixMode!,
+      ...parentMode!,
       lexerPhases,
       tokenizer,
     };

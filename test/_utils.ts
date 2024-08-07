@@ -18,6 +18,7 @@ export const logResults = function logResults(results: any) {
 
 export const checkResults = (actual: any, expected: any) => {
   // exports.logResults(actual);
+
   assertEquals(actual, expected);
 };
 

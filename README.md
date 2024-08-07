@@ -1,62 +1,96 @@
 # bash-parser
 
-Parses bash source code to produce an AST
+Parses bash source code to produce an AST.
 
-[![Travis Build Status](https://img.shields.io/travis/vorpaljs/bash-parser/master.svg)](http://travis-ci.org/vorpaljs/bash-parser)
-[![Coveralls](https://img.shields.io/coveralls/vorpaljs/bash-parser.svg?maxAge=2592000)](https://coveralls.io/github/vorpaljs/bash-parser)
-[![NPM module](https://img.shields.io/npm/v/bash-parser.svg)](https://npmjs.org/package/bash-parser)
-[![NPM downloads](https://img.shields.io/npm/dt/bash-parser.svg)](https://npmjs.org/package/bash-parser)
-[![Try online](https://img.shields.io/badge/try_it-online!-yellow.svg)](https://vorpaljs.github.io/bash-parser-playground/)
+## Table of Contents
 
-# Installation
+- [About This Fork](#about-this-fork)
+- [Objectives](#objectives)
+- [Non-Objectives](#non-objectives)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Documentation](#documentation)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
+
+## About This Fork
+
+This project is a fork of the original [bash-parser](https://github.com/vorpaljs/bash-parser) project, which appears to be unmaintained.
+
+### Objectives
+
+- Minimize dependencies where feasible
+- Migrate the codebase to TypeScript
+- Ensure compatibility with [Deno](https://deno.com/) instead of [Node.js](https://nodejs.org/)
+- Update the API to support asynchronous resolvers
+- Perform code cleanup and refactoring
+- Distribute releases via [JSR](https://jsr.io/)
+
+### Non-Objectives
+
+- No guarantee of compatibility with the original project
+- No guarantee of full `bash` compatibility, though contributions are welcome
+- Maintain only a `bash` parser to simplify the project, without separate `posix` and `bash` parsers
+
+## Features
+
+- Parses bash source code to produce an AST
+- Supports asynchronous resolvers
+- Compatible with Deno
+
+## Installation
 
 ```bash
-npm install --save bash-parser
+deno add @ein/bash-parser
+# or
+jsr add @ein/bash-parser
 ```
 
-# Usage
+## Usage
 
-```js
-  const parse = require('bash-parser');
-  const ast = parse('echo ciao');
+```TypeScript
+import parse from '@ein/bash-parser';
+
+const ast = await parse('echo ciao');
 ```
 
 `ast` result is:
 
 ```js
 {
-		type: "Script",
-		commands: [
-			{
-				type: "SimpleCommand",
-				name: {
-					text: "echo",
-					type: "Word"
-				},
-				suffix: [
-					{
-						text: "ciao",
-						type: "Word"
-					}
-				]
-			}
-		]
-	}
+  type: "Script",
+  commands: [
+    {
+      type: "SimpleCommand",
+      name: {
+        text: "echo",
+        type: "Word"
+      },
+      suffix: [
+        {
+          text: "ciao",
+          type: "Word"
+        }
+      ]
+    }
+  ]
+}
 ```
 
-# Related projects
+## Documentation
 
-* [cash](https://github.com/dthree/cash) - This parser should become the parser used by `cash` (and also [vorpal](https://github.com/dthree/vorpal))
-* [nsh](https://github.com/piranna/nsh) - This parser should become the parser used by `nsh`
-* [js-shell-parse](https://github.com/grncdr/js-shell-parse) - bash-parser was born as a fork of `js-shell-parse`, but was rewritten to use a `jison` grammar
-* [jison](https://github.com/zaach/jison) - Bison in JavaScript.
+Look in the docs folder for detailed documentation.
 
-# Documentation
+## Contributing
 
-Look in [documents folder](https://github.com/vorpaljs/bash-parser/tree/master/documents)
+Contributions are welcome! Please see the [CONTRIBUTING.md](./CONTRIBUTING.md) file for guidelines on how to contribute to this project.
 
-# License
+## License
 
-The MIT License (MIT)
+This project is licensed under the MIT License. See the [LICENSE](./LICENCE) file for more details. Other included code are described in [CREDITS](./CREDITS).
 
-Copyright (c) 2016 vorpaljs
+## Contact
+
+For questions or support, please open an issue on the [GitHub repository](https://github.com/mattiasrunge/bash-parser/issues).

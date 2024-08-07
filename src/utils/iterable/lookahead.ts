@@ -7,7 +7,7 @@ export interface LookaheadIterable<T> extends Iterable<T> {
 
 const lookahead = <T>(it: Iterable<T>, size: number = 1): LookaheadIterable<T> => {
   if (size < 1) {
-    throw new RangeError('Size argument must be greater than 0');
+    throw new RangeError('size argument must be greater than 0');
   }
 
   if (!is(it)) {
