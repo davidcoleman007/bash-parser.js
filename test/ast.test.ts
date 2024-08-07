@@ -30,7 +30,7 @@ Deno.test('ast', async (t) => {
   await t.step('command with multiple lines continuation', () => {
     const result = bashParser('echo \\\n\\\n\\\n\\\nthere');
     // utils.logResults(result);
-    utils.checkResults(result.commands[0].suffix[0], {
+    utils.checkResults((result as any).commands[0].suffix[0], {
       text: 'there',
       type: 'Word',
     });

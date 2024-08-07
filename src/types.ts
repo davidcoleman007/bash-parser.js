@@ -96,7 +96,7 @@ export type Options = {
    * @param name - The name of the alias to resolve.
    * @returns The resolved code if the alias exists, otherwise `null`.
    */
-  resolveAlias?: (name: string) => string | null;
+  resolveAlias?: (name: string) => string | undefined;
 
   /**
    * A callback to resolve environment variables. If specified, the parser calls it whenever it needs to resolve an environment variable. It should return the value if the variable is defined, otherwise `null`. If the option is not specified, the parser won't try to resolve any environment variable.

@@ -5,7 +5,7 @@ Deno.test('parameter-substitution', async (t) => {
   await t.step('parameter substitution in assignment', () => {
     const result = bashParser('echoword=${other}test');
     // utils.logResults(result);
-    utils.checkResults(result.commands[0].prefix, [{
+    utils.checkResults((result as any).commands[0].prefix, [{
       type: 'AssignmentWord',
       text: 'echoword=${other}test',
       expansion: [{
@@ -21,18 +21,18 @@ Deno.test('parameter-substitution', async (t) => {
 
   await t.step('parameter substitution skip escaped dollar', () => {
     const result = bashParser('echo "\\$ciao"');
-    utils.checkResults(result.commands[0].suffix, [{ type: 'Word', text: '\\$ciao' }]);
+    utils.checkResults((result as any).commands[0].suffix, [{ type: 'Word', text: '\\$ciao' }]);
   });
 
   await t.step('parameter substitution skip escaped dollar with braces', () => {
     const result = bashParser('echo "\\${ciao}"');
-    utils.checkResults(result.commands[0].suffix, [{ type: 'Word', text: '\\${ciao}' }]);
+    utils.checkResults((result as any).commands[0].suffix, [{ type: 'Word', text: '\\${ciao}' }]);
   });
 
   await t.step('parameter substitution skip single quoted words', () => {
     const result = bashParser("echo '${echo } $ciao'");
     // utils.logResults(result)
-    utils.checkResults(result.commands[0].suffix, [{
+    utils.checkResults((result as any).commands[0].suffix, [{
       type: 'Word',
       text: '${echo } $ciao',
     }]);
@@ -41,7 +41,7 @@ Deno.test('parameter-substitution', async (t) => {
   await t.step('parameter substitution and other words', () => {
     const result = bashParser('foo ${other} bar baz');
     // utils.logResults(result);
-    utils.checkResults(result.commands[0].suffix, [{
+    utils.checkResults((result as any).commands[0].suffix, [{
       text: '${other}',
       expansion: [{
         parameter: 'other',
@@ -65,7 +65,7 @@ Deno.test('parameter-substitution', async (t) => {
     const result = bashParser('echoword=${other word}test');
     // utils.logResults(result);
 
-    utils.checkResults(result.commands[0].prefix, [{
+    utils.checkResults((result as any).commands[0].prefix, [{
       type: 'AssignmentWord',
       text: 'echoword=${other word}test',
       expansion: [{
@@ -81,7 +81,7 @@ Deno.test('parameter-substitution', async (t) => {
 
   await t.step('parameter substitution', () => {
     const result = bashParser('echo word${other}test');
-    utils.checkResults(result.commands[0].suffix, [{
+    utils.checkResults((result as any).commands[0].suffix, [{
       type: 'Word',
       text: 'word${other}test',
       expansion: [{
@@ -97,7 +97,7 @@ Deno.test('parameter-substitution', async (t) => {
 
   await t.step('multiple parameter substitution', () => {
     const result = bashParser('echo word${other}t$est');
-    utils.checkResults(result.commands[0].suffix, [{
+    utils.checkResults((result as any).commands[0].suffix, [{
       type: 'Word',
       text: 'word${other}t$est',
       expansion: [{
@@ -121,7 +121,7 @@ Deno.test('parameter-substitution', async (t) => {
   await t.step('command consisting of only parameter substitution', () => {
     const result = bashParser('$other');
     // utils.logResults(result)
-    utils.checkResults(result.commands[0].name, {
+    utils.checkResults((result as any).commands[0].name, {
       type: 'Word',
       text: '$other',
       expansion: [{

@@ -2,7 +2,7 @@
   "name": "@ein/bash-parser",
   "version": "0.6.0",
   "exports": "./mod.ts",
-  "description": "Bash parser",
+  "description": "Bash parser - parse bash scripts into an AST",
   "repository": "https://github.com/mattiasrunge/bash-parser",
   "license": "MIT",
   "author": "Mattias Runge-Broberg <mattias@runge.se>",
@@ -37,7 +37,8 @@
     "coverage-clean": "rm -rf coverage",
     "coverage-html": "genhtml -o coverage/html coverage/coverage.lcov",
     "coverage": "DENO_FUTURE=1 deno coverage --lcov coverage --output=coverage/coverage.lcov && deno task coverage-html",
-    "test": "deno task coverage-clean && DENO_FUTURE=1 deno test --no-check --coverage=coverage",
+    "test": "deno task coverage-clean && DENO_FUTURE=1 deno test --coverage=coverage",
+    "test-nc": "deno task coverage-clean && DENO_FUTURE=1 deno test --no-check --coverage=coverage",
     "build": "DENO_FUTURE=1 deno run --allow-read --allow-write src/builder/builder.ts"
   }
 }

@@ -53,7 +53,7 @@ Deno.test('tilde-expanding', async (t) => {
       },
     });
     // utils.logResults(result.commands[0].prefix[0]);
-    utils.checkResults(result.commands[0].prefix[0], {
+    utils.checkResults((result as any).commands[0].prefix[0], {
       type: 'AssignmentWord',
       text: 'a=/home/current/subdir:/home/current/othersubdir/ciao',
     });

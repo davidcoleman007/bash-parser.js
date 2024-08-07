@@ -8,7 +8,7 @@ Deno.test('pathname-expansion', async (t) => {
         return 'ciao';
       },
     });
-    utils.checkResults(result.commands[0].name, {
+    utils.checkResults((result as any).commands[0].name, {
       type: 'Word',
       text: 'ciao',
     });
@@ -20,7 +20,7 @@ Deno.test('pathname-expansion', async (t) => {
         return 'ciao';
       },
     });
-    utils.checkResults(result.commands[0].prefix[0], {
+    utils.checkResults((result as any).commands[0].prefix[0], {
       type: 'AssignmentWord',
       text: 'a=ciao',
     });

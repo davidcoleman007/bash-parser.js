@@ -3,7 +3,7 @@ import utils from './_utils.ts';
 
 const tokenizer = tokenDelimiter();
 
-function mkloc([startCol, startRow, startChar], [endCol, endRow, endChar]) {
+function mkloc([startCol, startRow, startChar]: number[], [endCol, endRow, endChar]: number[]) {
   return JSON.stringify({
     start: {
       col: startCol,
@@ -18,20 +18,23 @@ function mkloc([startCol, startRow, startChar], [endCol, endRow, endChar]) {
   });
 }
 
-function tokenize(text, keepLoc) {
+function tokenize(text: string, keepLoc?: boolean) {
   const results = Array.from(tokenizer(text)).map((t) => {
-    const r = Object.assign({}, t);
+    const r: any = { ...t };
     r[r.type] = r.value;
     delete r._;
     delete r.type;
     delete r.value;
+
     if (keepLoc && r.loc) {
       r.loc = JSON.stringify(r.loc);
     } else {
       delete r.loc;
     }
+
     return r;
   });
+
   return results;
 }
 

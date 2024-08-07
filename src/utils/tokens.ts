@@ -1,5 +1,5 @@
+import operators from '~/modes/bash/enums/operators.ts';
 import type { Expansion, Location, ReducerStateIf, TokenIf, Visitor } from '~/types.ts';
-import operators from '../modes/bash/enums/operators.ts';
 
 class Token implements TokenIf {
 	type: string = '';

@@ -6,8 +6,8 @@ Deno.test('command substitution', async (t) => {
   await t.step('command substitution', () => {
     const result = bashParser('variable=$(echo ciao)');
     // utils.logResults(result)
-    delete result.commands[0].prefix[0].expansion[0].commandAST;
-    utils.checkResults(result.commands[0].prefix, [{
+    delete (result as any).commands[0].prefix[0].expansion[0].commandAST;
+    utils.checkResults((result as any).commands[0].prefix, [{
       type: 'AssignmentWord',
       text: 'variable=$(echo ciao)',
       expansion: [{
@@ -24,7 +24,7 @@ Deno.test('command substitution', async (t) => {
   await t.step('command substitution skip escaped dollar', () => {
     const result = bashParser('echo "\\$\\(echo ciao)"');
     // utils.logResults(result)
-    utils.checkResults(result.commands[0].suffix, [{
+    utils.checkResults((result as any).commands[0].suffix, [{
       type: 'Word',
       text: '\\$\\(echo ciao)',
     }]);
@@ -38,7 +38,7 @@ Deno.test('command substitution', async (t) => {
   await t.step('command substitution skip single quoted words', () => {
     const result = bashParser("echo '$(echo ciao)'");
     // utils.logResults(result)
-    utils.checkResults(result.commands[0].suffix, [{
+    utils.checkResults((result as any).commands[0].suffix, [{
       type: 'Word',
       text: '$(echo ciao)',
     }]);
@@ -47,13 +47,13 @@ Deno.test('command substitution', async (t) => {
   await t.step('command substitution with backticks skip single quoted words', () => {
     const result = bashParser("echo '`echo ciao`'");
     // utils.logResults(result)
-    utils.checkResults(result.commands[0].suffix, [{ type: 'Word', text: '`echo ciao`' }]);
+    utils.checkResults((result as any).commands[0].suffix, [{ type: 'Word', text: '`echo ciao`' }]);
   });
 
   await t.step('command substitution in suffix', () => {
     const result = bashParser('echo $(ciao)');
-    delete result.commands[0].suffix[0].expansion[0].commandAST;
-    utils.checkResults(result.commands[0].suffix, [{
+    delete (result as any).commands[0].suffix[0].expansion[0].commandAST;
+    utils.checkResults((result as any).commands[0].suffix, [{
       type: 'Word',
       text: '$(ciao)',
       expansion: [{
@@ -69,9 +69,9 @@ Deno.test('command substitution', async (t) => {
 
   await t.step('command substitution in suffix with backticks', () => {
     const result = bashParser('echo `ciao`');
-    delete result.commands[0].suffix[0].expansion[0].commandAST;
+    delete (result as any).commands[0].suffix[0].expansion[0].commandAST;
 
-    utils.checkResults(result.commands[0].suffix, [{
+    utils.checkResults((result as any).commands[0].suffix, [{
       type: 'Word',
       text: '`ciao`',
       expansion: [{
@@ -86,12 +86,11 @@ Deno.test('command substitution', async (t) => {
   });
 
   await t.step('command ast is recursively parsed', () => {
-    const result = bashParser('variable=$(echo ciao)')
-      .commands[0].prefix[0].expansion[0].commandAST;
+    const result = bashParser('variable=$(echo ciao)');
 
     // utils.logResults(result);
 
-    utils.checkResults(result, {
+    utils.checkResults((result as any).commands[0].prefix[0].expansion[0].commandAST, {
       type: 'Script',
       commands: [{
         type: 'Command',
@@ -103,9 +102,9 @@ Deno.test('command substitution', async (t) => {
 
   await t.step('command substitution with backticks', () => {
     const result = bashParser('variable=`echo ciao`');
-    delete result.commands[0].prefix[0].expansion[0].commandAST;
+    delete (result as any).commands[0].prefix[0].expansion[0].commandAST;
 
-    utils.checkResults(result.commands[0].prefix, [{
+    utils.checkResults((result as any).commands[0].prefix, [{
       type: 'AssignmentWord',
       text: 'variable=`echo ciao`',
       expansion: [{
@@ -121,10 +120,10 @@ Deno.test('command substitution', async (t) => {
 
   await t.step('quoted backtick are removed within command substitution with backticks', () => {
     const result = bashParser('variable=`echo \\`echo ciao\\``');
-    delete result.commands[0].prefix[0].expansion[0].commandAST;
+    delete (result as any).commands[0].prefix[0].expansion[0].commandAST;
     // utils.logResults(result);
 
-    utils.checkResults(result.commands[0].prefix, [{
+    utils.checkResults((result as any).commands[0].prefix, [{
       type: 'AssignmentWord',
       text: 'variable=`echo \\`echo ciao\\``',
       expansion: [{
@@ -140,8 +139,8 @@ Deno.test('command substitution', async (t) => {
 
   await t.step('quoted backtick are not removed within command substitution with parenthesis', () => {
     const result = bashParser('variable=$(echo \\`echo ciao\\`)');
-    delete result.commands[0].prefix[0].expansion[0].commandAST;
-    utils.checkResults(result.commands[0].prefix, [{
+    delete (result as any).commands[0].prefix[0].expansion[0].commandAST;
+    utils.checkResults((result as any).commands[0].prefix, [{
       type: 'AssignmentWord',
       text: 'variable=$(echo \\`echo ciao\\`)',
       expansion: [{
@@ -162,8 +161,8 @@ Deno.test('command substitution', async (t) => {
       },
     });
     // utils.logResults(result.commands[0]);
-    delete result.commands[0].name.expansion[0].commandAST;
-    delete result.commands[0].name.expansion[1].commandAST;
+    delete (result as any).commands[0].name.expansion[0].commandAST;
+    delete (result as any).commands[0].name.expansion[1].commandAST;
 
     // utils.logResults(result.commands[0]);
     utils.checkResults(result.commands[0], {
@@ -193,8 +192,8 @@ Deno.test('command substitution', async (t) => {
         return 'bar';
       },
     });
-    delete result.commands[0].name.expansion[0].commandAST;
-    delete result.commands[0].name.expansion[1].commandAST;
+    delete (result as any).commands[0].name.expansion[0].commandAST;
+    delete (result as any).commands[0].name.expansion[1].commandAST;
 
     // utils.logResults(result.commands[0]);
     utils.checkResults(result.commands[0], {
@@ -224,7 +223,7 @@ Deno.test('command substitution', async (t) => {
         return 'bar\n\n';
       },
     });
-    delete result.commands[0].name.expansion[0].commandAST;
+    delete (result as any).commands[0].name.expansion[0].commandAST;
     // utils.logResults(result)
     utils.checkResults(result.commands[0], {
       type: 'Command',
@@ -255,9 +254,9 @@ Deno.test('command substitution', async (t) => {
 
     // utils.logResults(result)
 
-    delete result.commands[0].suffix[0].expansion[0].commandAST;
-    delete result.commands[0].suffix[1].expansion[0].commandAST;
-    delete result.commands[0].suffix[2].expansion[0].commandAST;
+    delete (result as any).commands[0].suffix[0].expansion[0].commandAST;
+    delete (result as any).commands[0].suffix[1].expansion[0].commandAST;
+    delete (result as any).commands[0].suffix[2].expansion[0].commandAST;
 
     utils.checkResults(result.commands[0], {
       type: 'Command',

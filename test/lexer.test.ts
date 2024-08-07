@@ -2,7 +2,7 @@ import posixMode from '~/modes/bash/index.ts';
 import posixLexer from '~/shell-lexer.ts';
 import utils from './_utils.ts';
 
-function tokenize(text, rawTokens) {
+function tokenize(text: string, rawTokens?: boolean) {
   const lexer = posixLexer(posixMode.init(), {});
   lexer.setInput(text);
   const results = [];

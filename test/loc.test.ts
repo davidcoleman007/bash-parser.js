@@ -16,7 +16,7 @@ Deno.test('loc', async (t) => {
   await t.step('AST can include loc', () => {
     const result = bashParser('echo', { insertLOC: true });
     // utils.logResults(result)
-    utils.checkResults(result.commands[0].name, {
+    utils.checkResults((result as any).commands[0].name, {
       type: 'Word',
       text: 'echo',
       loc: mkloc(1, 1, 1, 4, 0, 3),
