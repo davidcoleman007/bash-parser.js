@@ -1,9 +1,8 @@
-import tokenDelimiter from '~/modes/bash/tokenizer/tokenizer.ts';
+import reducers from '~/modes/bash/reducers/mod.ts';
+import { tokenize as delimiterTokanize } from '~/tokenizer/mod.ts';
 import utils from './_utils.ts';
 
-const tokenizer = tokenDelimiter();
-
-function mkloc([startCol, startRow, startChar]: number[], [endCol, endRow, endChar]: number[]) {
+const mkloc = ([startCol, startRow, startChar]: number[], [endCol, endRow, endChar]: number[]) => {
   return JSON.stringify({
     start: {
       col: startCol,
@@ -16,9 +15,10 @@ function mkloc([startCol, startRow, startChar]: number[], [endCol, endRow, endCh
       char: endChar,
     },
   });
-}
+};
 
-function tokenize(text: string, keepLoc?: boolean) {
+const tokenize = (text: string, keepLoc?: boolean) => {
+  const tokenizer = delimiterTokanize(reducers);
   const results = Array.from(tokenizer(text)).map((t) => {
     const r: any = { ...t };
     r[r.type] = r.value;
@@ -36,7 +36,7 @@ function tokenize(text: string, keepLoc?: boolean) {
   });
 
   return results;
-}
+};
 
 Deno.test('tokenize', async (t) => {
   await t.step('parse single operator', () => {

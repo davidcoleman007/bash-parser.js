@@ -30,7 +30,6 @@
     "@babel/parser": "npm:@babel/parser@^7.25.3",
     "jison": "npm:jison@^0.4.18",
 
-    "grammar": "./gen/grammar.js",
     "~/": "./src/"
   },
   "tasks": {
@@ -39,6 +38,7 @@
     "coverage": "DENO_FUTURE=1 deno coverage --lcov coverage --output=coverage/coverage.lcov && deno task coverage-html",
     "test": "deno task coverage-clean && DENO_FUTURE=1 deno test --coverage=coverage",
     "test-nc": "deno task coverage-clean && DENO_FUTURE=1 deno test --no-check --coverage=coverage",
-    "build": "DENO_FUTURE=1 deno run --allow-read --allow-write src/builder/builder.ts"
+    "test-fast": "DENO_FUTURE=1 deno test --parallel --no-check --quiet",
+    "build-grammar": "DENO_FUTURE=1 deno run --allow-read --allow-write src/grammar/build.ts"
   }
 }

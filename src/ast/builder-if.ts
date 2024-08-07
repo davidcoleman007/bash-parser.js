@@ -1,0 +1,225 @@
+import type {
+  AstNode,
+  AstNodeAssignmentWord,
+  AstNodeCase,
+  AstNodeCaseItem,
+  AstNodeCommand,
+  AstNodeCompoundList,
+  AstNodeFor,
+  AstNodeFunction,
+  AstNodeIf,
+  AstNodeLogicalExpression,
+  AstNodeName,
+  AstNodePipeline,
+  AstNodeRedirect,
+  AstNodeScript,
+  AstNodeSubshell,
+  AstNodeUntil,
+  AstNodeWhile,
+  AstNodeWord,
+  InternalAstNodeElse,
+  InternalAstNodeIoNumber,
+} from '~/ast/types.ts';
+
+export type Separator = {
+  type: 'separator_op' | 'newline_list';
+  text: string;
+};
+
+/**
+ * An object containing methods to build the final AST. This object is mixed into the Jison grammar, and any of its methods can be called directly from the grammar EBNF source.
+ */
+
+export type AstBuilder = {
+  caseItem: (
+    pattern: AstNodeWord[],
+    body: AstNodeCompoundList,
+    locStart: Location,
+    locEnd: Location,
+  ) => AstNodeCaseItem;
+
+  caseClause: (
+    clause: AstNodeWord,
+    cases: AstNodeCaseItem[],
+    locStart: Location,
+    locEnd: Location,
+  ) => AstNodeCase;
+
+  doGroup: (
+    group: AstNodeCompoundList,
+    locStart: Location,
+    locEnd: Location,
+  ) => AstNodeCompoundList;
+
+  braceGroup: (
+    group: AstNodeCompoundList,
+    locStart: Location,
+    locEnd: Location,
+  ) => AstNodeCompoundList;
+
+  list: (
+    logicalExpression: AstNodeLogicalExpression,
+  ) => AstNodeScript;
+
+  checkAsync: (
+    list: AstNodeScript,
+    separator: Separator,
+  ) => AstNodeScript;
+
+  listAppend: (
+    list: AstNodeScript,
+    logicalExpression: AstNodeLogicalExpression,
+    separator: Separator,
+  ) => AstNodeScript;
+
+  addRedirections: (
+    compoundCommand: AstNodeCompoundList,
+    redirectList: AstNodeRedirect[],
+  ) => AstNodeCompoundList;
+
+  term: (
+    logicalExpression: AstNodeLogicalExpression,
+  ) => AstNodeCompoundList;
+
+  termAppend: (
+    term: AstNodeCompoundList,
+    logicalExpression: AstNodeLogicalExpression,
+    separator: Separator,
+  ) => AstNodeCompoundList;
+
+  subshell: (
+    list: AstNodeCompoundList,
+    locStart: Location,
+    locEnd: Location,
+  ) => AstNodeSubshell;
+
+  pipeSequence: (
+    command: AstNodeCommand,
+  ) => AstNodePipeline;
+
+  pipeSequenceAppend: (
+    pipe: AstNodePipeline,
+    command: AstNodeCommand,
+  ) => AstNodePipeline;
+
+  bangPipeLine: (
+    pipe: AstNodePipeline,
+  ) => AstNode & { bang: boolean };
+
+  pipeLine: (
+    pipe: AstNodePipeline,
+  ) => AstNodePipeline['commands'][0] | AstNodePipeline;
+
+  andAndOr: (
+    left: AstNodeLogicalExpression['left'],
+    right: AstNodeLogicalExpression['right'],
+  ) => AstNodeLogicalExpression;
+
+  orAndOr: (
+    left: AstNodeLogicalExpression['left'],
+    right: AstNodeLogicalExpression['right'],
+  ) => AstNodeLogicalExpression;
+
+  forClause: (
+    name: AstNodeName,
+    wordlist: AstNodeWord[],
+    doGroup: AstNodeCompoundList,
+    locStart: Location,
+  ) => AstNodeFor;
+
+  forClauseDefault: (
+    name: AstNodeName,
+    doGroup: AstNodeCompoundList,
+    locStart: Location,
+  ) => AstNodeFor;
+
+  functionDefinition: (
+    name: AstNodeName,
+    body: [AstNodeCompoundList, AstNodeRedirect[] | undefined],
+  ) => AstNodeFunction;
+
+  elseClause: (
+    compoundList: AstNodeCompoundList,
+    elseClaus: InternalAstNodeElse,
+  ) => AstNodeCompoundList;
+
+  ifClause: (
+    clause: AstNodeCompoundList,
+    then: AstNodeCompoundList,
+    elseBranch: AstNodeCompoundList,
+    locStart: Location,
+    locEnd: Location,
+  ) => AstNodeIf;
+
+  while: (
+    clause: AstNodeCompoundList,
+    body: AstNodeCompoundList,
+    whileWord: AstNodeWord,
+  ) => AstNodeWhile;
+
+  until: (
+    clause: AstNodeCompoundList,
+    body: AstNodeCompoundList,
+    whileWord: AstNodeWord,
+  ) => AstNodeUntil;
+
+  commandName: (
+    name: AstNodeName,
+  ) => AstNodeName;
+
+  commandAssignment: (
+    prefix: NonNullable<AstNodeCommand['prefix']>,
+  ) => AstNodeCommand;
+
+  command: (
+    prefix: NonNullable<AstNodeCommand['prefix']>,
+    command?: AstNodeName,
+    suffix?: NonNullable<AstNodeCommand['suffix']>,
+  ) => AstNodeCommand;
+
+  ioRedirect: (
+    op: AstNodeWord,
+    file: AstNodeWord,
+  ) => AstNodeRedirect;
+
+  numberIoRedirect: (
+    ioRedirect: AstNodeRedirect,
+    numberIo: InternalAstNodeIoNumber,
+  ) => AstNodeRedirect;
+
+  suffix: (
+    item: AstNodeWord,
+  ) => AstNodeWord[];
+
+  suffixAppend: (
+    list: AstNodeWord[],
+    item: AstNodeWord,
+  ) => AstNodeWord[];
+
+  prefix: (
+    item: AstNodeAssignmentWord | AstNodeRedirect,
+  ) => Array<AstNodeAssignmentWord | AstNodeRedirect>;
+
+  prefixAppend: (
+    list: AstNode[],
+    item: AstNodeAssignmentWord | AstNodeRedirect,
+  ) => AstNode[];
+
+  caseList: (
+    item: AstNodeCaseItem,
+  ) => AstNodeCaseItem[];
+
+  caseListAppend: (
+    list: AstNodeCaseItem[],
+    item: AstNodeCaseItem,
+  ) => AstNodeCaseItem[];
+
+  pattern: (
+    item: AstNodeWord,
+  ) => AstNodeWord[];
+
+  patternAppend: (
+    list: AstNodeWord[],
+    item: AstNodeWord,
+  ) => AstNodeWord[];
+};

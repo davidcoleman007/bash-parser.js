@@ -1,5 +1,5 @@
+import type { AstNodeCommand } from '~/ast/types.ts';
 import bashParser from '~/parse.ts';
-import type { NodeCommand } from '~/types.ts';
 import utils from './_utils.ts';
 
 Deno.test('alias-substitution', async (t) => {
@@ -23,7 +23,7 @@ Deno.test('alias-substitution', async (t) => {
     });
     // utils.logResults(result);
     utils.checkResults(
-      (result.commands[0] as NodeCommand).name,
+      (result.commands[0] as AstNodeCommand).name,
       { type: 'Word', text: 'test-value' },
     );
   });

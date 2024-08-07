@@ -1,11 +1,10 @@
 import { assertEquals } from '@std/assert';
-import type { LexerPhase, Mode } from '~/types.ts';
-import enums from '../src/modes/bash/enums/index.ts';
-import rules from '../src/modes/bash/rules/mod.ts';
-import tokens from '../src/utils/tokens.ts';
+import type { LexerPhase } from '~/lexer/types.ts';
+import enums from '~/modes/bash/enums/index.ts';
+import rules from '~/modes/bash/phases/mod.ts';
+import { token } from '~/tokenizer/mod.ts';
+import type { Mode } from '~/types.ts';
 // const _utils = require('./_utils');
-
-const token = tokens.token;
 
 function check(rule: LexerPhase, actual: any, expected: any) {
   // _utils.logResults({actual: Array.from(rule({}, mode)(actual)), expected});

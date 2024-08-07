@@ -3,6 +3,7 @@
   "deno.enablePaths": [
     "."
   ],
+  "deno.documentPreloadLimit": 2000,
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "denoland.vscode-deno",
   "[typescript]": {

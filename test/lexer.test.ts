@@ -1,9 +1,9 @@
+import { Lexer } from '~/lexer/mod.ts';
 import posixMode from '~/modes/bash/index.ts';
-import posixLexer from '~/shell-lexer.ts';
 import utils from './_utils.ts';
 
 function tokenize(text: string, rawTokens?: boolean) {
-  const lexer = posixLexer(posixMode.init(), {});
+  const lexer = new Lexer(posixMode.init(), {});
   lexer.setInput(text);
   const results = [];
   let token = lexer.lex();
