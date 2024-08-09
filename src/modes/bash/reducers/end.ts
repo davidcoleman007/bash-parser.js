@@ -1,10 +1,9 @@
-import { eof } from '~/tokenizer/tokens.ts';
-import type { Reducer } from '~/tokenizer/types.ts';
+import { mkToken, type Reducer } from '~/tokenizer/mod.ts';
 
 const end: Reducer = () => {
   return {
     nextReduction: null,
-    tokensToEmit: [eof()],
+    tokensToEmit: [mkToken('EOF')],
   };
 };
 

@@ -1,5 +1,5 @@
-import { LexerPhase } from '~/lexer/types.ts';
-import { mkFieldSplitToken, TokenIf } from '~/tokenizer/mod.ts';
+import type { LexerPhase } from '~/lexer/types.ts';
+import { mkToken, type TokenIf } from '~/tokenizer/mod.ts';
 import compose from '~/utils/compose.ts';
 import flatten from '~/utils/iterable/flatten.ts';
 import map from '~/utils/iterable/map.ts';
@@ -14,7 +14,17 @@ export const fieldSplitting: LexerPhase = () =>
         if (fields.length > 1) {
           let idx = 0;
 
-          return fields.map((field) => mkFieldSplitToken(token, field, idx++)) as TokenIf[];
+          return fields.map((field) =>
+            mkToken(token.type, field, {
+              loc: token.loc,
+
+              expansion: token.expansion,
+
+              joined: token.value,
+              fieldIdx: idx++,
+              originalText: token.originalText,
+            })
+          );
         }
       }
 

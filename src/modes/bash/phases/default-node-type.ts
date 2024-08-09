@@ -1,27 +1,30 @@
-import { LexerPhase } from '~/lexer/types.ts';
-import { TokenIf } from '~/tokenizer/mod.ts';
+import { assert } from '@std/assert';
+import type { LexerPhase } from '~/lexer/types.ts';
+import type { TokenIf } from '~/tokenizer/mod.ts';
 import map from '~/utils/iterable/map.ts';
 import toPascal from '~/utils/to-pascal-case.ts';
 
 const defaultNodeType: LexerPhase = () =>
   map((token: TokenIf) => {
-    const tk = Object.assign({}, token);
-    if (tk.type) {
-      tk.originalType = token.type;
-      // console.log({defaultNodeType, tk})
-      if (token.is('WORD') || token.is('NAME') || token.is('ASSIGNMENT_WORD')) {
-        tk.type = toPascal(tk.type);
-      } else {
-        tk.type = token.type.toLowerCase();
-      }
+    const tk = JSON.parse(JSON.stringify(token));
 
-      for (const xp of tk.expansion || []) {
-        xp.type = toPascal(xp.type!);
-      }
+    assert(tk.type, 'Token type is required');
 
-      delete tk._;
+    tk.ctx.originalType = token.type;
+
+    // console.log({defaultNodeType, tk})
+    if (token.is('WORD') || token.is('NAME') || token.is('ASSIGNMENT_WORD')) {
+      tk.type = toPascal(tk.type);
+    } else {
+      tk.type = token.type.toLowerCase();
     }
-    // Object.freeze(tk);
+
+    for (const xp of tk.expansion || []) {
+      xp.type = toPascal(xp.type!);
+    }
+
+    Object.freeze(tk);
+
     return tk;
   });
 

@@ -1,18 +1,18 @@
-import { LexerPhase } from '~/lexer/types.ts';
-import { TokenIf } from '~/tokenizer/mod.ts';
+import type { LexerPhase } from '~/lexer/types.ts';
+import type { TokenIf } from '~/tokenizer/mod.ts';
 import map from '~/utils/iterable/map.ts';
 import { ReplaceString } from '~/utils/replace-string.ts';
 import fieldSplittingMark from './lib/field-splitting-mark.ts';
 
-const arithmeticExpansionResolve: LexerPhase = (options) =>
+const arithmeticExpansionResolve: LexerPhase = (ctx) =>
   map((token: TokenIf) => {
-    if (options.runArithmeticExpression && token.expansion) {
+    if (ctx.resolvers.runArithmeticExpression && token.expansion) {
       const rValue = new ReplaceString(token.value!);
 
       for (const xp of token.expansion) {
         if (xp.type === 'arithmetic_expansion') {
-          const result = options.runArithmeticExpression(xp);
-          const replacement = fieldSplittingMark(result, token.value!, options);
+          const result = ctx.resolvers.runArithmeticExpression(xp);
+          const replacement = fieldSplittingMark(result, token.value!, ctx.resolvers.resolveEnv);
 
           rValue.replace(
             xp.loc!.start,

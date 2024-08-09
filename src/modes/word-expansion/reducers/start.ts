@@ -1,4 +1,4 @@
-import { Reducer, tokenOrEmpty } from '~/tokenizer/mod.ts';
+import type { Reducer } from '~/tokenizer/mod.ts';
 
 const start: Reducer = (state, source, reducers) => {
   const char = source && source.shift();
@@ -6,7 +6,7 @@ const start: Reducer = (state, source, reducers) => {
   if (char === undefined) {
     return {
       nextReduction: reducers.end,
-      tokensToEmit: tokenOrEmpty(state),
+      tokensToEmit: state.tokenOrEmpty(),
       nextState: state.resetCurrent().saveCurrentLocAsStart(),
     };
   }

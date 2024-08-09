@@ -1,5 +1,5 @@
-import { LexerPhase } from '~/lexer/types.ts';
-import { applyTokenizerVisitor, changeTokenType, TokenIf } from '~/tokenizer/mod.ts';
+import type { LexerPhase } from '~/lexer/types.ts';
+import { applyVisitor, type TokenIf } from '~/tokenizer/mod.ts';
 import compose from '~/utils/compose.ts';
 import lookahead, { type LookaheadIterable } from '~/utils/iterable/lookahead.ts';
 import map from '~/utils/iterable/map.ts';
@@ -16,31 +16,28 @@ const isSeparator = (tk: TokenIf) =>
   );
 
 const skipJoined = (tk: TokenIf) => {
-  if (tk._.joinedToSeparator) {
+  if (tk.ctx?.joinedToSeparator) {
     return null;
   }
   return tk;
 };
 
-const toSeparatorToken = (tk: TokenIf, iterable: LookaheadIterable<TokenIf>) => {
+const toSeparatorToken = (tk: TokenIf, iterable?: Iterable<TokenIf>) => {
   if (skipJoined(tk) === null) {
     return null;
   }
 
-  let newTk = changeTokenType(
-    tk,
-    'SEPARATOR_OP',
-    tk.value!,
-  );
+  const it = iterable as LookaheadIterable<TokenIf>;
+  let newTk = tk.setType('SEPARATOR_OP');
 
   let i = 1;
-  let nextTk = iterable.ahead(i);
+  let nextTk = it.ahead(i);
   while (isSeparator(nextTk!)) {
-    nextTk!._.joinedToSeparator = true;
+    nextTk!.ctx!.joinedToSeparator = true;
     i++;
-    newTk = newTk.appendTo(nextTk!.value!);
+    newTk = newTk.appendValue(nextTk!.value!);
 
-    nextTk = iterable.ahead(i);
+    nextTk = it.ahead(i);
   }
   return newTk;
 };
@@ -50,7 +47,7 @@ const AccumulateSeparators = {
   NEWLINE_LIST: skipJoined,
   SEMICOLON: toSeparatorToken,
   AND: toSeparatorToken,
-  OPERATOR: (tk: TokenIf, iterable: LookaheadIterable<TokenIf>) => tk.value === '&' || tk.value === ';' ? toSeparatorToken(tk, iterable) : tk,
+  OPERATOR: (tk: TokenIf, iterable?: Iterable<TokenIf>) => tk.value === '&' || tk.value === ';' ? toSeparatorToken(tk, iterable as LookaheadIterable<TokenIf>) : tk,
 };
 
 /*
@@ -73,7 +70,7 @@ const separator: LexerPhase = () =>
   compose<TokenIf>(
     filterNonNull,
     map(
-      applyTokenizerVisitor(AccumulateSeparators),
+      applyVisitor(AccumulateSeparators),
     ),
     lookahead.depth(10),
   );

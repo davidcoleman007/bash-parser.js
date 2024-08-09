@@ -1,5 +1,5 @@
-import { LexerPhase } from '~/lexer/types.ts';
-import { TokenIf } from '~/tokenizer/mod.ts';
+import type { LexerPhase } from '~/lexer/types.ts';
+import type { TokenIf } from '~/tokenizer/mod.ts';
 import compose from '~/utils/compose.ts';
 import lookahead, { type LookaheadIterable } from '~/utils/iterable/lookahead.ts';
 import map from '~/utils/iterable/map.ts';
@@ -23,13 +23,13 @@ const functionName: LexerPhase = () => {
         );*/
 
       if (
-        tk._.maybeStartOfSimpleCommand &&
+        tk.ctx?.maybeStartOfSimpleCommand &&
         tk.is('WORD') &&
         it.ahead(2) &&
         it.ahead(1)!.is('OPEN_PAREN') &&
         it.ahead(2)!.is('CLOSE_PAREN')
       ) {
-        tk = tk.changeTokenType('NAME', tk.value!);
+        tk = tk.setType('NAME');
       }
 
       return tk;

@@ -1,23 +1,41 @@
-export type TokenIf = {
+export type TokenContext = {
+  maybeStartOfSimpleCommand?: boolean;
+  commandNameNotFoundYet?: boolean;
+  joinedToSeparator?: boolean;
+  maybeSimpleCommandName?: boolean;
+  originalType?: string;
+};
+
+export type TokenPosition = {
+  row: number;
+  col: number;
+  char: number;
+};
+
+export type TokenLocation = {
+  start: ReducerPosition;
+  end: ReducerPosition;
+};
+
+export type TokenFields = {
   type: string;
-  value?: string;
-  text?: string;
+  ctx: TokenContext;
+  value: string;
+
+  loc?: TokenLocation;
+  expansion?: Expansion[];
   joined?: string;
   fieldIdx?: number;
-  loc: Location;
-  expansion?: Expansion[];
   originalText?: string;
-  originalType?: string;
-  maybeSimpleCommandName?: string;
-  _: Record<string, any>;
+};
 
+export type TokenIf = TokenFields & {
   is(type: string): boolean;
-  appendTo(chunk: string): TokenIf;
-  changeTokenType(type: string, value: string): TokenIf;
+  appendValue(chunk: string): TokenIf;
+  setType(type: string): TokenIf;
   setValue(value: string): TokenIf;
   alterValue(value: string): TokenIf;
-  addExpansions(): TokenIf;
-  setExpansions(expansion: Expansion[]): TokenIf;
+  setExpansion(expansion: Expansion[]): TokenIf;
 };
 
 export type Tokenizer = (code: string) => Iterable<TokenIf>;
@@ -42,6 +60,12 @@ export interface ReducerStateIf {
   advanceLoc(char: string): this;
   replaceLastExpansion(fields: Partial<Expansion>): this;
   deleteLastExpansionValue(): this;
+
+  tokenOrEmpty(): TokenIf[];
+  operatorTokens(): TokenIf[];
+
+  isPartOfOperator(text: string): boolean;
+  isOperator(): boolean;
 }
 
 export type Reducer = (state: ReducerStateIf, source: string[], reducers: Reducers) => ReducerNextState;
@@ -61,8 +85,14 @@ export type ReducerPosition = {
 
 export type ReducerLocation = {
   start: ReducerPosition;
+  end?: ReducerPosition;
   previous?: ReducerPosition | null;
   current?: ReducerPosition;
+};
+
+export type ExpansionLocation = {
+  start: number;
+  end: number;
 };
 
 // TODO: This type needs work
@@ -73,7 +103,7 @@ export type Expansion = {
   value?: string;
   type?: string;
   resolved?: boolean;
-  loc?: { start: number; end: number };
+  loc?: ExpansionLocation;
 };
 
 export type Visitor = {

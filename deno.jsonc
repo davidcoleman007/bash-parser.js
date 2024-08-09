@@ -37,7 +37,7 @@
     "coverage-html": "genhtml -o coverage/html coverage/coverage.lcov",
     "coverage": "DENO_FUTURE=1 deno coverage --lcov coverage --output=coverage/coverage.lcov && deno task coverage-html",
     "test": "deno task coverage-clean && DENO_FUTURE=1 deno test --coverage=coverage",
-    "test-nc": "deno task coverage-clean && DENO_FUTURE=1 deno test --no-check --coverage=coverage",
+    "test-nc": "deno task coverage-clean && DENO_FUTURE=1 deno test -A --no-check --coverage=coverage",
     "test-fast": "DENO_FUTURE=1 deno test --parallel --no-check --quiet",
     "build-grammar": "DENO_FUTURE=1 deno run --allow-read --allow-write src/grammar/build.ts"
   }

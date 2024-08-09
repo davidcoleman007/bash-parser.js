@@ -1,4 +1,5 @@
 {
+  "deno.future": true,
   "deno.enable": true,
   "deno.enablePaths": [
     "."
@@ -9,15 +10,17 @@
   "[typescript]": {
     "editor.defaultFormatter": "denoland.vscode-deno",
     "editor.codeActionsOnSave": {
+      "source.addMissingImports": "always",
       "source.organizeImports": "always",
-      "source.addMissingImports": "always"
+      "source.fixAll": "always"
     }
   },
   "[typescriptreact]": {
     "editor.defaultFormatter": "denoland.vscode-deno",
     "editor.codeActionsOnSave": {
+      "source.addMissingImports": "always",
       "source.organizeImports": "always",
-      "source.addMissingImports": "always"
+      "source.fixAll": "always"
     }
   },
   "[yaml]": {

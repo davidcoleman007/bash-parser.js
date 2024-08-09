@@ -1,5 +1,5 @@
-import { LexerPhase } from '~/lexer/types.ts';
-import { TokenIf } from '~/tokenizer/mod.ts';
+import type { LexerPhase } from '~/lexer/types.ts';
+import type { TokenIf } from '~/tokenizer/mod.ts';
 import compose from '~/utils/compose.ts';
 import lookahead, { type LookaheadIterable } from '~/utils/iterable/lookahead.ts';
 import map from '~/utils/iterable/map.ts';
@@ -29,21 +29,21 @@ function isValidReservedWordPosition(tk: TokenIf, iterable: LookaheadIterable<To
   return tk.value === '}' || startOfCommand || lastIsReservedWord || thirdInFor || thirdInCase;
 }
 
-const reservedWords: LexerPhase = (_options, mode) => {
-  return compose<TokenIf>(
+const reservedWords: LexerPhase = (ctx) =>
+  compose<TokenIf>(
     map((tk: TokenIf, _idx, iterable) => {
       // console.log(tk, isValidReservedWordPosition(tk, iterable), hasOwnProperty(words, tk.value))
       // TOKEN tokens consisting of a reserved word
       // are converted to their own token types
       // console.log({tk, v:isValidReservedWordPosition(tk, iterable)})
-      if (isValidReservedWordPosition(tk, iterable as LookaheadIterable<TokenIf>, mode.enums.reservedWords) && tk.value! in mode.enums.reservedWords) {
-        return tk.changeTokenType(mode.enums.reservedWords[tk.value!], tk.value!);
+      if (isValidReservedWordPosition(tk, iterable as LookaheadIterable<TokenIf>, ctx.enums.reservedWords) && tk.value! in ctx.enums.reservedWords) {
+        return tk.setType(ctx.enums.reservedWords[tk.value!]);
       }
 
       // otherwise, TOKEN tokens are converted to
       // WORD tokens
       if (tk.is('TOKEN')) {
-        return tk.changeTokenType('WORD', tk.value!);
+        return tk.setType('WORD');
       }
 
       // other tokens are amitted as-is
@@ -51,6 +51,5 @@ const reservedWords: LexerPhase = (_options, mode) => {
     }),
     lookahead.depth(2),
   );
-};
 
 export default reservedWords;

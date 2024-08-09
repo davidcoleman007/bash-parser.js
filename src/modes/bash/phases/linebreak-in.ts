@@ -1,5 +1,5 @@
-import { LexerPhase } from '~/lexer/types.ts';
-import { applyTokenizerVisitor, changeTokenType, mkToken, TokenIf, Visitor } from '~/tokenizer/mod.ts';
+import type { LexerPhase } from '~/lexer/types.ts';
+import { applyVisitor, mkToken, type TokenIf, type Visitor } from '~/tokenizer/mod.ts';
 import compose from '~/utils/compose.ts';
 import lookahead, { type LookaheadIterable } from '~/utils/iterable/lookahead.ts';
 import map from '~/utils/iterable/map.ts';
@@ -11,11 +11,7 @@ const ReplaceWithLineBreakIn: Visitor = {
     const nextToken = it.ahead(1) || mkToken('EMPTY');
 
     if (nextToken.is('In')) {
-      return changeTokenType(
-        tk,
-        'LINEBREAK_IN',
-        '\nin',
-      );
+      return tk.setType('LINEBREAK_IN').setValue('\nin');
     }
 
     return tk;
@@ -39,7 +35,7 @@ const linebreakIn: LexerPhase = () =>
   compose<TokenIf>(
     filterNonNull,
     map(
-      applyTokenizerVisitor(ReplaceWithLineBreakIn),
+      applyVisitor(ReplaceWithLineBreakIn),
     ),
     lookahead,
   );

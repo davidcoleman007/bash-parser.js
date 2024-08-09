@@ -1,5 +1,4 @@
-import { newLine } from '~/tokenizer/tokens.ts';
-import type { Reducer } from '~/tokenizer/types.ts';
+import { mkToken, type Reducer } from '~/tokenizer/mod.ts';
 
 const comment: Reducer = (state, source, reducers) => {
   const char = source && source.shift();
@@ -13,7 +12,7 @@ const comment: Reducer = (state, source, reducers) => {
 
   if (char === '\n') {
     return {
-      tokensToEmit: [newLine()],
+      tokensToEmit: [mkToken('NEWLINE', '\n')],
       nextReduction: reducers.start,
       nextState: state,
     };

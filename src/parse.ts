@@ -1,9 +1,10 @@
 import { astBuilder } from '~/ast/mod.ts';
 import { grammar } from '~/grammar/mod.ts';
-import type { Mode, ModePlugin, Options } from '~/types.ts';
+import type { Mode, ModePlugin } from '~/modes/types.ts';
+import type { Parse } from '~/types.ts';
 import { Lexer } from './lexer/mod.ts';
-import modeBash from './modes/bash/index.ts';
-import modeWordExpansion from './modes/word-expansion/index.ts';
+import modeBash from './modes/bash/mod.ts';
+import modeWordExpansion from './modes/word-expansion/mod.ts';
 
 const loadPlugin = (name: string): Mode => {
   const modes: Record<string, ModePlugin> = {
@@ -20,7 +21,7 @@ const loadPlugin = (name: string): Mode => {
   return modePlugin.init();
 };
 
-export const parse = (sourceCode: string, options?: Options) => {
+export const parse: Parse = (sourceCode, options?) => {
   try {
     options = options || {};
     options.mode = options.mode || 'bash';

@@ -1,5 +1,5 @@
-import { LexerPhase } from '~/lexer/types.ts';
-import { setValue, TokenIf } from '~/tokenizer/mod.ts';
+import type { LexerPhase } from '~/lexer/types.ts';
+import type { TokenIf } from '~/tokenizer/mod.ts';
 import type { Options } from '~/types.ts';
 import map from '~/utils/iterable/map.ts';
 
@@ -19,23 +19,23 @@ const replace = (text: string, resolveHomeUser: Options['resolveHomeUser']) => {
   return result;
 };
 
-const tildeExpanding: LexerPhase = (options) =>
+const tildeExpanding: LexerPhase = (ctx) =>
   map((token: TokenIf) => {
-    if (token.is('WORD') && typeof options.resolveHomeUser === 'function') {
-      return setValue(token, replace(token.value!, options.resolveHomeUser));
+    if (token.is('WORD') && typeof ctx.resolvers.resolveHomeUser === 'function') {
+      return token.setValue(replace(token.value!, ctx.resolvers.resolveHomeUser));
     }
 
-    if (token.is('ASSIGNMENT_WORD') && typeof options.resolveHomeUser === 'function') {
+    if (token.is('ASSIGNMENT_WORD') && typeof ctx.resolvers.resolveHomeUser === 'function') {
       const parts = token.value!.split('=', 2);
       const target = parts[0];
       const sourceParts = parts[1];
 
       const source = sourceParts
         .split(':')
-        .map((text: string) => replace(text, options.resolveHomeUser!))
+        .map((text: string) => replace(text, ctx.resolvers.resolveHomeUser!))
         .join(':');
 
-      return setValue(token, target + '=' + source);
+      return token.setValue(target + '=' + source);
     }
 
     return token;

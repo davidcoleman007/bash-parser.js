@@ -1,4 +1,3 @@
-import { isOperator, isPartOfOperator, operatorTokens } from '~/tokenizer/tokens.ts';
 import type { Reducer, TokenIf } from '~/tokenizer/types.ts';
 
 const operator: Reducer = (state, source, reducers) => {
@@ -7,17 +6,17 @@ const operator: Reducer = (state, source, reducers) => {
   // console.log('isOperator ', {state,char})
 
   if (char === undefined) {
-    if (isOperator(state.current)) {
+    if (state.isOperator()) {
       return {
         nextReduction: reducers.end,
-        tokensToEmit: operatorTokens(state),
+        tokensToEmit: state.operatorTokens(),
         nextState: state.resetCurrent().saveCurrentLocAsStart(),
       };
     }
     return reducers.start(state, char ? [char] : [], reducers);
   }
 
-  if (isPartOfOperator(state.current + char)) {
+  if (state.isPartOfOperator(state.current + char)) {
     return {
       nextReduction: reducers.operator,
       nextState: state.appendChar(char),
@@ -25,9 +24,9 @@ const operator: Reducer = (state, source, reducers) => {
   }
 
   let tokens: TokenIf[] = [];
-  if (isOperator(state.current)) {
+  if (state.isOperator()) {
     // console.log('isOperator ', state.current)
-    tokens = operatorTokens(state);
+    tokens = state.operatorTokens();
     state = state.resetCurrent().saveCurrentLocAsStart();
   }
 

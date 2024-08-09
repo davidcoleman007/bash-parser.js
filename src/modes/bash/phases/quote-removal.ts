@@ -1,5 +1,5 @@
-import { LexerPhase } from '~/lexer/types.ts';
-import { Expansion, setValue, TokenIf } from '~/tokenizer/mod.ts';
+import type { LexerPhase } from '~/lexer/types.ts';
+import type { Expansion, TokenIf } from '~/tokenizer/mod.ts';
 import map from '~/utils/iterable/map.ts';
 import unescape from '~/utils/unescape.ts';
 import parse from '~/utils/unquote-word.ts';
@@ -30,7 +30,7 @@ const quoteRemoval: LexerPhase = () =>
   map((token: TokenIf) => {
     if (token.is('WORD') || token.is('ASSIGNMENT_WORD')) {
       if (!unresolvedExpansions(token)) {
-        return setValue(token, unquote(token.value!));
+        return token.setValue(unquote(token.value!));
       }
     }
     return token;

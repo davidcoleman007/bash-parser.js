@@ -1,5 +1,4 @@
-import { isPartOfOperator, newLine, tokenOrEmpty } from '~/tokenizer/tokens.ts';
-import type { Reducer } from '~/tokenizer/types.ts';
+import { mkToken, type Reducer } from '~/tokenizer/mod.ts';
 
 const start: Reducer = (state, source, reducers) => {
   const char = source && source.shift();
@@ -7,7 +6,7 @@ const start: Reducer = (state, source, reducers) => {
   if (char === undefined) {
     return {
       nextReduction: reducers.end,
-      tokensToEmit: tokenOrEmpty(state),
+      tokensToEmit: state.tokenOrEmpty(),
       nextState: state.resetCurrent().saveCurrentLocAsStart(),
     };
   }
@@ -28,7 +27,7 @@ const start: Reducer = (state, source, reducers) => {
   if (!state.escaping && char === '\n') {
     return {
       nextReduction: reducers.start,
-      tokensToEmit: tokenOrEmpty(state).concat(newLine()),
+      tokensToEmit: state.tokenOrEmpty().concat(mkToken('NEWLINE', '\n')),
       nextState: state.resetCurrent().saveCurrentLocAsStart(),
     };
   }
@@ -40,10 +39,10 @@ const start: Reducer = (state, source, reducers) => {
     };
   }
 
-  if (!state.escaping && isPartOfOperator(char)) {
+  if (!state.escaping && state.isPartOfOperator(char)) {
     return {
       nextReduction: reducers.operator,
-      tokensToEmit: tokenOrEmpty(state),
+      tokensToEmit: state.tokenOrEmpty(),
       nextState: state.setCurrent(char).saveCurrentLocAsStart(),
     };
   }
@@ -65,7 +64,7 @@ const start: Reducer = (state, source, reducers) => {
   if (!state.escaping && char.match(/\s/)) {
     return {
       nextReduction: reducers.start,
-      tokensToEmit: tokenOrEmpty(state),
+      tokensToEmit: state.tokenOrEmpty(),
       nextState: state.resetCurrent().saveCurrentLocAsStart().setExpansion([]),
     };
   }

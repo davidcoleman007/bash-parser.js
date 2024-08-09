@@ -1,32 +1,24 @@
 import { Lexer } from '~/lexer/mod.ts';
-import posixMode from '~/modes/bash/index.ts';
+import mode from '../src/modes/bash/mod.ts';
 import utils from './_utils.ts';
 
 function tokenize(text: string, rawTokens?: boolean) {
-  const lexer = new Lexer(posixMode.init(), {});
+  const lexer = new Lexer(mode.init(), {});
   lexer.setInput(text);
   const results = [];
   let token = lexer.lex();
   while (token !== 'EOF') {
-    delete token.type;
-
     if (rawTokens) {
       const value = JSON.parse(JSON.stringify(lexer.yytext));
       delete value.type;
-      delete value.maybeSimpleCommandName;
 
       results.push({ token, value });
     } else {
       const value = lexer.yytext.text || lexer.yytext;
-      const expansion = lexer.expansion;
-      delete value.type;
-      delete value.maybeSimpleCommandName;
 
-      if (expansion) {
-        results.push({ token, value, expansion });
-      } else {
-        results.push({ token, value });
-      }
+      delete value.type;
+
+      results.push({ token, value });
     }
 
     token = lexer.lex();

@@ -1,11 +1,11 @@
 import type { LexerPhase, LexerPhaseFn } from '~/lexer/types.ts';
-import { applyTokenizerVisitor, TokenIf, Visitor } from '~/tokenizer/mod.ts';
-import type { Options } from '~/types.ts';
+import { applyVisitor, type TokenIf, type Visitor } from '~/tokenizer/mod.ts';
+import type { Resolvers } from '~/types.ts';
 import compose from '~/utils/compose.ts';
 import flatten from '~/utils/iterable/flatten.ts';
 import map from '~/utils/iterable/map.ts';
 
-const expandAlias = (preAliasLexer: LexerPhaseFn, resolveAlias: Options['resolveAlias'], reservedWords: string[]) => {
+const expandAlias = (preAliasLexer: LexerPhaseFn, resolveAlias: Resolvers['resolveAlias'], reservedWords: string[]) => {
   function* tryExpandToken(token: TokenIf, expandingAliases: string[]): Iterable<TokenIf> {
     if (expandingAliases.indexOf(token.value!) !== -1) {
       yield token;
@@ -43,18 +43,18 @@ const expandAlias = (preAliasLexer: LexerPhaseFn, resolveAlias: Options['resolve
   return visitor;
 };
 
-const aliasSubstitution: LexerPhase = (options, mode, previousPhases) => {
-  if (typeof options.resolveAlias !== 'function') {
+const aliasSubstitution: LexerPhase = (ctx) => {
+  if (typeof ctx.resolvers.resolveAlias !== 'function') {
     return (x) => x;
   }
 
-  const preAliasLexer = compose<TokenIf>(...previousPhases.reverse());
-  const visitor = expandAlias(preAliasLexer, options.resolveAlias, Object.values(mode.enums.reservedWords));
+  const preAliasLexer = compose<TokenIf>(...ctx.previousPhases.reverse());
+  const visitor = expandAlias(preAliasLexer, ctx.resolvers.resolveAlias, Object.values(ctx.enums.reservedWords));
 
   return compose<TokenIf>(
     flatten,
     map(
-      applyTokenizerVisitor(visitor),
+      applyVisitor(visitor),
     ),
   );
 };

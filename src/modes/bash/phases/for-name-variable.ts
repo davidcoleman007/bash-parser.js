@@ -1,5 +1,5 @@
-import { LexerPhase } from '~/lexer/types.ts';
-import { TokenIf } from '~/tokenizer/mod.ts';
+import type { LexerPhase } from '~/lexer/types.ts';
+import type { TokenIf } from '~/tokenizer/mod.ts';
 import compose from '~/utils/compose.ts';
 import isValidName from '~/utils/is-valid-name.ts';
 import lookahead, { type LookaheadIterable } from '~/utils/iterable/lookahead.ts';
@@ -15,7 +15,7 @@ const forNameVariable: LexerPhase = () => {
       // type of token is changed from WORD to NAME
 
       if (lastToken.is('For') && tk.is('WORD') && isValidName(tk.value!)) {
-        return tk.changeTokenType('NAME', tk.value!);
+        return tk.setType('NAME');
       }
 
       return tk;

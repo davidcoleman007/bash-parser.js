@@ -1,6 +1,6 @@
-import type { TokenIf } from '~/types.ts';
+import type { TokenIf } from '~/tokenizer/types.ts';
 
-const logger = (name: string) => () => (function* (tokens: TokenIf[]) {
+const loggerPhse = (name: string) => () => (function* (tokens: TokenIf[]) {
   for (const tk of tokens) {
     if (!tk) {
       console.log(`In ${name} token null.`);
@@ -15,4 +15,4 @@ const logger = (name: string) => () => (function* (tokens: TokenIf[]) {
   }
 });
 
-export default logger;
+export default loggerPhse;

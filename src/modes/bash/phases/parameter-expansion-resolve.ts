@@ -1,13 +1,13 @@
-import { LexerPhase } from '~/lexer/types.ts';
-import { TokenIf } from '~/tokenizer/mod.ts';
+import type { LexerPhase } from '~/lexer/types.ts';
+import type { TokenIf } from '~/tokenizer/mod.ts';
 import map from '~/utils/iterable/map.ts';
 import { ReplaceString } from '~/utils/replace-string.ts';
 import fieldSplittingMark from './lib/field-splitting-mark.ts';
 
-const parameterExpansionResolve: LexerPhase = (options) =>
+const parameterExpansionResolve: LexerPhase = (ctx) =>
   map((token: TokenIf) => {
     if (token.is('WORD') || token.is('ASSIGNMENT_WORD')) {
-      if (!options.resolveParameter || !token.expansion || token.expansion.length === 0) {
+      if (!ctx.resolvers.resolveParameter || !token.expansion || token.expansion.length === 0) {
         return token;
       }
 
@@ -15,8 +15,8 @@ const parameterExpansionResolve: LexerPhase = (options) =>
 
       for (const xp of token.expansion) {
         if (xp.type === 'parameter_expansion') {
-          const result = options.resolveParameter(xp);
-          const replacement = fieldSplittingMark(result, token.value!, options);
+          const result = ctx.resolvers.resolveParameter(xp);
+          const replacement = fieldSplittingMark(result, token.value!, ctx.resolvers.resolveEnv);
 
           rValue.replace(
             xp.loc!.start,

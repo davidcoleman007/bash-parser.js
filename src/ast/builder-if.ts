@@ -1,4 +1,5 @@
 import type {
+  AstIoNumber,
   AstNode,
   AstNodeAssignmentWord,
   AstNodeCase,
@@ -17,10 +18,13 @@ import type {
   AstNodeUntil,
   AstNodeWhile,
   AstNodeWord,
-  InternalAstNodeElse,
-  InternalAstNodeIoNumber,
+  AstSourceLocation,
 } from '~/ast/types.ts';
 
+export type ElseClaus = AstNode & {
+  type: 'else';
+  text: 'else';
+};
 export type Separator = {
   type: 'separator_op' | 'newline_list';
   text: string;
@@ -34,27 +38,27 @@ export type AstBuilder = {
   caseItem: (
     pattern: AstNodeWord[],
     body: AstNodeCompoundList,
-    locStart: Location,
-    locEnd: Location,
+    locStart: AstSourceLocation,
+    locEnd: AstSourceLocation,
   ) => AstNodeCaseItem;
 
   caseClause: (
     clause: AstNodeWord,
     cases: AstNodeCaseItem[],
-    locStart: Location,
-    locEnd: Location,
+    locStart: AstSourceLocation,
+    locEnd: AstSourceLocation,
   ) => AstNodeCase;
 
   doGroup: (
     group: AstNodeCompoundList,
-    locStart: Location,
-    locEnd: Location,
+    locStart: AstSourceLocation,
+    locEnd: AstSourceLocation,
   ) => AstNodeCompoundList;
 
   braceGroup: (
     group: AstNodeCompoundList,
-    locStart: Location,
-    locEnd: Location,
+    locStart: AstSourceLocation,
+    locEnd: AstSourceLocation,
   ) => AstNodeCompoundList;
 
   list: (
@@ -89,8 +93,8 @@ export type AstBuilder = {
 
   subshell: (
     list: AstNodeCompoundList,
-    locStart: Location,
-    locEnd: Location,
+    locStart: AstSourceLocation,
+    locEnd: AstSourceLocation,
   ) => AstNodeSubshell;
 
   pipeSequence: (
@@ -124,13 +128,13 @@ export type AstBuilder = {
     name: AstNodeName,
     wordlist: AstNodeWord[],
     doGroup: AstNodeCompoundList,
-    locStart: Location,
+    locStart: AstSourceLocation,
   ) => AstNodeFor;
 
   forClauseDefault: (
     name: AstNodeName,
     doGroup: AstNodeCompoundList,
-    locStart: Location,
+    locStart: AstSourceLocation,
   ) => AstNodeFor;
 
   functionDefinition: (
@@ -140,15 +144,15 @@ export type AstBuilder = {
 
   elseClause: (
     compoundList: AstNodeCompoundList,
-    elseClaus: InternalAstNodeElse,
+    elseClaus: ElseClaus,
   ) => AstNodeCompoundList;
 
   ifClause: (
     clause: AstNodeCompoundList,
     then: AstNodeCompoundList,
     elseBranch: AstNodeCompoundList,
-    locStart: Location,
-    locEnd: Location,
+    locStart: AstSourceLocation,
+    locEnd: AstSourceLocation,
   ) => AstNodeIf;
 
   while: (
@@ -184,7 +188,7 @@ export type AstBuilder = {
 
   numberIoRedirect: (
     ioRedirect: AstNodeRedirect,
-    numberIo: InternalAstNodeIoNumber,
+    numberIo: AstIoNumber,
   ) => AstNodeRedirect;
 
   suffix: (

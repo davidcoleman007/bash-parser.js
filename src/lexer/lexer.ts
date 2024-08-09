@@ -1,46 +1,54 @@
 import type { LexerIf } from '~/grammar/mod.ts';
-import type { LexerPhaseFn } from '~/lexer/types.ts';
-import { type TokenIf, tokenize } from '~/tokenizer/mod.ts';
-import type { Mode, Options } from '~/types.ts';
+import type { LexerContext, LexerPhaseFn } from '~/lexer/types.ts';
+import type { Mode } from '~/modes/types.ts';
+import { type TokenIf, tokenize, type Tokenizer } from '~/tokenizer/mod.ts';
+import type { Options } from '~/types.ts';
 import compose from '~/utils/compose.ts';
 
 export class Lexer implements LexerIf {
-  private mode: Mode;
-  private options: Options;
-  private tokenizer?: Iterable<TokenIf>;
+  private tokenizer: Tokenizer;
+  private tokens?: Iterable<TokenIf>;
+  private insertLOC: boolean;
   public yytext?: any;
   public yylineno: number = 0;
 
   constructor(mode: Mode, options: Options) {
-    this.mode = mode;
-    this.options = options;
-  }
-
-  setInput(source: string) {
-    const tokenizePhase = tokenize(this.mode.reducers);
+    const tokenizerPhase: LexerPhaseFn = tokenize(mode.reducers);
 
     let previousPhases: LexerPhaseFn[] = [
-      tokenizePhase,
+      tokenizerPhase,
     ];
 
     const phases = [
-      tokenizePhase,
-      ...this.mode.lexerPhases.map((phase) => {
-        const ph = phase(this.options, this.mode, previousPhases);
+      tokenizerPhase,
+      ...mode.lexerPhases.map((phase) => {
+        const ctx: LexerContext = {
+          resolvers: options,
+          enums: mode.enums,
+          previousPhases,
+        };
+
+        const ph = phase(ctx);
         previousPhases = [...previousPhases, ph];
         return ph;
       }),
     ];
 
-    this.tokenizer = compose(...phases.reverse())(source);
+    this.tokenizer = compose<TokenIf>(...phases.reverse());
+    this.insertLOC = !!options.insertLOC;
+  }
+
+  setInput(source: string) {
+    this.tokens = this.tokenizer(source);
   }
 
   lex() {
-    const iterator = this.tokenizer![Symbol.iterator]();
+    const iterator = this.tokens![Symbol.iterator]();
     const item = iterator.next();
 
     const tk: TokenIf = item.value;
-    const tkType = tk.originalType;
+
+    const tkType = tk.ctx.originalType;
     const text = tk.value;
 
     this.yytext = { text, type: '' };
@@ -48,16 +56,12 @@ export class Lexer implements LexerIf {
       this.yytext.expansion = tk.expansion;
     }
 
-    if (tk.originalText) {
-      this.yytext.originalText = tk.originalText;
-    }
-
     if (tk.type) {
       this.yytext.type = tk.type;
     }
 
-    if (tk.maybeSimpleCommandName) {
-      this.yytext.maybeSimpleCommandName = tk.maybeSimpleCommandName;
+    if (tk.originalText) {
+      this.yytext.originalText = tk.originalText;
     }
 
     if (tk.joined) {
@@ -68,7 +72,7 @@ export class Lexer implements LexerIf {
       this.yytext.fieldIdx = tk.fieldIdx;
     }
 
-    if (this.options.insertLOC && tk.loc) {
+    if (this.insertLOC && tk.loc) {
       this.yytext.loc = tk.loc;
     }
 

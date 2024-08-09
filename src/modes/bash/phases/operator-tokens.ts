@@ -1,23 +1,19 @@
-import { LexerPhase } from '~/lexer/types.ts';
-import { applyTokenizerVisitor, changeTokenType, TokenIf } from '~/tokenizer/mod.ts';
+import type { LexerPhase } from '~/lexer/types.ts';
+import { applyVisitor, type TokenIf } from '~/tokenizer/mod.ts';
 import map from '~/utils/iterable/map.ts';
 
 const reduceToOperatorTokenVisitor = (operators: Record<string, string>) => ({
   OPERATOR(tk: TokenIf) {
     if (tk.value! in operators) {
-      return changeTokenType(
-        tk,
-        operators[tk.value!],
-        tk.value!,
-      );
+      return tk.setType(operators[tk.value!]);
     }
     return tk;
   },
 });
 
-const operatorTokens: LexerPhase = (_options, mode) =>
+const operatorTokens: LexerPhase = (ctx) =>
   map(
-    applyTokenizerVisitor(reduceToOperatorTokenVisitor(mode.enums.operators)),
+    applyVisitor(reduceToOperatorTokenVisitor(ctx.enums.operators)),
   );
 
 export default operatorTokens;

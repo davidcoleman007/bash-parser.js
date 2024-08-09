@@ -1,5 +1,4 @@
-import { continueToken, tokenOrEmpty } from '~/tokenizer/tokens.ts';
-import type { Reducer } from '~/tokenizer/types.ts';
+import { mkToken, type Reducer } from '~/tokenizer/mod.ts';
 
 const singleQuoting: Reducer = (state, source, reducers) => {
   const char = source && source.shift();
@@ -8,7 +7,10 @@ const singleQuoting: Reducer = (state, source, reducers) => {
     return {
       nextState: state,
       nextReduction: null,
-      tokensToEmit: tokenOrEmpty(state).concat(continueToken("'")),
+      tokensToEmit: [
+        ...state.tokenOrEmpty(),
+        mkToken('CONTINUE', "'"),
+      ],
     };
   }
 

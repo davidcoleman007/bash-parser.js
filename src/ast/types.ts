@@ -214,7 +214,7 @@ export type AstNodeRedirect = AstNode & {
   type: 'Redirect';
   op: AstNodeWord;
   file: AstNodeWord;
-  numberIo?: InternalAstNodeIoNumber;
+  numberIo?: AstIoNumber;
 };
 
 /**
@@ -285,14 +285,11 @@ export type AstNodeParameterExpansion = AstNode & {
   op?: string;
 };
 
-// TODO: Move to internal types or handle in some way
+/**
+ * Helper types
+ */
 
-export type InternalAstNodeIoNumber = AstNode & {
+export type AstIoNumber = AstNode & {
   type: 'io_number';
   text: string;
-};
-
-export type InternalAstNodeElse = AstNode & {
-  type: 'else';
-  text: 'else';
 };

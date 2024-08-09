@@ -110,7 +110,7 @@ Deno.test('special parameter substitution', async (t) => {
   await t.step('parameter with other parameter in word', () => {
     const result = bashParser('${other:=default$value}');
     // utils.logResults(result)
-    utils.checkResults(JSON.parse(JSON.stringify((result as any).commands[0].name)), {
+    utils.checkResults(structuredClone((result as any).commands[0].name), {
       type: 'Word',
       text: '${other:=default$value}',
       expansion: [{
@@ -224,7 +224,7 @@ Deno.test('special parameter substitution', async (t) => {
   await t.step('parameter with Remove Smallest Suffix Pattern', () => {
     const result = bashParser('${other%default$value}');
     // utils.logResults(result)
-    utils.checkResults(JSON.parse(JSON.stringify((result as any).commands[0].name)), {
+    utils.checkResults(structuredClone((result as any).commands[0].name), {
       type: 'Word',
       text: '${other%default$value}',
       expansion: [{
@@ -254,7 +254,7 @@ Deno.test('special parameter substitution', async (t) => {
   await t.step('parameter with Remove Smallest Prefix Pattern', () => {
     const result = bashParser('${other#default$value}');
     // utils.logResults(result)
-    utils.checkResults(JSON.parse(JSON.stringify((result as any).commands[0].name)), {
+    utils.checkResults(structuredClone((result as any).commands[0].name), {
       type: 'Word',
       text: '${other#default$value}',
       expansion: [{
@@ -284,7 +284,7 @@ Deno.test('special parameter substitution', async (t) => {
   await t.step('parameter with Remove Largest Suffix Pattern', () => {
     const result = bashParser('${other%%default$value}');
     // utils.logResults(result)
-    utils.checkResults(JSON.parse(JSON.stringify((result as any).commands[0].name)), {
+    utils.checkResults(structuredClone((result as any).commands[0].name), {
       type: 'Word',
       text: '${other%%default$value}',
       expansion: [{
@@ -314,7 +314,7 @@ Deno.test('special parameter substitution', async (t) => {
   await t.step('parameter with Remove Largest Prefix Pattern', () => {
     const result = bashParser('${other##default$value}');
     // utils.logResults(result)
-    utils.checkResults(JSON.parse(JSON.stringify((result as any).commands[0].name)), {
+    utils.checkResults(structuredClone((result as any).commands[0].name), {
       type: 'Word',
       text: '${other##default$value}',
       expansion: [{

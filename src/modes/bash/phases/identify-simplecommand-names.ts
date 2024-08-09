@@ -1,5 +1,5 @@
-import { LexerPhase } from '~/lexer/types.ts';
-import { TokenIf } from '~/tokenizer/mod.ts';
+import type { LexerPhase } from '~/lexer/types.ts';
+import type { TokenIf } from '~/tokenizer/mod.ts';
 import compose from '~/utils/compose.ts';
 import isValidName from '~/utils/is-valid-name.ts';
 import lookahead, { type LookaheadIterable } from '~/utils/iterable/lookahead.ts';
@@ -22,33 +22,33 @@ const couldBeCommandName = (tk: TokenIf) => {
   return tk && tk.is('WORD') && isValidName(tk.value!);
 };
 
-const identifySimpleCommandNames: LexerPhase = (_options, mode) =>
+const identifySimpleCommandNames: LexerPhase = (ctx) =>
   compose<TokenIf>(
     map((tk: TokenIf, _idx, iterable) => {
       const it = iterable as LookaheadIterable<TokenIf>;
-      if (tk._.maybeStartOfSimpleCommand) {
+      if (tk.ctx?.maybeStartOfSimpleCommand) {
         if (couldBeCommandName(tk)) {
-          tk._.maybeSimpleCommandName = true;
+          tk.ctx.maybeSimpleCommandName = true;
         } else {
           const next = it.ahead(1);
           if (next && !couldEndSimpleCommand(next)) {
-            next._.commandNameNotFoundYet = true;
+            next.ctx!.commandNameNotFoundYet = true;
           }
         }
       }
 
-      if (tk._.commandNameNotFoundYet) {
+      if (tk.ctx?.commandNameNotFoundYet) {
         const last = it.behind(1);
 
-        if (!mode.enums.IOFileOperators.some((op) => last!.type === op) && couldBeCommandName(tk)) {
-          tk._.maybeSimpleCommandName = true;
+        if (!ctx.enums.IOFileOperators.some((op) => last!.type === op) && couldBeCommandName(tk)) {
+          tk.ctx.maybeSimpleCommandName = true;
         } else {
           const next = it.ahead(1);
           if (next && !couldEndSimpleCommand(next)) {
-            next._.commandNameNotFoundYet = true;
+            next.ctx!.commandNameNotFoundYet = true;
           }
         }
-        delete tk._.commandNameNotFoundYet;
+        delete tk.ctx.commandNameNotFoundYet;
       }
 
       return tk;

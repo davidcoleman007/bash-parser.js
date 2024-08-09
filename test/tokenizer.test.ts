@@ -20,14 +20,14 @@ const mkloc = ([startCol, startRow, startChar]: number[], [endCol, endRow, endCh
 const tokenize = (text: string, keepLoc?: boolean) => {
   const tokenizer = delimiterTokanize(reducers);
   const results = Array.from(tokenizer(text)).map((t) => {
-    const r: any = { ...t };
+    const r: any = JSON.parse(JSON.stringify(t));
     r[r.type] = r.value;
-    delete r._;
+    delete r.ctx;
     delete r.type;
     delete r.value;
 
-    if (keepLoc && r.loc) {
-      r.loc = JSON.stringify(r.loc);
+    if (keepLoc && t.loc) {
+      r.loc = JSON.stringify(t.loc);
     } else {
       delete r.loc;
     }

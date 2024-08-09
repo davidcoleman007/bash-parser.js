@@ -1,6 +1,6 @@
-import { LexerPhase } from '~/lexer/types.ts';
+import type { LexerPhase } from '~/lexer/types.ts';
 import bashParser from '~/parse.ts';
-import { Expansion, setExpansions, TokenIf } from '~/tokenizer/mod.ts';
+import type { Expansion, TokenIf } from '~/tokenizer/mod.ts';
 import map from '~/utils/iterable/map.ts';
 
 const setCommandExpansion = (xp: Expansion, token: TokenIf) => {
@@ -21,25 +21,24 @@ const setCommandExpansion = (xp: Expansion, token: TokenIf) => {
 // command substitution (Command Substitution), or arithmetic expansion (Arithmetic
 // Expansion) from their introductory unquoted character sequences: '$' or "${", "$("
 // or '`', and "$((", respectively.
+const commandExpansion: LexerPhase = () =>
+  map((token: TokenIf) => {
+    if (token.is('WORD') || token.is('ASSIGNMENT_WORD')) {
+      if (!token.expansion || token.expansion.length === 0) {
+        return token;
+      }
 
-const commandExpansion: LexerPhase = () => (map((token: TokenIf) => {
-  if (token.is('WORD') || token.is('ASSIGNMENT_WORD')) {
-    if (!token.expansion || token.expansion.length === 0) {
-      return token;
+      return token.setExpansion(
+        token.expansion.map((xp: Expansion) => {
+          if (xp.type === 'command_expansion') {
+            return setCommandExpansion(xp, token);
+          }
+
+          return xp;
+        }),
+      );
     }
-
-    return setExpansions(
-      token,
-      token.expansion.map((xp: Expansion) => {
-        if (xp.type === 'command_expansion') {
-          return setCommandExpansion(xp, token);
-        }
-
-        return xp;
-      }),
-    );
-  }
-  return token;
-}));
+    return token;
+  });
 
 export default commandExpansion;

@@ -10,7 +10,7 @@ const expansionParameter: Reducer = (state, source, reducers) => {
     return {
       nextReduction: reducers.start,
       nextState: state.replaceLastExpansion({
-        loc: Object.assign({}, xp!.loc, { end: state.loc.previous }),
+        loc: Object.assign({}, xp!.loc, { end: state.loc.previous?.char }),
       }),
     };
   }
@@ -25,7 +25,7 @@ const expansionParameter: Reducer = (state, source, reducers) => {
   }
 
   return state.previousReducer(
-    state.replaceLastExpansion({ loc: Object.assign({}, xp!.loc, { end: state.loc.previous }) }),
+    state.replaceLastExpansion({ loc: Object.assign({}, xp!.loc, { end: state.loc.previous?.char }) }),
     [char].concat(source),
     reducers,
   );

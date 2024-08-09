@@ -1,5 +1,4 @@
-import { continueToken } from '~/tokenizer/tokens.ts';
-import type { Reducer } from '~/tokenizer/types.ts';
+import { mkToken, type Reducer } from '~/tokenizer/mod.ts';
 import last from '~/utils/last.ts';
 
 const expansionCommandOrArithmetic: Reducer = (state, source, reducers) => {
@@ -16,9 +15,9 @@ const expansionCommandOrArithmetic: Reducer = (state, source, reducers) => {
   if (char === undefined) {
     return {
       nextReduction: state.previousReducer,
-      tokensToEmit: [continueToken('$(')],
+      tokensToEmit: [mkToken('CONTINUE', '$(')],
       nextState: state.replaceLastExpansion({
-        loc: Object.assign({}, xp!.loc, { end: state.loc.previous }),
+        loc: Object.assign({}, xp!.loc, { end: state.loc.previous?.char }),
       }),
     };
   }
@@ -28,9 +27,7 @@ const expansionCommandOrArithmetic: Reducer = (state, source, reducers) => {
       nextReduction: state.previousReducer,
       nextState: state.appendChar(char).replaceLastExpansion({
         type: 'command_expansion',
-        loc: Object.assign({}, xp!.loc, {
-          end: state.loc.current,
-        }),
+        loc: Object.assign({}, xp!.loc, { end: state.loc.current?.char }),
       }),
     };
   }

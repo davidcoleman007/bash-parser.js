@@ -1,12 +1,12 @@
-import { LexerPhase } from '~/lexer/types.ts';
-import { TokenIf } from '~/tokenizer/types.ts';
+import type { LexerPhase } from '~/lexer/types.ts';
+import type { TokenIf } from '~/tokenizer/types.ts';
 import map from '~/utils/iterable/map.ts';
 
 const convertToWord: LexerPhase = () =>
   map((tk: TokenIf) => {
     // TOKEN tokens are converted to WORD tokens
     if (tk.is('TOKEN')) {
-      return tk.changeTokenType('WORD', tk.value!);
+      return tk.setType('WORD');
     }
 
     // other tokens are amitted as-is
