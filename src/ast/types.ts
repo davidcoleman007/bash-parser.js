@@ -246,7 +246,7 @@ export type AstNodeAssignmentWord = AstNode & {
 /**
  * A `ArithmeticExpansion` represent an arithmetic expansion operation to perform in the Word.
  *
- * The parsing of the arithmetic expression is done using [Babel parser](https://github.com/babel/babylon). See there for the `arithmeticAST` node specification.
+ * The parsing of the arithmetic expression is done using [Babel parser](https://babeljs.io/docs/babel-parser). See there for the `arithmeticAST` node specification.
  *
  * The `loc.start` property contains the index of the character in the Word text where the substitution starts. The `loc.end` property contains the index where it the ends.
  */

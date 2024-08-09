@@ -1,34 +1,34 @@
 export default {
-  sourceCode: "echo world #this is a comment\necho ciao",
+  sourceCode: 'echo world #this is a comment\necho ciao',
   result: {
-    type: "Script",
+    type: 'Script',
     commands: [
       {
-        type: "SimpleCommand",
+        type: 'SimpleCommand',
         name: {
-          text: "echo",
-          type: "Word"
+          text: 'echo',
+          type: 'Word',
         },
         suffix: [
           {
-            text: "world",
-            type: "Word"
-          }
-        ]
+            text: 'world',
+            type: 'Word',
+          },
+        ],
       },
       {
-        type: "SimpleCommand",
+        type: 'SimpleCommand',
         name: {
-          text: "echo",
-          type: "Word"
+          text: 'echo',
+          type: 'Word',
         },
         suffix: [
           {
-            text: "ciao",
-            type: "Word"
-          }
-        ]
-      }
-    ]
-  }
+            text: 'ciao',
+            type: 'Word',
+          },
+        ],
+      },
+    ],
+  },
 };

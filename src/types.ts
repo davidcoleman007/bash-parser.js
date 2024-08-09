@@ -42,7 +42,7 @@ export type Resolvers = {
   resolveParameter?: (parameterAST: object) => string;
 
   /**
-   * A callback to execute a [simple_command](https://github.com/vorpaljs/bash-parser/blob/master/docs/ast.md#simple_command). If specified, the parser calls it whenever it needs to resolve a command substitution. It receives as argument the AST of a [simple_command node](https://github.com/vorpaljs/bash-parser/blob/master/docs/ast.md#simple_command), and shall return the output of the command. If the option is not specified, the parser won't try to resolve any command substitution.
+   * A callback to execute a `simple_command`. If specified, the parser calls it whenever it needs to resolve a command substitution. It receives as argument the AST of a `simple_command` node, and shall return the output of the command. If the option is not specified, the parser won't try to resolve any command substitution.
    *
    * @param cmdAST - The AST of the simple command to execute.
    * @returns The output of the command.
@@ -50,7 +50,7 @@ export type Resolvers = {
   execCommand?: (cmdAST: object) => string;
 
   /**
-   * A callback to execute a [complete_command](https://github.com/vorpaljs/bash-parser/blob/master/docs/ast.md#complete_command) in a new shell process. If specified, the parser calls it whenever it needs to resolve a subshell statement. It receives as argument the AST of a [complete_command node](https://github.com/vorpaljs/bash-parser/blob/master/docs/ast.md#complete_command), and shall return the output of the command. If the option is not specified, the parser won't try to resolve any subshell statement.
+   * A callback to execute a `complete_command in a new shell process. If specified, the parser calls it whenever it needs to resolve a subshell statement. It receives as argument the AST of a `complete_command` node.md#complete_command), and shall return the output of the command. If the option is not specified, the parser won't try to resolve any subshell statement.
    *
    * @param scriptAST - The AST of the complete command to execute.
    * @returns The output of the command.
@@ -58,7 +58,7 @@ export type Resolvers = {
   execShellScript?: (scriptAST: object) => string;
 
   /**
-   * A callback to execute an [arithmetic_expansion](https://github.com/vorpaljs/bash-parser/blob/master/docs/ast.md#arithmetic_expansion). If specified, the parser calls it whenever it needs to resolve an arithmetic substitution. It receives as argument the AST of an [arithmetic_expansion node](https://github.com/vorpaljs/bash-parser/blob/master/docs/ast.md#arithmetic_expansion), and shall return the result of the calculation. If the option is not specified, the parser won't try to resolve any arithmetic expansion substitution. Please note that the arithmetic expression AST is built using [babylon](https://github.com/babel/babylon), you can find there its AST specification.
+   * A callback to execute an `arithmetic_expansion`. If specified, the parser calls it whenever it needs to resolve an arithmetic substitution. It receives as argument the AST of an `arithmetic_expansion` node, and shall return the result of the calculation. If the option is not specified, the parser won't try to resolve any arithmetic expansion substitution. Please note that the arithmetic expression AST is built using [babel/parser](https://babeljs.io/docs/babel-parser), you can find there its AST specification.
    *
    * @param arithmeticAST - The AST of the arithmetic expression to evaluate.
    * @returns The result of the calculation.
@@ -68,7 +68,7 @@ export type Resolvers = {
 
 export type Options = Resolvers & {
   /**
-   * Which mode to use for the parsing. The mode specifies the tokenizer, lexer phases, grammar, and AST builder to use. Default is `posix`.
+   * Which mode to use for the parsing. The mode specifies the tokenizer, lexer phases, grammar, and AST builder to use. Default is `bash`.
    */
   mode?: string;
 

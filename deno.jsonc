@@ -1,12 +1,19 @@
 {
   "name": "@ein/bash-parser",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "exports": "./mod.ts",
   "description": "Bash parser - parse bash scripts into an AST",
   "repository": "https://github.com/mattiasrunge/bash-parser",
   "license": "MIT",
   "author": "Mattias Runge-Broberg <mattias@runge.se>",
   "type": "module",
+  "publish": {
+    "exclude": [
+      "test",
+      "src/grammar/build-parser.ts",
+      ".vscode"
+    ]
+  },
   "compilerOptions": {
     "strict": true
   },
@@ -35,10 +42,10 @@
   "tasks": {
     "coverage-clean": "rm -rf coverage",
     "coverage-html": "genhtml -o coverage/html coverage/coverage.lcov",
-    "coverage": "DENO_FUTURE=1 deno coverage --lcov coverage --output=coverage/coverage.lcov && deno task coverage-html",
-    "test": "deno task coverage-clean && DENO_FUTURE=1 deno test --coverage=coverage",
-    "test-nc": "deno task coverage-clean && DENO_FUTURE=1 deno test -A --no-check --coverage=coverage",
-    "test-fast": "DENO_FUTURE=1 deno test --parallel --no-check --quiet",
-    "build-grammar": "DENO_FUTURE=1 deno run --allow-read --allow-write src/grammar/build.ts"
+    "coverage": "deno coverage --lcov coverage --output=coverage/coverage.lcov && deno task coverage-html",
+    "test": "deno task coverage-clean && deno test --coverage=coverage",
+    "test-nc": "deno task coverage-clean && deno test -A --no-check --coverage=coverage",
+    "test-fast": "deno test --parallel --no-check --quiet",
+    "build-parser": "deno run --allow-read --allow-write src/grammar/build-parser.ts"
   }
 }

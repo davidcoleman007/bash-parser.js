@@ -14,6 +14,7 @@ try {
   // since it is unused and produces a warning.
   source = `
 // deno-lint-ignore-file
+// deno-fmt-ignore-file
 ${source.replace('_token_stack:', '')}
 // ESM export
 export {parser};
