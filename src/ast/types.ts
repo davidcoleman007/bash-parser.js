@@ -254,7 +254,7 @@ export type AstNodeArithmeticExpansion = AstNode & {
   type: 'ArithmeticExpansion';
   expression: string;
   resolved: boolean;
-  arithmeticAST: any; // TODO
+  arithmeticAST: AstNode; // Maybe this should be specialized
 };
 
 /** A `CommandExpansion` represent a command substitution operation to perform on the Word.
@@ -267,7 +267,7 @@ export type AstNodeCommandExpansion = AstNode & {
   type: 'CommandExpansion';
   command: string;
   resolved: boolean;
-  commandAST: any; // TODO
+  commandAST: AstNodeScript;
 };
 
 /**

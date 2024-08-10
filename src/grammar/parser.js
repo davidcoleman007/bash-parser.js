@@ -285,7 +285,7 @@ parseError: function parseError (str, hash) {
         throw error;
     }
 },
-parse: function parse(input) {
+parse: async function parse(input) {
     var self = this, stack = [0], tstack = [], vstack = [null], lstack = [], table = this.table, yytext = '', yylineno = 0, yyleng = 0, recovering = 0, TERROR = 2, EOF = 1;
     var args = lstack.slice.call(arguments, 1);
     var lexer = Object.create(this.lexer);
@@ -315,9 +315,9 @@ parse: function parse(input) {
         lstack.length = lstack.length - n;
     }
     
-        var lex = function () {
+        var lex = async function () {
             var token;
-            token = lexer.lex() || EOF;
+            token = (await lexer.lex()) || EOF;
             if (typeof token !== 'number') {
                 token = self.symbols_[token] || token;
             }
@@ -330,7 +330,7 @@ parse: function parse(input) {
             action = this.defaultActions[state];
         } else {
             if (symbol === null || typeof symbol == 'undefined') {
-                symbol = lex();
+                symbol = await lex();
             }
             action = table[state] && table[state][symbol];
         }

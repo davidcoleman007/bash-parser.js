@@ -5,26 +5,28 @@ import bashParser from '~/parse.ts';
 import type { Expansion, TokenIf } from '~/tokenizer/mod.ts';
 import map from '~/utils/iterable/map.ts';
 
-const handleParameter = (obj: ParameterOp, match: RegExpMatchArray) => {
+const handleParameter = async (obj: ParameterOp, match: RegExpMatchArray) => {
   const ret = Object.fromEntries(
-    Object.entries(obj).map(([k, v]) => {
-      if (typeof v === 'function') {
-        const val = v(match);
-        return [k, val];
-      }
+    await Promise.all(
+      Object.entries(obj).map(async ([k, v]) => {
+        if (typeof v === 'function') {
+          const val = v(match);
+          return [k, val];
+        }
 
-      if (typeof v === 'object' && k !== 'expand') {
-        // TODO: This as seems funky
-        return [k, handleParameter(v as unknown as ParameterOp, match)];
-      }
+        if (typeof v === 'object' && k !== 'expand') {
+          // TODO: This as seems funky
+          return [k, await handleParameter(v as unknown as ParameterOp, match)];
+        }
 
-      return [k, v];
-    }),
+        return [k, v];
+      }),
+    ),
   ) as ParameterOp;
 
   if (ret.expand) {
     for (const prop of ret.expand as string[]) {
-      const ast = bashParser(ret[prop] as string, { mode: 'word-expansion' });
+      const ast = await bashParser(ret[prop] as string, { mode: 'word-expansion' });
       // console.log('expand', ret[prop], ast.commands[0].name);
       (ret as any)[prop] = (ast.commands[0] as AstNodeCommand).name;
     }
@@ -35,7 +37,7 @@ const handleParameter = (obj: ParameterOp, match: RegExpMatchArray) => {
   return ret;
 };
 
-const expandParameter = (xp: Expansion, enums: Enums) => {
+const expandParameter = async (xp: Expansion, enums: Enums) => {
   const parameter = xp.parameter;
 
   for (const pair of Object.entries(enums.parameterOperators)) {
@@ -43,7 +45,7 @@ const expandParameter = (xp: Expansion, enums: Enums) => {
     const match = parameter!.match(re);
 
     if (match) {
-      const opProps = handleParameter(pair[1], match);
+      const opProps = await handleParameter(pair[1], match);
       const mergedObject = Object.assign({}, xp, opProps);
 
       return Object.fromEntries(
@@ -64,20 +66,22 @@ const expandParameter = (xp: Expansion, enums: Enums) => {
  * '$' or "${", "$(" * or '`', and "$((", respectively.
  */
 const parameterExpansion: LexerPhase = (ctx) =>
-  map((token: TokenIf) => {
+  map(async (token: TokenIf) => {
     if (token.is('WORD') || token.is('ASSIGNMENT_WORD')) {
       if (!token.expansion || token.expansion.length === 0) {
         return token;
       }
 
       return token.setExpansion(
-        token.expansion!.map((xp: Expansion) => {
-          if (xp.type === 'parameter_expansion') {
-            return expandParameter(xp, ctx.enums);
-          }
+        await Promise.all(
+          token.expansion!.map(async (xp: Expansion) => {
+            if (xp.type === 'parameter_expansion') {
+              return await expandParameter(xp, ctx.enums);
+            }
 
-          return xp;
-        }),
+            return xp;
+          }),
+        ),
       );
     }
     return token;

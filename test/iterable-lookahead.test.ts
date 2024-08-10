@@ -1,4 +1,5 @@
 import { assert, assertEquals, assertThrows } from '@std/assert';
+import fromArray from '~/utils/iterable/from-array.ts';
 import isIterable from '~/utils/iterable/is.ts';
 import iterableLookahead from '~/utils/iterable/lookahead.ts';
 
@@ -39,29 +40,35 @@ Deno.test('iterable-lookahead', async (t) => {
     behind: 2,
   }];
 
-  await t.step('return an iterable', () => {
-    assertEquals(isIterable(iterableLookahead([])), true);
+  await t.step('return an iterable', async () => {
+    assertEquals(isIterable(iterableLookahead(fromArray([]))), true);
   });
 
-  await t.step('resulting iterable is equivalent to the initial one', () => {
-    assertEquals(Array.from(iterableLookahead([1, 2, 3])), [1, 2, 3]);
+  await t.step('resulting iterable is equivalent to the initial one', async () => {
+    const arr = [];
+
+    for await (const item of iterableLookahead(fromArray([1, 2, 3]))) {
+      arr.push(item);
+    }
+
+    assertEquals(arr, [1, 2, 3]);
   });
 
-  await t.step('resulting iterable has a ahead method', () => {
-    const it = iterableLookahead([]);
+  await t.step('resulting iterable has a ahead method', async () => {
+    const it = iterableLookahead(fromArray([]));
     assertEquals(typeof it.ahead, 'function');
   });
 
-  await t.step('resulting iterable has a behind method', () => {
-    const it = iterableLookahead([]);
+  await t.step('resulting iterable has a behind method', async () => {
+    const it = iterableLookahead(fromArray([]));
     assertEquals(typeof it.behind, 'function');
   });
 
-  await t.step('behind and ahead indexes defaults to 1', () => {
-    const it = iterableLookahead([1, 2, 3, 4]);
+  await t.step('behind and ahead indexes defaults to 1', async () => {
+    const it = iterableLookahead(fromArray([1, 2, 3, 4]));
     const result = [];
 
-    for (const item of it) {
+    for await (const item of it) {
       result.push({
         item,
         ahead: it.ahead(1),
@@ -72,11 +79,11 @@ Deno.test('iterable-lookahead', async (t) => {
     assertEquals(result, expected1);
   });
 
-  await t.step('behind and ahead works with indexes smaller than size', () => {
-    const it = iterableLookahead([1, 2, 3, 4], 2);
+  await t.step('behind and ahead works with indexes smaller than size', async () => {
+    const it = iterableLookahead(fromArray([1, 2, 3, 4]), 2);
     const result = [];
 
-    for (const item of it) {
+    for await (const item of it) {
       result.push({
         item,
         ahead: it.ahead(1),
@@ -86,11 +93,11 @@ Deno.test('iterable-lookahead', async (t) => {
     assertEquals(result, Object.assign(expected1.concat(), {}));
   });
 
-  await t.step('behind and ahead use index', () => {
-    const it = iterableLookahead([1, 2, 3, 4], 2);
+  await t.step('behind and ahead use index', async () => {
+    const it = iterableLookahead(fromArray([1, 2, 3, 4]), 2);
     const result = [];
 
-    for (const item of it) {
+    for await (const item of it) {
       const r = {
         item,
         ahead: it.ahead(2),
@@ -101,11 +108,11 @@ Deno.test('iterable-lookahead', async (t) => {
     assertEquals(result, expected2);
   });
 
-  await t.step('behind and ahead works with size greater than array', () => {
-    const it = iterableLookahead([1, 2, 3, 4], 13);
+  await t.step('behind and ahead works with size greater than array', async () => {
+    const it = iterableLookahead(fromArray([1, 2, 3, 4]), 13);
     const result = [];
 
-    for (const item of it) {
+    for await (const item of it) {
       const r = {
         item,
         ahead: it.ahead(2),
@@ -116,8 +123,8 @@ Deno.test('iterable-lookahead', async (t) => {
     assertEquals(result, expected2);
   });
 
-  await t.step('throws if lookahead or lookbehind are over size', () => {
-    const it = iterableLookahead([1, 2, 3, 4], 1);
+  await t.step('throws if lookahead or lookbehind are over size', async () => {
+    const it = iterableLookahead(fromArray([1, 2, 3, 4]), 1);
     const err1 = assertThrows(() => it.ahead(2)) as Error;
     const err2 = assertThrows(() => it.behind(2)) as Error;
 
@@ -127,9 +134,9 @@ Deno.test('iterable-lookahead', async (t) => {
     assert(err2 instanceof RangeError);
   });
 
-  await t.step('throws if size is smaller than 1', () => {
-    const err1 = assertThrows(() => iterableLookahead([1, 2, 3, 4], -1)) as Error;
-    const err2 = assertThrows(() => iterableLookahead([1, 2, 3, 4], 0)) as Error;
+  await t.step('throws if size is smaller than 1', async () => {
+    const err1 = assertThrows(() => iterableLookahead(fromArray([1, 2, 3, 4]), -1)) as Error;
+    const err2 = assertThrows(() => iterableLookahead(fromArray([1, 2, 3, 4]), 0)) as Error;
 
     assertEquals(err1.message, 'size argument must be greater than 0');
     assertEquals(err2.message, 'size argument must be greater than 0');
@@ -137,8 +144,8 @@ Deno.test('iterable-lookahead', async (t) => {
     assert(err2 instanceof RangeError);
   });
 
-  await t.step('throws if lookahead or lookbehind are <= 0', () => {
-    const it = iterableLookahead([1, 2, 3, 4], 1);
+  await t.step('throws if lookahead or lookbehind are <= 0', async () => {
+    const it = iterableLookahead(fromArray([1, 2, 3, 4]), 1);
     const err1 = assertThrows(() => it.ahead(-2)) as Error;
     const err2 = assertThrows(() => it.behind(-2)) as Error;
     const err3 = assertThrows(() => it.ahead(-2)) as Error;

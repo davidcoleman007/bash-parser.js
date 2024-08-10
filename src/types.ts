@@ -1,5 +1,8 @@
 import type { AstNodeScript } from '~/ast/types.ts';
 
+/**
+ * The resolvers to use by the parsing to resolve external information when needed.
+ */
 export type Resolvers = {
   /**
    * A callback to resolve shell alias. If specified, the parser calls it whenever it needs to resolve an alias. It should return the resolved code if the alias exists, otherwise `null`. If the option is not specified, the parser won't try to resolve any alias.
@@ -66,6 +69,9 @@ export type Resolvers = {
   runArithmeticExpression?: (arithmeticAST: object) => string;
 };
 
+/**
+ * The options to use for controlling how the parsing is done.
+ */
 export type Options = Resolvers & {
   /**
    * Which mode to use for the parsing. The mode specifies the tokenizer, lexer phases, grammar, and AST builder to use. Default is `bash`.
@@ -78,4 +84,11 @@ export type Options = Resolvers & {
   insertLOC?: boolean;
 };
 
-export type Parse = (sourceCode: string, options?: Options) => AstNodeScript;
+/**
+ * Parses a shell script and returns its AST.
+ *
+ * @param sourceCode - The shell script to parse.
+ * @param options - The options to use for the parsing.
+ * @returns The AST of the shell script.
+ */
+export type Parse = (sourceCode: string, options?: Options) => Promise<AstNodeScript>;

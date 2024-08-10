@@ -1,7 +1,7 @@
 import operators from '~/modes/bash/enums/operators.ts';
 import last from '~/utils/last.ts';
 import { mkToken } from './token.ts';
-import type { Expansion, Reducer, ReducerLocation, ReducerNextState, Reducers, ReducerStateIf } from './types.ts';
+import type { Expansion, Reducer, ReducerLocation, ReducerNextState, Reducers, ReducerStateIf, TokenIf } from './types.ts';
 
 class State implements ReducerStateIf {
   current = '';
@@ -164,7 +164,7 @@ class State implements ReducerStateIf {
  *
  * @returns A function that takes shell source code and returns an iterable of parsed tokens.
  */
-export const tokenize = (r: Reducers) => (function* tokenizer(src: string) {
+export const tokenize = (r: Reducers) => (async function* (src: string): AsyncIterable<TokenIf> {
   let state = new State(r);
 
   let reduction: Reducer | null = r.start;

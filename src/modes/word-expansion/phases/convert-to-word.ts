@@ -3,7 +3,7 @@ import type { TokenIf } from '~/tokenizer/types.ts';
 import map from '~/utils/iterable/map.ts';
 
 const convertToWord: LexerPhase = () =>
-  map((tk: TokenIf) => {
+  map(async (tk: TokenIf) => {
     // TOKEN tokens are converted to WORD tokens
     if (tk.is('TOKEN')) {
       return tk.setType('WORD');

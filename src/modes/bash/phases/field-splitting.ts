@@ -1,13 +1,13 @@
 import type { LexerPhase } from '~/lexer/types.ts';
 import { mkToken, type TokenIf } from '~/tokenizer/mod.ts';
-import compose from '~/utils/compose.ts';
 import flatten from '~/utils/iterable/flatten.ts';
 import map from '~/utils/iterable/map.ts';
+import compose from '../../../utils/iterable/compose.ts';
 
 export const fieldSplitting: LexerPhase = () =>
   compose<TokenIf>(
     flatten,
-    map((token: TokenIf) => {
+    map(async (token: TokenIf) => {
       if (token.is('WORD')) {
         const fields = token.value!.split('\0');
 

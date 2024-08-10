@@ -1,34 +1,33 @@
 import is from '~/utils/iterable/is.ts';
 
-export type MapFunction<T> = (value: T, idx: number, iter: Iterable<T>) => T | T[] | null;
-export type MapperFunction<T> = (it: Iterable<T>) => Iterable<T>;
+export type MapFunction<T> = (value: T, idx: number, iter: AsyncIterable<T>) => Promise<T | T[] | null>;
+export type MapperFunction<T> = (it: AsyncIterable<T>) => AsyncIterable<T>;
 
 const map = <T>(callback: MapFunction<T>): MapperFunction<T> => {
-  return (it) => {
+  return async function* (it) {
     if (!is(it)) {
       throw new TypeError('argument must be an iterable');
     }
 
     let idx = 0;
-    const dataIterator = it[Symbol.iterator]();
+    for await (const item of it) {
+      const result = await callback(item, idx++, it);
 
-    const resultIterable: Iterable<T> = {
-      [Symbol.iterator]() {
-        return {
-          next(): IteratorResult<T> {
-            const item = dataIterator.next();
+      if (result === null) {
+        continue;
+      }
 
-            if (!item.done) {
-              // TODO: As T, when is it T[] or null?
-              item.value = callback(item.value, idx++, it) as T;
-            }
-            return item;
-          },
-        };
-      },
-    };
+      // TODO: Does this do flattening so we can remove that step when using map?
+      if (Array.isArray(result)) {
+        for (const res of result) {
+          yield res;
+        }
 
-    return resultIterable;
+        continue;
+      }
+
+      yield result;
+    }
   };
 };
 

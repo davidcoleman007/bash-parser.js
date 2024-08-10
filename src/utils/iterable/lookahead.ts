@@ -1,11 +1,11 @@
 import is from '~/utils/iterable/is.ts';
 
-export interface LookaheadIterable<T> extends Iterable<T> {
+export interface LookaheadIterable<T> extends AsyncIterable<T> {
   ahead(idx: number): T | undefined;
   behind(idx: number): T | undefined;
 }
 
-const lookahead = <T>(it: Iterable<T>, size: number = 1): LookaheadIterable<T> => {
+const lookahead = <T>(it: AsyncIterable<T>, size: number = 1): LookaheadIterable<T> => {
   if (size < 1) {
     throw new RangeError('size argument must be greater than 0');
   }
@@ -17,7 +17,7 @@ const lookahead = <T>(it: Iterable<T>, size: number = 1): LookaheadIterable<T> =
   const behindCache: (T | undefined)[] = new Array(size + 1);
   const aheadCache: T[] = [];
 
-  const iterator = it[Symbol.iterator]();
+  const iterator = it[Symbol.asyncIterator]();
 
   const resultIterable: LookaheadIterable<T> = {
     ahead(idx: number): T | undefined {
@@ -42,14 +42,14 @@ const lookahead = <T>(it: Iterable<T>, size: number = 1): LookaheadIterable<T> =
 
       return behindCache[idx];
     },
-    [Symbol.iterator]() {
+    [Symbol.asyncIterator]() {
       return {
-        next(): IteratorResult<T> {
-          let item = iterator.next();
+        async next(): Promise<IteratorResult<T>> {
+          let item = await iterator.next();
 
           while (!item.done && aheadCache.length <= size) {
             aheadCache.push(item.value);
-            item = iterator.next();
+            item = await iterator.next();
           }
 
           if (!item.done) {
@@ -57,7 +57,7 @@ const lookahead = <T>(it: Iterable<T>, size: number = 1): LookaheadIterable<T> =
           }
 
           if (item.done && aheadCache.length === 0) {
-            return { done: true, value: undefined as any };
+            return { done: true, value: undefined };
           }
 
           const value = aheadCache.shift() as T;
@@ -74,6 +74,6 @@ const lookahead = <T>(it: Iterable<T>, size: number = 1): LookaheadIterable<T> =
   return resultIterable;
 };
 
-lookahead.depth = (size: number) => <T>(iterable: Iterable<T>): LookaheadIterable<T> => lookahead(iterable, size);
+lookahead.depth = (size: number) => <T>(iterable: AsyncIterable<T>): LookaheadIterable<T> => lookahead(iterable, size);
 
 export default lookahead;

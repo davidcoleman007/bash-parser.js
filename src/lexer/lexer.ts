@@ -3,11 +3,11 @@ import type { LexerContext, LexerPhaseFn } from '~/lexer/types.ts';
 import type { Mode } from '~/modes/types.ts';
 import { type TokenIf, tokenize, type Tokenizer } from '~/tokenizer/mod.ts';
 import type { Options } from '~/types.ts';
-import compose from '~/utils/compose.ts';
+import compose from '../utils/iterable/compose.ts';
 
 export class Lexer implements LexerIf {
   private tokenizer: Tokenizer;
-  private tokens?: Iterable<TokenIf>;
+  private tokens?: AsyncIterable<TokenIf>;
   private insertLOC: boolean;
   public yytext?: any;
   public yylineno: number = 0;
@@ -19,20 +19,19 @@ export class Lexer implements LexerIf {
       tokenizerPhase,
     ];
 
-    const phases = [
-      tokenizerPhase,
-      ...mode.lexerPhases.map((phase) => {
-        const ctx: LexerContext = {
-          resolvers: options,
-          enums: mode.enums,
-          previousPhases,
-        };
+    const phases = [tokenizerPhase];
 
-        const ph = phase(ctx);
-        previousPhases = [...previousPhases, ph];
-        return ph;
-      }),
-    ];
+    for (const phase of mode.lexerPhases) {
+      const ctx: LexerContext = {
+        resolvers: options,
+        enums: mode.enums,
+        previousPhases,
+      };
+
+      const ph = phase(ctx);
+      previousPhases = [...previousPhases, ph];
+      phases.push(ph);
+    }
 
     this.tokenizer = compose<TokenIf>(...phases.reverse());
     this.insertLOC = !!options.insertLOC;
@@ -42,9 +41,9 @@ export class Lexer implements LexerIf {
     this.tokens = this.tokenizer(source);
   }
 
-  lex() {
-    const iterator = this.tokens![Symbol.iterator]();
-    const item = iterator.next();
+  async lex() {
+    const iterator = this.tokens![Symbol.asyncIterator]();
+    const item = await iterator.next();
 
     const tk: TokenIf = item.value;
 

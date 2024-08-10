@@ -1,12 +1,12 @@
 import type { LexerPhase } from '~/lexer/types.ts';
 import type { TokenIf } from '~/tokenizer/mod.ts';
-import compose from '~/utils/compose.ts';
 import lookahead, { type LookaheadIterable } from '~/utils/iterable/lookahead.ts';
 import map from '~/utils/iterable/map.ts';
+import compose from '../../../utils/iterable/compose.ts';
 
 const identifyMaybeSimpleCommands: LexerPhase = (ctx) => {
   return compose<TokenIf>(
-    map((tk: TokenIf, _idx, iterable) => {
+    map(async (tk: TokenIf, _idx, iterable) => {
       const it = iterable as LookaheadIterable<TokenIf>;
       const last = it.behind(1) || { EMPTY: true, is: (type: string) => type === 'EMPTY' };
 

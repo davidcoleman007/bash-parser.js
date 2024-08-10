@@ -2,8 +2,8 @@ import bashParser from '~/parse.ts';
 import utils from './_utils.ts';
 
 Deno.test('if', async (t) => {
-  await t.step('parse if', () => {
-    const result = bashParser('if true; then echo 1; fi');
+  await t.step('parse if', async () => {
+    const result = await bashParser('if true; then echo 1; fi');
     // console.log(inspect(result, {depth:null}))
     utils.checkResults(
       result,
@@ -31,8 +31,8 @@ Deno.test('if', async (t) => {
     );
   });
 
-  await t.step('parse if else', () => {
-    const result = bashParser('if true; then echo 1; else echo 2; fi');
+  await t.step('parse if else', async () => {
+    const result = await bashParser('if true; then echo 1; else echo 2; fi');
     // utils.logResults(result);
     utils.checkResults(
       result,
@@ -68,8 +68,8 @@ Deno.test('if', async (t) => {
     );
   });
 
-  await t.step('parse if else multiline', () => {
-    const result = bashParser('if true; then \n echo 1;\n else\n echo 2;\n fi');
+  await t.step('parse if else multiline', async () => {
+    const result = await bashParser('if true; then \n echo 1;\n else\n echo 2;\n fi');
     // console.log(inspect(result, {depth:null}))
     utils.checkResults(
       result,
@@ -105,8 +105,8 @@ Deno.test('if', async (t) => {
     );
   });
 
-  await t.step('parse if elif else', () => {
-    const result = bashParser('if true; then echo 1; elif false; then echo 3; else echo 2; fi');
+  await t.step('parse if elif else', async () => {
+    const result = await bashParser('if true; then echo 1; elif false; then echo 3; else echo 2; fi');
     // utils.logResults(result);
     const expected = {
       type: 'Script',

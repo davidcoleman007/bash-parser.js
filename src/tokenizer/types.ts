@@ -38,7 +38,7 @@ export type TokenIf = TokenFields & {
   setExpansion(expansion: Expansion[]): TokenIf;
 };
 
-export type Tokenizer = (code: string) => Iterable<TokenIf>;
+export type Tokenizer = (code: string) => AsyncIterable<TokenIf>;
 
 export interface ReducerStateIf {
   current: string;
@@ -107,5 +107,5 @@ export type Expansion = {
 };
 
 export type Visitor = {
-  [key: string]: (tk: TokenIf, iterable?: Iterable<TokenIf>) => TokenIf[] | TokenIf | null;
+  [key: string]: (tk: TokenIf, iterable?: AsyncIterable<TokenIf>) => Promise<TokenIf[] | TokenIf | null>;
 };

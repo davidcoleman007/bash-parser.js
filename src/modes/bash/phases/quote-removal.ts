@@ -27,7 +27,7 @@ function unresolvedExpansions(token: TokenIf) {
 }
 
 const quoteRemoval: LexerPhase = () =>
-  map((token: TokenIf) => {
+  map(async (token: TokenIf) => {
     if (token.is('WORD') || token.is('ASSIGNMENT_WORD')) {
       if (!unresolvedExpansions(token)) {
         return token.setValue(unquote(token.value!));

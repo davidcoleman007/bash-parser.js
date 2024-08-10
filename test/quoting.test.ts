@@ -1,10 +1,10 @@
-import { assertThrows } from '@std/assert';
+import { assertRejects } from '@std/assert';
 import bashParser from '~/parse.ts';
 import utils from './_utils.ts';
 
 function testUnclosed(cmd: string, char: string) {
-  return () => {
-    assertThrows(
+  return async () => {
+    assertRejects(
       () => bashParser(cmd),
       SyntaxError,
       'Unclosed ' + char,
@@ -20,8 +20,8 @@ Deno.test('quoting', async (t) => {
   await t.step('throws on unclosed arhit subst', testUnclosed('echo $((TEST1', '$(('));
   await t.step('throws on unclosed param subst', testUnclosed('echo ${TEST1', '${'));
 
-  await t.step('quotes within double quotes', () => {
-    const result = bashParser('echo "TEST1 \'TEST2"');
+  await t.step('quotes within double quotes', async () => {
+    const result = await bashParser('echo "TEST1 \'TEST2"');
     // utils.logResults(result)
     utils.checkResults(result, {
       type: 'Script',
@@ -33,8 +33,8 @@ Deno.test('quoting', async (t) => {
     });
   });
 
-  await t.step('escaped double quotes within double quotes', () => {
-    const result = bashParser('echo "TEST1 \\"TEST2"');
+  await t.step('escaped double quotes within double quotes', async () => {
+    const result = await bashParser('echo "TEST1 \\"TEST2"');
     // utils.logResults(result);
     utils.checkResults(result, {
       type: 'Script',
@@ -46,8 +46,8 @@ Deno.test('quoting', async (t) => {
     });
   });
 
-  await t.step('double quotes within single quotes', () => {
-    const result = bashParser("echo 'TEST1 \"TEST2'");
+  await t.step('double quotes within single quotes', async () => {
+    const result = await bashParser("echo 'TEST1 \"TEST2'");
     utils.checkResults(result, {
       type: 'Script',
       commands: [{
@@ -58,8 +58,8 @@ Deno.test('quoting', async (t) => {
     });
   });
 
-  await t.step('Partially quoted word', () => {
-    const result = bashParser("echo TEST1' TEST2 'TEST3");
+  await t.step('Partially quoted word', async () => {
+    const result = await bashParser("echo TEST1' TEST2 'TEST3");
     utils.checkResults(result, {
       type: 'Script',
       commands: [{
@@ -70,8 +70,8 @@ Deno.test('quoting', async (t) => {
     });
   });
 
-  await t.step('Partially double quoted word', () => {
-    const result = bashParser('echo TEST3" TEST4 "TEST5');
+  await t.step('Partially double quoted word', async () => {
+    const result = await bashParser('echo TEST3" TEST4 "TEST5');
     // utils.logResults(result);
     utils.checkResults(result, {
       type: 'Script',

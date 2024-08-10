@@ -1,7 +1,8 @@
 import type { TokenIf } from '~/tokenizer/types.ts';
 
-const loggerPhse = (name: string) => () => (function* (tokens: TokenIf[]) {
-  for (const tk of tokens) {
+const loggerPhase = (name: string) => () => (async function* (tokens: TokenIf[]) {
+  console.log('tokens', tokens);
+  for await (const tk of tokens) {
     if (!tk) {
       console.log(`In ${name} token null.`);
     }
@@ -15,4 +16,4 @@ const loggerPhse = (name: string) => () => (function* (tokens: TokenIf[]) {
   }
 });
 
-export default loggerPhse;
+export default loggerPhase;

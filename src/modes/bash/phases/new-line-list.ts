@@ -1,12 +1,11 @@
 import type { LexerPhase } from '~/lexer/types.ts';
 import { applyVisitor, mkToken, type TokenIf } from '~/tokenizer/mod.ts';
-import compose from '~/utils/compose.ts';
 import lookahead, { type LookaheadIterable } from '~/utils/iterable/lookahead.ts';
 import map from '~/utils/iterable/map.ts';
-import filterNonNull from '~/utils/non-null.ts';
+import compose from '../../../utils/iterable/compose.ts';
 
 const SkipRepeatedNewLines = {
-  NEWLINE(tk: TokenIf, iterable?: Iterable<TokenIf>) {
+  async NEWLINE(tk: TokenIf, iterable?: AsyncIterable<TokenIf>) {
     const it = iterable as LookaheadIterable<TokenIf>;
     const lastToken = it.behind(1) || mkToken('EMPTY');
 
@@ -22,7 +21,7 @@ const SkipRepeatedNewLines = {
 newline_list token (it was a rule in POSIX grammar) */
 const newLineList: LexerPhase = () =>
   compose<TokenIf>(
-    filterNonNull,
+    // filterNonNull,
     map(
       applyVisitor(SkipRepeatedNewLines),
     ),

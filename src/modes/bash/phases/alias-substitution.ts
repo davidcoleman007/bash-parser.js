@@ -1,12 +1,12 @@
 import type { LexerPhase, LexerPhaseFn } from '~/lexer/types.ts';
 import { applyVisitor, type TokenIf, type Visitor } from '~/tokenizer/mod.ts';
 import type { Resolvers } from '~/types.ts';
-import compose from '~/utils/compose.ts';
 import flatten from '~/utils/iterable/flatten.ts';
 import map from '~/utils/iterable/map.ts';
+import compose from '../../../utils/iterable/compose.ts';
 
 const expandAlias = (preAliasLexer: LexerPhaseFn, resolveAlias: Resolvers['resolveAlias'], reservedWords: string[]) => {
-  function* tryExpandToken(token: TokenIf, expandingAliases: string[]): Iterable<TokenIf> {
+  async function* tryExpandToken(token: TokenIf, expandingAliases: string[]): AsyncIterable<TokenIf> {
     if (expandingAliases.indexOf(token.value!) !== -1) {
       yield token;
       return;
@@ -15,7 +15,7 @@ const expandAlias = (preAliasLexer: LexerPhaseFn, resolveAlias: Resolvers['resol
     if (result === undefined) {
       yield token;
     } else {
-      for (const newToken of preAliasLexer(result)) {
+      for await (const newToken of preAliasLexer(result)) {
         if (newToken.is('WORD') || reservedWords.some((word) => newToken.is(word))) {
           yield* tryExpandToken(
             newToken,
@@ -28,8 +28,14 @@ const expandAlias = (preAliasLexer: LexerPhaseFn, resolveAlias: Resolvers['resol
     }
   }
 
-  const expandToken = (tk: TokenIf) => {
-    return Array.from(tryExpandToken(tk, []));
+  const expandToken = async (tk: TokenIf) => {
+    const result: TokenIf[] = [];
+
+    for await (const newToken of tryExpandToken(tk, [])) {
+      result.push(newToken);
+    }
+
+    return result;
   };
 
   const visitor: Visitor = {

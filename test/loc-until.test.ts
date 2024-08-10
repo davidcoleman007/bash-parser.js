@@ -2,8 +2,8 @@ import bashParser from '~/parse.ts';
 import utils from './_utils.ts';
 
 Deno.test('loc-until', async (t) => {
-  await t.step('loc in until statement', () => {
-    const result = bashParser('until true || 1; do sleep 1;echo ciao; done', { insertLOC: true });
+  await t.step('loc in until statement', async () => {
+    const result = await bashParser('until true || 1; do sleep 1;echo ciao; done', { insertLOC: true });
     // utils.logResults(result.commands[0]);
     const expected = {
       type: 'Until',

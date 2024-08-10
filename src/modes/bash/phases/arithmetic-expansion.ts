@@ -23,7 +23,7 @@ function parseArithmeticAST(xp: Expansion) {
 }
 
 const arithmeticExpansion: LexerPhase = () =>
-  map((token: TokenIf) => {
+  map(async (token: TokenIf) => {
     if (token.is('WORD') || token.is('ASSIGNMENT_WORD')) {
       if (!token.expansion || token.expansion.length === 0) {
         return token;

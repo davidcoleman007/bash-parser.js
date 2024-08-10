@@ -2,8 +2,8 @@ import bashParser from '~/parse.ts';
 import utils from './_utils.ts';
 
 Deno.test('loc-while', async (t) => {
-  await t.step('loc in while statement', () => {
-    const result = bashParser('while true && 1; do sleep 1;echo ciao; done', { insertLOC: true });
+  await t.step('loc in while statement', async () => {
+    const result = await bashParser('while true && 1; do sleep 1;echo ciao; done', { insertLOC: true });
     // utils.logResults(result.commands[0]);
     const expected = {
       type: 'While',

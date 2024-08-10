@@ -11,7 +11,10 @@
     "exclude": [
       "test",
       "src/grammar/build-parser.ts",
-      ".vscode"
+      ".vscode",
+      ".github",
+      "CODE_OF_CONDUCT.md",
+      "CONTRIBUTING.md"
     ]
   },
   "compilerOptions": {
@@ -45,6 +48,7 @@
     "coverage": "deno coverage --lcov coverage --output=coverage/coverage.lcov && deno task coverage-html",
     "test": "deno task coverage-clean && deno test --coverage=coverage",
     "test-nc": "deno task coverage-clean && deno test -A --no-check --coverage=coverage",
+    "test-single": "deno test -A  --no-check test/alias-substitution.test.ts",
     "test-fast": "deno test --parallel --no-check --quiet",
     "build-parser": "deno run --allow-read --allow-write src/grammar/build-parser.ts"
   }

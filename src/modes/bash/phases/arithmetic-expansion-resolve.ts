@@ -5,14 +5,14 @@ import { ReplaceString } from '~/utils/replace-string.ts';
 import fieldSplittingMark from './lib/field-splitting-mark.ts';
 
 const arithmeticExpansionResolve: LexerPhase = (ctx) =>
-  map((token: TokenIf) => {
+  map(async (token: TokenIf) => {
     if (ctx.resolvers.runArithmeticExpression && token.expansion) {
       const rValue = new ReplaceString(token.value!);
 
       for (const xp of token.expansion) {
         if (xp.type === 'arithmetic_expansion') {
           const result = ctx.resolvers.runArithmeticExpression(xp);
-          const replacement = fieldSplittingMark(result, token.value!, ctx.resolvers.resolveEnv);
+          const replacement = await fieldSplittingMark(result, token.value!, ctx.resolvers.resolveEnv);
 
           rValue.replace(
             xp.loc!.start,

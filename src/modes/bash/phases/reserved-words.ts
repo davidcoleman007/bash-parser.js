@@ -1,8 +1,8 @@
 import type { LexerPhase } from '~/lexer/types.ts';
 import type { TokenIf } from '~/tokenizer/mod.ts';
-import compose from '~/utils/compose.ts';
 import lookahead, { type LookaheadIterable } from '~/utils/iterable/lookahead.ts';
 import map from '~/utils/iterable/map.ts';
+import compose from '../../../utils/iterable/compose.ts';
 // const words = require('../enums/reserved-words');
 /*
 function defined(v) {
@@ -31,7 +31,7 @@ function isValidReservedWordPosition(tk: TokenIf, iterable: LookaheadIterable<To
 
 const reservedWords: LexerPhase = (ctx) =>
   compose<TokenIf>(
-    map((tk: TokenIf, _idx, iterable) => {
+    map(async (tk: TokenIf, _idx, iterable) => {
       // console.log(tk, isValidReservedWordPosition(tk, iterable), hasOwnProperty(words, tk.value))
       // TOKEN tokens consisting of a reserved word
       // are converted to their own token types

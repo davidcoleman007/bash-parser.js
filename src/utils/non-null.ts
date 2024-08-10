@@ -1,4 +1,4 @@
-import filter from './filter.ts';
+import filter from './iterable/filter.ts';
 
 const nonNull = filter((tk: any) => {
   return tk !== null;

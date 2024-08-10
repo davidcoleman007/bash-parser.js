@@ -7,7 +7,7 @@ import type { Resolvers } from '~/types.ts';
  *
  * Each phase is a function that accepts the parser option object, an array of all phases that precede it in the pipeline, and the utils object. The function returns another function that receives the iterable produced by the previous phase and returns the iterable to give to the subsequent one.
  */
-export type LexerMapper = (tokens: Iterable<TokenIf>) => Iterable<TokenIf>;
+export type LexerMapper = (tokens: AsyncIterable<TokenIf>) => AsyncIterable<TokenIf>;
 
 export type LexerContext = {
   resolvers: Resolvers;
@@ -17,6 +17,6 @@ export type LexerContext = {
 
 export type LexerPhase = (ctx: LexerContext) => LexerMapper;
 
-export type LexerPhaseFn = (...input: any[]) => Iterable<TokenIf>;
+export type LexerPhaseFn = (...input: any[]) => AsyncIterable<TokenIf>;
 
 export type LexerPhases = Record<string, LexerPhase>;

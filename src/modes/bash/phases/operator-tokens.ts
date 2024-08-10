@@ -3,7 +3,7 @@ import { applyVisitor, type TokenIf } from '~/tokenizer/mod.ts';
 import map from '~/utils/iterable/map.ts';
 
 const reduceToOperatorTokenVisitor = (operators: Record<string, string>) => ({
-  OPERATOR(tk: TokenIf) {
+  async OPERATOR(tk: TokenIf) {
     if (tk.value! in operators) {
       return tk.setType(operators[tk.value!]);
     }

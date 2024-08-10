@@ -5,7 +5,7 @@ import map from '~/utils/iterable/map.ts';
 import toPascal from '~/utils/to-pascal-case.ts';
 
 const defaultNodeType: LexerPhase = () =>
-  map((token: TokenIf) => {
+  map(async (token: TokenIf) => {
     const tk = JSON.parse(JSON.stringify(token));
 
     assert(tk.type, 'Token type is required');

@@ -1,27 +1,35 @@
 import { assertEquals } from '@std/assert';
 import type { LexerContext, LexerPhase } from '~/lexer/types.ts';
 import rules from '~/modes/bash/phases/mod.ts';
-import { mkToken } from '~/tokenizer/mod.ts';
+import { mkToken, type TokenIf } from '~/tokenizer/mod.ts';
+import fromArray from '~/utils/iterable/from-array.ts';
 import enums from '../src/modes/bash/enums/mod.ts';
 // const _utils = require('./_utils');
 
-function check(rule: LexerPhase, actual: any, expected: any) {
+const check = async (rule: LexerPhase, actual: TokenIf[], expected: TokenIf[]) => {
   // _utils.logResults({actual: Array.from(rule({}, mode)(actual)), expected});
+  const result = [];
+  const it = rule({ enums } as LexerContext)(fromArray(actual));
+
+  for await (const tk of it) {
+    result.push(tk);
+  }
+
   assertEquals(
     JSON.stringify(
-      Array.from(rule({ enums } as LexerContext)(actual)),
+      result,
     ),
     JSON.stringify(expected),
   );
-}
+};
 
 Deno.test('tokenization-rules', async (t) => {
-  await t.step('operatorTokens - identify operator with their tokens', () => {
-    check(rules.operatorTokens, [mkToken('OPERATOR', '<<')], [mkToken('DLESS', '<<')]);
+  await t.step('operatorTokens - identify operator with their tokens', async () => {
+    await check(rules.operatorTokens, [mkToken('OPERATOR', '<<')], [mkToken('DLESS', '<<')]);
   });
 
-  await t.step('reservedWords - identify reserved words or WORD', () => {
-    check(
+  await t.step('reservedWords - identify reserved words or WORD', async () => {
+    await check(
       rules.reservedWords,
       [
         mkToken('TOKEN', 'while'),
@@ -34,7 +42,7 @@ Deno.test('tokenization-rules', async (t) => {
     );
   });
 
-  await t.step('functionName - replace function name token as NAME', () => {
+  await t.step('functionName - replace function name token as NAME', async () => {
     const input = [
       mkToken('WORD', 'test', {
         ctx: { maybeStartOfSimpleCommand: true },
@@ -50,7 +58,7 @@ Deno.test('tokenization-rules', async (t) => {
     ];
     // _utils.logResults(result);
 
-    check(rules.functionName, input, [
+    await check(rules.functionName, input, [
       mkToken('NAME', 'test', {
         ctx: { maybeStartOfSimpleCommand: true },
       }),

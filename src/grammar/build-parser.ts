@@ -9,13 +9,21 @@ try {
   const parser = new Jison.Parser(grammar);
   let source = parser.generate({ moduleType: 'js' });
 
+  // Remove the _token_stack label since it is unused and produces a warning
+  source = source.replace('_token_stack:', '');
+
+  // Replace the parse and lex functions with async versions
+  source = source.replace('parse: function parse(input) {', 'parse: async function parse(input) {');
+  source = source.replace('var lex = function () {', 'var lex = async function () {');
+  source = source.replace('= lexer.lex()', '= (await lexer.lex())');
+  source = source.replace('= lex()', '= await lex()');
+
   // Do some magic to make the generated parser work as an ESM module
-  // and ignore any lint errors. Also remove the _token_stack label
-  // since it is unused and produces a warning.
+  // and ignore any lint errors.
   source = `
 // deno-lint-ignore-file
 // deno-fmt-ignore-file
-${source.replace('_token_stack:', '')}
+${source}
 // ESM export
 export {parser};
 export const Parser = parser.Parser;

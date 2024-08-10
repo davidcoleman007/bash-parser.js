@@ -21,7 +21,7 @@ const loadPlugin = (name: string): Mode => {
   return modePlugin.init();
 };
 
-export const parse: Parse = (sourceCode, options?) => {
+export const parse: Parse = async (sourceCode, options?) => {
   try {
     options = options || {};
     options.mode = options.mode || 'bash';

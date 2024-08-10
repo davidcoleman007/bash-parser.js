@@ -1,10 +1,10 @@
-import { assertEquals, assertThrows } from '@std/assert';
+import { assertEquals, assertRejects } from '@std/assert';
 import bashParser from '~/parse.ts';
 import utils from './_utils.ts';
 
 Deno.test('arithmetic substitution', async (t) => {
-  await t.step('arithmetic substitution', () => {
-    const result = bashParser('variable=$((42 + 43))');
+  await t.step('arithmetic substitution', async () => {
+    const result = await bashParser('variable=$((42 + 43))');
     delete (result as any).commands[0].prefix[0].expansion[0].arithmeticAST;
     // console.log(JSON.stringify(result.commands[0].prefix[0]))
     utils.checkResults((result as any).commands[0].prefix[0], {
@@ -21,8 +21,8 @@ Deno.test('arithmetic substitution', async (t) => {
     });
   });
 
-  await t.step('arithmetic substitution skip single quoted words', () => {
-    const result = bashParser("echo '$((42 * 42))'");
+  await t.step('arithmetic substitution skip single quoted words', async () => {
+    const result = await bashParser("echo '$((42 * 42))'");
     // utils.logResults(result)
     utils.checkResults((result as any).commands[0].suffix, [{
       type: 'Word',
@@ -30,8 +30,8 @@ Deno.test('arithmetic substitution', async (t) => {
     }]);
   });
 
-  await t.step('arithmetic substitution skip escaped dollar', () => {
-    const result = bashParser('echo "\\$(\\(42 * 42))"');
+  await t.step('arithmetic substitution skip escaped dollar', async () => {
+    const result = await bashParser('echo "\\$(\\(42 * 42))"');
     // utils.logResults(result)
     utils.checkResults((result as any).commands[0].suffix, [{
       type: 'Word',
@@ -39,8 +39,8 @@ Deno.test('arithmetic substitution', async (t) => {
     }]);
   });
 
-  await t.step('arithmetic & parameter substitution', () => {
-    const result = bashParser('variable=$((42 + 43)) $ciao');
+  await t.step('arithmetic & parameter substitution', async () => {
+    const result = await bashParser('variable=$((42 + 43)) $ciao');
 
     delete (result as any).commands[0].prefix[0].expansion[0].arithmeticAST;
     // utils.logResults(result.commands[0].name);
@@ -71,8 +71,8 @@ Deno.test('arithmetic substitution', async (t) => {
     });
   });
 
-  await t.step('arithmetic substitution in suffix', () => {
-    const result = bashParser('echo $((42 + 43))');
+  await t.step('arithmetic substitution in suffix', async () => {
+    const result = await bashParser('echo $((42 + 43))');
     delete (result as any).commands[0].suffix[0].expansion[0].arithmeticAST;
     utils.checkResults((result as any).commands[0].suffix[0], {
       type: 'Word',
@@ -88,20 +88,20 @@ Deno.test('arithmetic substitution', async (t) => {
     });
   });
 
-  await t.step('arithmetic substitution node applied to invalid expressions throws', () => {
-    const result = assertThrows(() => bashParser('echo $((a b c d))')) as Error;
+  await t.step('arithmetic substitution node applied to invalid expressions throws', async () => {
+    const result = (await assertRejects(() => bashParser('echo $((a b c d))'))) as Error;
     const message = result.message.split('\n')[0];
     assertEquals(message, 'Cannot parse arithmetic expression "a b c d": Missing semicolon. (1:1)');
   });
 
-  await t.step('arithmetic substitution node applied to non expressions throws', () => {
-    const result = assertThrows(() => bashParser('echo $((while(1);))')) as Error;
+  await t.step('arithmetic substitution node applied to non expressions throws', async () => {
+    const result = (await assertRejects(() => bashParser('echo $((while(1);))'))) as Error;
     const message = result.message.split('\n')[0];
     assertEquals(message, 'Cannot parse arithmetic expression "while(1);": Not an expression');
   });
 
-  await t.step('arithmetic ast is parsed', () => {
-    const result = bashParser('variable=$((42 + 43))');
+  await t.step('arithmetic ast is parsed', async () => {
+    const result = await bashParser('variable=$((42 + 43))');
 
     // utils.logResults(result)
     utils.checkResults((result as any).commands[0].prefix[0].expansion[0].arithmeticAST, {
@@ -168,8 +168,8 @@ Deno.test('arithmetic substitution', async (t) => {
     });
   });
 
-  await t.step('resolve expression', () => {
-    const result = bashParser('"foo $((42 * 42)) baz"', {
+  await t.step('resolve expression', async () => {
+    const result = await bashParser('"foo $((42 * 42)) baz"', {
       runArithmeticExpression() {
         return '43';
       },
@@ -196,8 +196,8 @@ Deno.test('arithmetic substitution', async (t) => {
     });
   });
 
-  await t.step('field splitting', () => {
-    const result = bashParser('say $((other)) plz', {
+  await t.step('field splitting', async () => {
+    const result = await bashParser('say $((other)) plz', {
       runArithmeticExpression() {
         return 'foo\tbar baz';
       },

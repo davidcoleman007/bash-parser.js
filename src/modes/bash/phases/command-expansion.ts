@@ -3,14 +3,14 @@ import bashParser from '~/parse.ts';
 import type { Expansion, TokenIf } from '~/tokenizer/mod.ts';
 import map from '~/utils/iterable/map.ts';
 
-const setCommandExpansion = (xp: Expansion, token: TokenIf) => {
+const setCommandExpansion = async (xp: Expansion, token: TokenIf) => {
   let command = xp.command!;
 
   if (token.value![xp.loc!.start - 1] === '`') {
     command = command.replace(/\\`/g, '`');
   }
 
-  const commandAST = bashParser(command);
+  const commandAST = await bashParser(command);
 
   // console.log(JSON.stringify({command, commandAST}, null, 4))
   return Object.assign({}, xp, { command, commandAST });
@@ -22,20 +22,22 @@ const setCommandExpansion = (xp: Expansion, token: TokenIf) => {
 // Expansion) from their introductory unquoted character sequences: '$' or "${", "$("
 // or '`', and "$((", respectively.
 const commandExpansion: LexerPhase = () =>
-  map((token: TokenIf) => {
+  map(async (token: TokenIf) => {
     if (token.is('WORD') || token.is('ASSIGNMENT_WORD')) {
       if (!token.expansion || token.expansion.length === 0) {
         return token;
       }
 
       return token.setExpansion(
-        token.expansion.map((xp: Expansion) => {
-          if (xp.type === 'command_expansion') {
-            return setCommandExpansion(xp, token);
-          }
+        await Promise.all(
+          token.expansion.map(async (xp: Expansion) => {
+            if (xp.type === 'command_expansion') {
+              return await setCommandExpansion(xp, token);
+            }
 
-          return xp;
-        }),
+            return xp;
+          }),
+        ),
       );
     }
     return token;

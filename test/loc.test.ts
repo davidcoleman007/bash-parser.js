@@ -1,4 +1,4 @@
-import { assert, assertThrows } from '@std/assert';
+import { assert, assertRejects } from '@std/assert';
 import bashParser from '~/parse.ts';
 import utils from './_utils.ts';
 
@@ -6,15 +6,17 @@ const mkloc = utils.mkloc2;
 
 Deno.test('loc', async (t) => {
   await t.step('syntax error contains line number', async () => {
-    const error = assertThrows(() => bashParser('ecoh\necho <')) as Error;
+    const error = (await assertRejects(() => bashParser('ecoh\necho <'))) as Error;
 
-    assert(error.message.startsWith(
-      "Error: Parse error on line 2: Unexpected 'EOF'",
-    ));
+    assert(
+      error.message.includes(
+        "Parse error on line 2: Unexpected 'EOF'",
+      ),
+    );
   });
 
-  await t.step('AST can include loc', () => {
-    const result = bashParser('echo', { insertLOC: true });
+  await t.step('AST can include loc', async () => {
+    const result = await bashParser('echo', { insertLOC: true });
     // utils.logResults(result)
     utils.checkResults((result as any).commands[0].name, {
       type: 'Word',
@@ -23,8 +25,8 @@ Deno.test('loc', async (t) => {
     });
   });
 
-  await t.step('subshell can include loc', () => {
-    const result = bashParser('(echo)', { insertLOC: true });
+  await t.step('subshell can include loc', async () => {
+    const result = await bashParser('(echo)', { insertLOC: true });
     // utils.logResults(result);
     utils.checkResults(result, {
       type: 'Script',
@@ -53,8 +55,8 @@ Deno.test('loc', async (t) => {
     });
   });
 
-  await t.step('double command with only name', () => {
-    const result = bashParser('echo; ciao;', { insertLOC: true });
+  await t.step('double command with only name', async () => {
+    const result = await bashParser('echo; ciao;', { insertLOC: true });
     // utils.logResults(result);
     utils.checkResults(result, {
       type: 'Script',
@@ -82,8 +84,8 @@ Deno.test('loc', async (t) => {
     });
   });
 
-  await t.step('loc are composed by all tokens', () => {
-    const result = bashParser('echo 42', { insertLOC: true });
+  await t.step('loc are composed by all tokens', async () => {
+    const result = await bashParser('echo 42', { insertLOC: true });
     // console.log(JSON.stringify(result, null, 4));
     utils.checkResults(result.commands[0], {
       type: 'Command',
@@ -103,8 +105,8 @@ Deno.test('loc', async (t) => {
     });
   });
 
-  await t.step('loc works with multiple newlines', () => {
-    const result = bashParser('\n\n\necho 42', { insertLOC: true });
+  await t.step('loc works with multiple newlines', async () => {
+    const result = await bashParser('\n\n\necho 42', { insertLOC: true });
     utils.checkResults(result.commands[0], {
       type: 'Command',
       name: {
@@ -123,14 +125,14 @@ Deno.test('loc', async (t) => {
     });
   });
 
-  await t.step('loc with LINEBREAK_IN statement', () => {
+  await t.step('loc with LINEBREAK_IN statement', async () => {
     const cmd = `for x
  in ; do
  echo $x;
 done
 `;
 
-    const result = bashParser(cmd, { insertLOC: true });
+    const result = await bashParser(cmd, { insertLOC: true });
     // utils.logResults(result)
     const expected = {
       type: 'For',
@@ -243,8 +245,8 @@ done
     utils.checkResults(result.commands[0], expected);
   });
 
-  await t.step('loc in multi line commands', () => {
-    const result = bashParser('echo;\nls;\n', { insertLOC: true });
+  await t.step('loc in multi line commands', async () => {
+    const result = await bashParser('echo;\nls;\n', { insertLOC: true });
     // utils.logResults(result);
     utils.checkResults(result, {
       loc: mkloc(1, 1, 2, 2, 0, 7),

@@ -4,8 +4,8 @@ import utils from './_utils.ts';
 // various example taken from http://www.etalabs.net/sh_tricks.html
 
 Deno.test('fixtures', async (t) => {
-  await t.step('2', () => {
-    const result = bashParser('echo () { printf %s\\n "$*" ; }');
+  await t.step('2', async () => {
+    const result = await bashParser('echo () { printf %s\\n "$*" ; }');
     // utils.logResults(result);
     utils.checkResults(result, {
       type: 'Script',
@@ -54,8 +54,8 @@ Deno.test('fixtures', async (t) => {
     });
   });
 
-  await t.step('3', () => {
-    const result = bashParser('IFS= read -r var');
+  await t.step('3', async () => {
+    const result = await bashParser('IFS= read -r var');
     utils.checkResults(result, {
       type: 'Script',
       commands: [{
@@ -67,8 +67,8 @@ Deno.test('fixtures', async (t) => {
     });
   });
 
-  await t.step('4', () => {
-    const result = bashParser('foo | IFS= read var');
+  await t.step('4', async () => {
+    const result = await bashParser('foo | IFS= read var');
     // console.log(inspect(result, {depth: null}));
 
     utils.checkResults(result, {
@@ -88,8 +88,8 @@ Deno.test('fixtures', async (t) => {
     });
   });
 
-  await t.step('5', () => {
-    const result = bashParser(
+  await t.step('5', async () => {
+    const result = await bashParser(
       `foo='hello ; rm -rf /'
 dest=bar
 eval "dest=foo"`,

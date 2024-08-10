@@ -5,7 +5,7 @@ import { ReplaceString } from '~/utils/replace-string.ts';
 import fieldSplittingMark from './lib/field-splitting-mark.ts';
 
 const parameterExpansionResolve: LexerPhase = (ctx) =>
-  map((token: TokenIf) => {
+  map(async (token: TokenIf) => {
     if (token.is('WORD') || token.is('ASSIGNMENT_WORD')) {
       if (!ctx.resolvers.resolveParameter || !token.expansion || token.expansion.length === 0) {
         return token;
@@ -16,7 +16,7 @@ const parameterExpansionResolve: LexerPhase = (ctx) =>
       for (const xp of token.expansion) {
         if (xp.type === 'parameter_expansion') {
           const result = ctx.resolvers.resolveParameter(xp);
-          const replacement = fieldSplittingMark(result, token.value!, ctx.resolvers.resolveEnv);
+          const replacement = await fieldSplittingMark(result, token.value!, ctx.resolvers.resolveEnv);
 
           rValue.replace(
             xp.loc!.start,
