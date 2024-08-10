@@ -1,5 +1,5 @@
 import reducers from '~/modes/bash/reducers/mod.ts';
-import { TokenIf, tokenize as delimiterTokanize } from '~/tokenizer/mod.ts';
+import { type TokenIf, tokenize as delimiterTokanize } from '~/tokenizer/mod.ts';
 import utils from './_utils.ts';
 
 const mkloc = ([startCol, startRow, startChar]: number[], [endCol, endRow, endChar]: number[]) => {
