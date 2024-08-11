@@ -1,6 +1,6 @@
 import { join, resolve } from '@std/path';
 import bashParser from '~/parse.ts';
-import { Options } from '~/types.ts';
+import type { Options } from '~/types.ts';
 import utils from './_utils.ts';
 
 // various example taken from http://www.etalabs.net/sh_tricks.html
