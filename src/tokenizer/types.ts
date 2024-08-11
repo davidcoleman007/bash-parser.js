@@ -1,3 +1,5 @@
+import { AstNodeScript } from '~/ast/types.ts';
+
 export type TokenContext = {
   maybeStartOfSimpleCommand?: boolean;
   commandNameNotFoundYet?: boolean;
@@ -98,8 +100,13 @@ export type ExpansionLocation = {
 // TODO: This type needs work
 export type Expansion = {
   parameter?: string;
+
   command?: string;
+  commandAST?: AstNodeScript;
+
   expression?: string;
+  arithmeticAST?: any;
+
   value?: string;
   type?: string;
   resolved?: boolean;

@@ -4,7 +4,7 @@ export default {
     type: 'Script',
     commands: [
       {
-        type: 'SimpleCommand',
+        type: 'Command',
         name: {
           text: '$ciao',
           expansion: [
@@ -38,10 +38,12 @@ export default {
                     start: {
                       line: 1,
                       column: 0,
+                      index: 0,
                     },
                     end: {
                       line: 1,
                       column: 7,
+                      index: 7,
                     },
                   },
                   left: {
@@ -52,10 +54,12 @@ export default {
                       start: {
                         line: 1,
                         column: 0,
+                        index: 0,
                       },
                       end: {
                         line: 1,
                         column: 2,
+                        index: 2,
                       },
                     },
                     extra: {
@@ -73,10 +77,12 @@ export default {
                       start: {
                         line: 1,
                         column: 5,
+                        index: 5,
                       },
                       end: {
                         line: 1,
                         column: 7,
+                        index: 7,
                       },
                     },
                     extra: {

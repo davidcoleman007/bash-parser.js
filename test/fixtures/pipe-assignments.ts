@@ -7,14 +7,14 @@ export default {
         type: 'Pipeline',
         commands: [
           {
-            type: 'SimpleCommand',
+            type: 'Command',
             name: {
               text: 'foo',
               type: 'Word',
             },
           },
           {
-            type: 'SimpleCommand',
+            type: 'Command',
             name: {
               text: 'read',
               type: 'Word',

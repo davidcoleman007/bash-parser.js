@@ -170,7 +170,7 @@ Deno.test('arithmetic substitution', async (t) => {
 
   await t.step('resolve expression', async () => {
     const result = await bashParser('"foo $((42 * 42)) baz"', {
-      runArithmeticExpression() {
+      async runArithmeticExpression() {
         return '43';
       },
     });
@@ -198,11 +198,11 @@ Deno.test('arithmetic substitution', async (t) => {
 
   await t.step('field splitting', async () => {
     const result = await bashParser('say $((other)) plz', {
-      runArithmeticExpression() {
+      async runArithmeticExpression() {
         return 'foo\tbar baz';
       },
 
-      resolveEnv() {
+      async resolveEnv() {
         return '\t ';
       },
     });

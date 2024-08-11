@@ -1,5 +1,6 @@
 import reducers from '~/modes/bash/reducers/mod.ts';
-import { type TokenIf, tokenize as delimiterTokanize } from '~/tokenizer/mod.ts';
+import { tokenize as delimiterTokanize } from '~/tokenizer/mod.ts';
+import toArray from '~/utils/iterable/to-array.ts';
 import utils from './_utils.ts';
 
 const mkloc = ([startCol, startRow, startChar]: number[], [endCol, endRow, endChar]: number[]) => {
@@ -19,11 +20,7 @@ const mkloc = ([startCol, startRow, startChar]: number[], [endCol, endRow, endCh
 
 const tokenize = async (text: string, keepLoc?: boolean) => {
   const tokenizer = delimiterTokanize(reducers);
-  const tokens: TokenIf[] = [];
-
-  for await (const newToken of tokenizer(text)) {
-    tokens.push(newToken);
-  }
+  const tokens = await toArray(tokenizer(text));
 
   const results = tokens.map((t) => {
     const r: any = JSON.parse(JSON.stringify(t));
@@ -364,7 +361,6 @@ Deno.test('tokenize', async (t) => {
 
   await t.step('parse parameter expansion', async () => {
     const result = await tokenize('a$b-c');
-    // utils.logResults(result);
 
     const expansion = [{
       type: 'parameter_expansion',

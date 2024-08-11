@@ -4,11 +4,11 @@ import utils from './_utils.ts';
 Deno.test('tilde-expanding', async (t) => {
   await t.step('resolve tilde to current user home', async () => {
     const result = await bashParser('echo ~/subdir', {
-      resolveHomeUser() {
+      async resolveHomeUser() {
         return '/home/current';
       },
     });
-    // utils.logResults(result);
+
     utils.checkResults(result, {
       type: 'Script',
       commands: [
@@ -26,7 +26,7 @@ Deno.test('tilde-expanding', async (t) => {
 
   await t.step('resolve one tilde only in normal WORD tokens', async () => {
     const result = await bashParser('echo ~/subdir/~other/', {
-      resolveHomeUser() {
+      async resolveHomeUser() {
         return '/home/current';
       },
     });
@@ -48,7 +48,7 @@ Deno.test('tilde-expanding', async (t) => {
 
   await t.step('resolve multiple tilde in assignments', async () => {
     const result = await bashParser('a=~/subdir:~/othersubdir/ciao', {
-      resolveHomeUser() {
+      async resolveHomeUser() {
         return '/home/current';
       },
     });
@@ -61,7 +61,7 @@ Deno.test('tilde-expanding', async (t) => {
 
   await t.step('resolve tilde to any user home', async () => {
     const result = await bashParser('echo ~username/subdir', {
-      resolveHomeUser() {
+      async resolveHomeUser() {
         return '/home/username';
       },
     });

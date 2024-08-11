@@ -93,7 +93,7 @@ export const astBuilder = (insertLOC?: boolean) => {
 
     checkAsync: (list, separator) => {
       if (isAsyncSeparator(separator)) {
-        last(list.commands!)!.async = true;
+        last(list.commands as AstNodeCommand[])!.async = true;
       }
 
       return list;
@@ -101,7 +101,7 @@ export const astBuilder = (insertLOC?: boolean) => {
 
     listAppend: (list, logicalExpression, separator) => {
       if (isAsyncSeparator(separator)) {
-        last(list.commands!)!.async = true;
+        last(list.commands as AstNodeCommand[])!.async = true;
       }
 
       list.commands.push(logicalExpression);
@@ -136,7 +136,7 @@ export const astBuilder = (insertLOC?: boolean) => {
 
     termAppend: (term, logicalExpression, separator) => {
       if (isAsyncSeparator(separator)) {
-        last(term.commands)!.async = true;
+        last(term.commands as AstNodeCommand[])!.async = true;
       }
 
       term.commands.push(logicalExpression);
@@ -258,7 +258,6 @@ export const astBuilder = (insertLOC?: boolean) => {
       return compoundList;
     },
 
-    // eslint-disable-next-line max-params
     ifClause: (clause, then, elseBranch, locStart, locEnd) => {
       const node: AstNodeIf = { type: 'If', clause, then };
 

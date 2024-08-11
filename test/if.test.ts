@@ -33,7 +33,7 @@ Deno.test('if', async (t) => {
 
   await t.step('parse if else', async () => {
     const result = await bashParser('if true; then echo 1; else echo 2; fi');
-    // utils.logResults(result);
+
     utils.checkResults(
       result,
       {
@@ -107,7 +107,7 @@ Deno.test('if', async (t) => {
 
   await t.step('parse if elif else', async () => {
     const result = await bashParser('if true; then echo 1; elif false; then echo 3; else echo 2; fi');
-    // utils.logResults(result);
+
     const expected = {
       type: 'Script',
       commands: [{

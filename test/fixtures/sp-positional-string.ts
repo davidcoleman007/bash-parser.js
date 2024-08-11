@@ -4,11 +4,7 @@ export default {
     type: 'Script',
     commands: [
       {
-        type: 'SimpleCommand',
-        name: {
-          text: '',
-          type: 'Word',
-        },
+        type: 'Command',
         prefix: [
           {
             text: 'echoword=$*',

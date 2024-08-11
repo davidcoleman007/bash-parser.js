@@ -1,10 +1,15 @@
 export default {
   sourceCode: '"foo ${other} baz"',
+  options: {
+    resolveParameter: async () => {
+      return 'bar';
+    },
+  },
   result: {
     type: 'Script',
     commands: [
       {
-        type: 'SimpleCommand',
+        type: 'Command',
         name: {
           text: 'foo bar baz',
           expansion: [

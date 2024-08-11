@@ -1,5 +1,8 @@
 export default {
   sourceCode: '(echo)',
+  options: {
+    insertLOC: true,
+  },
   result: {
     type: 'Script',
     commands: [
@@ -9,7 +12,7 @@ export default {
           type: 'CompoundList',
           commands: [
             {
-              type: 'SimpleCommand',
+              type: 'Command',
               name: {
                 text: 'echo',
                 type: 'Word',

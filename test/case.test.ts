@@ -4,7 +4,7 @@ import utils from './_utils.ts';
 Deno.test('case', async (t) => {
   await t.step('parse case', async () => {
     const result = await bashParser('case foo in * ) echo bar;; esac');
-    // utils.logResults(result);
+
     const expected = {
       type: 'Script',
       commands: [{
@@ -36,7 +36,7 @@ Deno.test('case', async (t) => {
   /*
 await t.step('parse case with compound list', async () => {
     const result = await bashParser('case foo in * ) echo foo;echo bar;; esac');
-    // utils.logResults(result);
+
     const expected = {
         type: 'Script',
         commands: [{

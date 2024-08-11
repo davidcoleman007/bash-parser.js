@@ -4,9 +4,9 @@ export default {
     type: 'Script',
     commands: [
       {
-        type: 'SimpleCommand',
+        type: 'Command',
         name: {
-          text: 'test-value',
+          text: 'world',
           type: 'Word',
         },
         prefix: [

@@ -432,4 +432,3 @@ return new Parser;
 // ESM export
 export {parser};
 export const Parser = parser.Parser;
-export const parse = function () { return parser.parse.apply(parser, arguments); };

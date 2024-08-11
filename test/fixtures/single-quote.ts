@@ -4,11 +4,7 @@ export default {
     type: 'Script',
     commands: [
       {
-        type: 'SimpleCommand',
-        name: {
-          text: '',
-          type: 'Word',
-        },
+        type: 'Command',
         prefix: [
           {
             text: 'variable=`echo \\`echo ciao\\``',
@@ -24,7 +20,7 @@ export default {
                   type: 'Script',
                   commands: [
                     {
-                      type: 'SimpleCommand',
+                      type: 'Command',
                       name: {
                         text: 'echo',
                         type: 'Word',
@@ -44,7 +40,7 @@ export default {
                                 type: 'Script',
                                 commands: [
                                   {
-                                    type: 'SimpleCommand',
+                                    type: 'Command',
                                     name: {
                                       text: 'echo',
                                       type: 'Word',

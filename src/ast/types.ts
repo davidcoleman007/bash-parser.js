@@ -18,7 +18,6 @@ export type AstSourcePosition = {
 export type AstNode = {
   type: string;
   loc?: AstSourceLocation;
-  async?: boolean; // TODO: Should this be on the base type?
 };
 
 /**
@@ -100,6 +99,7 @@ export type AstNodeCommand = AstNode & {
   name?: AstNodeName;
   prefix?: Array<AstNodeAssignmentWord | AstNodeRedirect>;
   suffix?: Array<AstNodeWord | AstNodeRedirect>;
+  async?: boolean;
 };
 
 /**
@@ -120,7 +120,7 @@ export type AstNodeFunction = AstNode & {
  * Valid Name values should be formed by one or more alphanumeric characters or underscores, and the could not start with a digit.
  */
 export type AstNodeName = AstNode & {
-  type: 'Name';
+  type: 'Word';
   text: string;
 };
 

@@ -1,10 +1,13 @@
 export default {
   sourceCode: 'echo 2> 43',
+  options: {
+    insertLOC: true,
+  },
   result: {
     type: 'Script',
     commands: [
       {
-        type: 'SimpleCommand',
+        type: 'Command',
         name: {
           text: 'echo',
           type: 'Word',

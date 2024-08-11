@@ -1,5 +1,8 @@
 export default {
   sourceCode: 'foo () {\n\tcommand bar --lol;\n}\n',
+  options: {
+    insertLOC: true,
+  },
   result: {
     type: 'Script',
     commands: [
@@ -25,7 +28,7 @@ export default {
           type: 'CompoundList',
           commands: [
             {
-              type: 'SimpleCommand',
+              type: 'Command',
               name: {
                 text: 'command',
                 type: 'Word',

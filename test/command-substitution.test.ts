@@ -88,8 +88,6 @@ Deno.test('command substitution', async (t) => {
   await t.step('command ast is recursively parsed', async () => {
     const result = await bashParser('variable=$(echo ciao)');
 
-    // utils.logResults(result);
-
     utils.checkResults((result as any).commands[0].prefix[0].expansion[0].commandAST, {
       type: 'Script',
       commands: [{
@@ -121,7 +119,6 @@ Deno.test('command substitution', async (t) => {
   await t.step('quoted backtick are removed within command substitution with backticks', async () => {
     const result = await bashParser('variable=`echo \\`echo ciao\\``');
     delete (result as any).commands[0].prefix[0].expansion[0].commandAST;
-    // utils.logResults(result);
 
     utils.checkResults((result as any).commands[0].prefix, [{
       type: 'AssignmentWord',
@@ -156,7 +153,7 @@ Deno.test('command substitution', async (t) => {
 
   await t.step('resolve double command', async () => {
     const result = await bashParser('"foo $(other) $(one) baz"', {
-      execCommand() {
+      async execCommand() {
         return 'bar';
       },
     });
@@ -188,7 +185,7 @@ Deno.test('command substitution', async (t) => {
 
   await t.step('resolve double command with backticks', async () => {
     const result = await bashParser('"foo `other` `one` baz"', {
-      execCommand() {
+      async execCommand() {
         return 'bar';
       },
     });
@@ -219,7 +216,7 @@ Deno.test('command substitution', async (t) => {
 
   await t.step('last newlines are removed from command output', async () => {
     const result = await bashParser('"foo $(other) baz"', {
-      execCommand() {
+      async execCommand() {
         return 'bar\n\n';
       },
     });
@@ -243,11 +240,11 @@ Deno.test('command substitution', async (t) => {
 
   await t.step('field splitting', async () => {
     const result = await bashParser('say $(other) plz', {
-      execCommand() {
+      async execCommand() {
         return 'foo\tbar baz';
       },
 
-      resolveEnv() {
+      async resolveEnv() {
         return '\t ';
       },
     });

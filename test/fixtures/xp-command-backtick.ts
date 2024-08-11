@@ -4,7 +4,7 @@ export default {
     type: 'Script',
     commands: [
       {
-        type: 'SimpleCommand',
+        type: 'Command',
         name: {
           text: 'echo',
           type: 'Word',
@@ -24,7 +24,7 @@ export default {
                   type: 'Script',
                   commands: [
                     {
-                      type: 'SimpleCommand',
+                      type: 'Command',
                       name: {
                         text: 'ciao',
                         type: 'Word',

@@ -5,7 +5,7 @@ Deno.test('bash-mode', async (t) => {
   await t.step('alias on reserved word', async () => {
     const result = await bashParser('if world', {
       mode: 'bash',
-      resolveAlias: (name) => {
+      resolveAlias: async (name) => {
         return name === 'if' ? 'echo' : undefined;
       },
     });
@@ -114,8 +114,6 @@ Deno.test('bash-mode', async (t) => {
   await t.step('parameter substitution with array indices', async () => {
     const result = await bashParser('echo ${!text[*]}', { mode: 'bash' });
 
-    // utils.logResults(result);
-
     utils.checkResults((result as any).commands[0].suffix[0].expansion[0], {
       loc: {
         start: 0,
@@ -145,7 +143,7 @@ Deno.test('bash-mode', async (t) => {
 
   await t.step('parameter substitution with case change upper case and pattern', async () => {
     const result = await bashParser('echo ${text^t}', { mode: 'bash' });
-    // utils.logResults(result);
+
     utils.checkResults((result as any).commands[0].suffix[0].expansion[0], {
       loc: {
         start: 0,
@@ -162,7 +160,7 @@ Deno.test('bash-mode', async (t) => {
 
   await t.step('parameter substitution with case change upper case globally and pattern', async () => {
     const result = await bashParser('echo ${text^^t}', { mode: 'bash' });
-    // utils.logResults(result);
+
     utils.checkResults((result as any).commands[0].suffix[0].expansion[0], {
       loc: {
         start: 0,
@@ -179,7 +177,7 @@ Deno.test('bash-mode', async (t) => {
 
   await t.step('parameter substitution with case change lower case and pattern', async () => {
     const result = await bashParser('echo ${text,t}', { mode: 'bash' });
-    // utils.logResults(result);
+
     utils.checkResults((result as any).commands[0].suffix[0].expansion[0], {
       loc: {
         start: 0,
@@ -196,7 +194,7 @@ Deno.test('bash-mode', async (t) => {
 
   await t.step('parameter substitution with case change lower case globally and pattern', async () => {
     const result = await bashParser('echo ${text,,t}', { mode: 'bash' });
-    // utils.logResults(result);
+
     utils.checkResults((result as any).commands[0].suffix[0].expansion[0], {
       loc: {
         start: 0,
@@ -229,7 +227,7 @@ Deno.test('bash-mode', async (t) => {
 
   await t.step('parameter substitution with case change upper case globally and default pattern', async () => {
     const result = await bashParser('echo ${text^^}', { mode: 'bash' });
-    // utils.logResults(result);
+
     utils.checkResults((result as any).commands[0].suffix[0].expansion[0], {
       loc: {
         start: 0,

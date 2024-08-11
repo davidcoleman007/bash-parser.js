@@ -1,14 +1,15 @@
 export default {
   sourceCode: 'a=~/subdir:~/othersubdir/ciao',
+  options: {
+    resolveHomeUser: async () => {
+      return '/home/current';
+    },
+  },
   result: {
     type: 'Script',
     commands: [
       {
-        type: 'SimpleCommand',
-        name: {
-          text: '',
-          type: 'Word',
-        },
+        type: 'Command',
         prefix: [
           {
             text: 'a=/home/current/subdir:/home/current/othersubdir/ciao',

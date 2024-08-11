@@ -1,33 +1,38 @@
 export default {
-  sourceCode: 'for x\n do echo $x\n done',
+  sourceCode: 'echo () { printf %s\\n "$*" ; }',
   result: {
     type: 'Script',
     commands: [
       {
-        type: 'For',
+        type: 'Function',
         name: {
-          text: 'x',
+          text: 'echo',
           type: 'Name',
         },
-        do: {
+        body: {
           type: 'CompoundList',
           commands: [
             {
               type: 'Command',
               name: {
-                text: 'echo',
+                text: 'printf',
                 type: 'Word',
               },
               suffix: [
                 {
-                  text: '$x',
+                  text: '%sn',
+                  type: 'Word',
+                },
+                {
+                  text: '"$*"',
                   expansion: [
                     {
+                      kind: 'positional-string',
+                      parameter: '*',
                       loc: {
-                        start: 0,
-                        end: 1,
+                        start: 1,
+                        end: 2,
                       },
-                      parameter: 'x',
                       type: 'ParameterExpansion',
                     },
                   ],

@@ -6,7 +6,7 @@ Deno.test('loc-line-continuations', async (t) => {
   await t.step('empty line after line continuation', async () => {
     const cmd = `echo \\\n\n\necho there`;
     const result = await bashParser(cmd);
-    // utils.logResults(result);
+
     const expected = {
       type: 'Script',
       commands: [
@@ -38,7 +38,7 @@ Deno.test('loc-line-continuations', async (t) => {
   await t.step('loc take into account line continuations', async () => {
     const cmd = 'echo \\\nworld';
     const result = await bashParser(cmd, { insertLOC: true });
-    // utils.logResults(result);
+
     const expected = {
       type: 'Script',
       commands: [
@@ -105,8 +105,6 @@ Deno.test('loc-line-continuations', async (t) => {
         },
       },
     };
-
-    // utils.logResults(result);
 
     utils.checkResults(result, expected);
   });

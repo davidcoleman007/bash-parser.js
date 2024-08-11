@@ -46,10 +46,9 @@
     "coverage-clean": "rm -rf coverage",
     "coverage-html": "genhtml -o coverage/html coverage/coverage.lcov",
     "coverage": "deno coverage --lcov coverage --output=coverage/coverage.lcov && deno task coverage-html",
-    "test": "deno task coverage-clean && deno test --coverage=coverage",
+    "test": "deno task coverage-clean && deno test -A --coverage=coverage",
     "test-nc": "deno task coverage-clean && deno test -A --no-check --coverage=coverage",
-    "test-single": "deno test -A  --no-check test/alias-substitution.test.ts",
-    "test-fast": "deno test --parallel --no-check --quiet",
+    "test-fast": "deno test -A --parallel --no-check --quiet",
     "build-parser": "deno run --allow-read --allow-write src/grammar/build-parser.ts"
   }
 }

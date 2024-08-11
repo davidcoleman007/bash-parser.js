@@ -4,7 +4,7 @@ import utils from './_utils.ts';
 Deno.test('parameter-substitution', async (t) => {
   await t.step('parameter substitution in assignment', async () => {
     const result = await bashParser('echoword=${other}test');
-    // utils.logResults(result);
+
     utils.checkResults((result as any).commands[0].prefix, [{
       type: 'AssignmentWord',
       text: 'echoword=${other}test',
@@ -40,7 +40,7 @@ Deno.test('parameter-substitution', async (t) => {
 
   await t.step('parameter substitution and other words', async () => {
     const result = await bashParser('foo ${other} bar baz');
-    // utils.logResults(result);
+
     utils.checkResults((result as any).commands[0].suffix, [{
       text: '${other}',
       expansion: [{
@@ -63,7 +63,6 @@ Deno.test('parameter-substitution', async (t) => {
 
   await t.step('multi-word parameter substitution', async () => {
     const result = await bashParser('echoword=${other word}test');
-    // utils.logResults(result);
 
     utils.checkResults((result as any).commands[0].prefix, [{
       type: 'AssignmentWord',
@@ -137,7 +136,8 @@ Deno.test('parameter-substitution', async (t) => {
 
   await t.step('resolve parameter', async () => {
     const result = await bashParser('"foo ${other} baz"', {
-      resolveParameter() {
+      async resolveParameter(a: any) {
+        console.log('resolveParameter', a);
         return 'bar';
       },
     });
@@ -165,11 +165,11 @@ Deno.test('parameter-substitution', async (t) => {
 
   await t.step('resolve double parameter', async () => {
     const result = await bashParser('"foo ${other} ${one} baz"', {
-      resolveParameter() {
+      async resolveParameter() {
         return 'bar';
       },
     });
-    // utils.logResults(result);
+
     utils.checkResults(result.commands[0], {
       type: 'Command',
       name: {
@@ -199,11 +199,11 @@ Deno.test('parameter-substitution', async (t) => {
 
   await t.step('field splitting', async () => {
     const result = await bashParser('say ${other} plz', {
-      resolveParameter() {
+      async resolveParameter() {
         return 'foo\tbar baz';
       },
 
-      resolveEnv() {
+      async resolveEnv() {
         return '\t ';
       },
     });
@@ -268,11 +268,11 @@ Deno.test('parameter-substitution', async (t) => {
 
   await t.step('field splitting not occurring within quoted words', async () => {
     const result = await bashParser('say "${other} plz"', {
-      resolveParameter() {
+      async resolveParameter() {
         return 'foo\tbar baz';
       },
 
-      resolveEnv() {
+      async resolveEnv() {
         return '\t ';
       },
     });

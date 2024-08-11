@@ -4,14 +4,14 @@ export default {
     type: 'Script',
     commands: [
       {
-        type: 'SimpleCommand',
+        type: 'Command',
         name: {
           text: 'echo',
           type: 'Word',
         },
       },
       {
-        type: 'SimpleCommand',
+        type: 'Command',
         name: {
           text: 'echo',
           type: 'Word',

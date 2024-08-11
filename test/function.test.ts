@@ -4,7 +4,7 @@ import utils from './_utils.ts';
 Deno.test('function', async (t) => {
   await t.step('parse function declaration multiple lines', async () => {
     const result = await bashParser('foo () \n{\n command bar --lol;\n}');
-    // utils.logResults(result);
+
     utils.checkResults(
       result,
       {
@@ -31,7 +31,7 @@ Deno.test('function', async (t) => {
     } > file.txt`;
 
     const result = await bashParser(src);
-    // utils.logResults(result);
+
     utils.checkResults(
       result,
       {

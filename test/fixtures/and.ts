@@ -7,14 +7,14 @@ export default {
         type: 'LogicalExpression',
         op: 'and',
         left: {
-          type: 'SimpleCommand',
+          type: 'Command',
           name: {
             text: 'run',
             type: 'Word',
           },
         },
         right: {
-          type: 'SimpleCommand',
+          type: 'Command',
           name: {
             text: 'stop',
             type: 'Word',

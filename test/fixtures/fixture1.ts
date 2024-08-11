@@ -4,11 +4,7 @@ export default {
     type: 'Script',
     commands: [
       {
-        type: 'SimpleCommand',
-        name: {
-          text: '',
-          type: 'Word',
-        },
+        type: 'Command',
         prefix: [
           {
             text: 'foo=hello ; rm -rf /',
@@ -17,11 +13,7 @@ export default {
         ],
       },
       {
-        type: 'SimpleCommand',
-        name: {
-          text: '',
-          type: 'Word',
-        },
+        type: 'Command',
         prefix: [
           {
             text: 'dest=bar',
@@ -30,7 +22,7 @@ export default {
         ],
       },
       {
-        type: 'SimpleCommand',
+        type: 'Command',
         name: {
           text: 'eval',
           type: 'Word',

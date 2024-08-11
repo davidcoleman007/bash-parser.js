@@ -9,7 +9,7 @@ export default {
           type: 'CompoundList',
           commands: [
             {
-              type: 'SimpleCommand',
+              type: 'Command',
               name: {
                 text: 'ls',
                 type: 'Word',

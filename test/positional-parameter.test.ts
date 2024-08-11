@@ -5,8 +5,6 @@ Deno.test('positional-parameter', async (t) => {
   await t.step('positional parameter with word following', async () => {
     const result = await bashParser('echoword=$1ciao');
 
-    // utils.logResults(result);
-
     utils.checkResults((result as any).commands[0].prefix, [{
       type: 'AssignmentWord',
       text: 'echoword=$1ciao',

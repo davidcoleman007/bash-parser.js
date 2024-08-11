@@ -5,7 +5,7 @@ import utils from './_utils.ts';
 Deno.test('alias-substitution', async (t) => {
   await t.step('alias with no argument', async () => {
     const result = await bashParser('thisIsAlias world', {
-      resolveAlias: (name) => name === 'thisIsAlias' ? 'test-value' : undefined,
+      resolveAlias: async (name) => name === 'thisIsAlias' ? 'test-value' : undefined,
     });
     utils.checkResults(result, {
       type: 'Script',
@@ -19,9 +19,9 @@ Deno.test('alias-substitution', async (t) => {
 
   await t.step('alias with duplicating stream redirection', async () => {
     const result = await bashParser('2>&1 world', {
-      resolveAlias: (name) => name === 'world' ? 'test-value' : undefined,
+      resolveAlias: async (name) => name === 'world' ? 'test-value' : undefined,
     });
-    // utils.logResults(result);
+
     utils.checkResults(
       (result.commands[0] as AstNodeCommand).name,
       { type: 'Word', text: 'test-value' },
@@ -30,7 +30,7 @@ Deno.test('alias-substitution', async (t) => {
 
   await t.step('alias with arguments', async () => {
     const result = await bashParser('thisIsAlias world', {
-      resolveAlias: (name) => name === 'thisIsAlias' ? 'test-value earth' : undefined,
+      resolveAlias: async (name) => name === 'thisIsAlias' ? 'test-value earth' : undefined,
     });
     utils.checkResults(result, {
       type: 'Script',
@@ -47,7 +47,7 @@ Deno.test('alias-substitution', async (t) => {
 
   await t.step('alias with prefixes', async () => {
     const result = await bashParser('thisIsAlias world', {
-      resolveAlias: (name) => name === 'thisIsAlias' ? 'a=42 test-value' : undefined,
+      resolveAlias: async (name) => name === 'thisIsAlias' ? 'a=42 test-value' : undefined,
     });
     utils.checkResults(result, {
       type: 'Script',
@@ -62,7 +62,7 @@ Deno.test('alias-substitution', async (t) => {
 
   await t.step('recursive alias with prefixes', async () => {
     const result = await bashParser('thisIsAlias world', {
-      resolveAlias: (name) => {
+      resolveAlias: async (name) => {
         if (name === 'thisIsAlias') {
           return 'a=42 recurse';
         }
@@ -89,7 +89,7 @@ Deno.test('alias-substitution', async (t) => {
 
   await t.step('guarded against infinite loops', async () => {
     const result = await bashParser('thisIsAlias world', {
-      resolveAlias: (name) => {
+      resolveAlias: async (name) => {
         if (name === 'thisIsAlias') {
           return 'alias1';
         }

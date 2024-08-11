@@ -1,5 +1,8 @@
 export default {
   sourceCode: 'for x\n\tin ; do\n\techo $x;\ndone\n',
+  options: {
+    insertLOC: true,
+  },
   result: {
     type: 'Script',
     commands: [
@@ -25,7 +28,7 @@ export default {
           type: 'CompoundList',
           commands: [
             {
-              type: 'SimpleCommand',
+              type: 'Command',
               name: {
                 text: 'echo',
                 type: 'Word',

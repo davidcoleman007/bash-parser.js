@@ -1,10 +1,15 @@
 export default {
   sourceCode: '"foo $((42 * 42)) baz"',
+  options: {
+    runArithmeticExpression: async () => {
+      return '43';
+    },
+  },
   result: {
     type: 'Script',
     commands: [
       {
-        type: 'SimpleCommand',
+        type: 'Command',
         name: {
           text: 'foo 43 baz',
           expansion: [
@@ -23,10 +28,12 @@ export default {
                   start: {
                     line: 1,
                     column: 0,
+                    index: 0,
                   },
                   end: {
                     line: 1,
                     column: 7,
+                    index: 7,
                   },
                 },
                 left: {
@@ -37,10 +44,12 @@ export default {
                     start: {
                       line: 1,
                       column: 0,
+                      index: 0,
                     },
                     end: {
                       line: 1,
                       column: 2,
+                      index: 2,
                     },
                   },
                   extra: {
@@ -58,10 +67,12 @@ export default {
                     start: {
                       line: 1,
                       column: 5,
+                      index: 5,
                     },
                     end: {
                       line: 1,
                       column: 7,
+                      index: 7,
                     },
                   },
                   extra: {

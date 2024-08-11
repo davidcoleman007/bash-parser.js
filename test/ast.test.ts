@@ -29,7 +29,7 @@ Deno.test('ast', async (t) => {
 
   await t.step('command with multiple lines continuation', async () => {
     const result = await bashParser('echo \\\n\\\n\\\n\\\nthere');
-    // utils.logResults(result);
+
     utils.checkResults((result as any).commands[0].suffix[0], {
       text: 'there',
       type: 'Word',
@@ -175,7 +175,7 @@ Deno.test('ast', async (t) => {
 
   await t.step('Compound list', async () => {
     const result = await bashParser('{ echo; ls; }');
-    // utils.logResults(result);
+
     utils.checkResults(result, {
       type: 'Script',
       commands: [{
@@ -404,7 +404,7 @@ Deno.test('ast', async (t) => {
 
   await t.step('command with stderr redirection to file', async () => {
     const result = await bashParser('ls 2> file.txt');
-    // utils.logResults(result);
+
     utils.checkResults(result, {
       type: 'Script',
       commands: [{

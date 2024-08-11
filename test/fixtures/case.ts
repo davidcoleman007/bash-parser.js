@@ -1,5 +1,8 @@
 export default {
   sourceCode: 'case foo in\n\t* )\n\t\techo bar;;\nesac\n',
+  options: {
+    insertLOC: true,
+  },
   result: {
     type: 'Script',
     commands: [
@@ -46,7 +49,7 @@ export default {
               type: 'CompoundList',
               commands: [
                 {
-                  type: 'SimpleCommand',
+                  type: 'Command',
                   name: {
                     text: 'echo',
                     type: 'Word',

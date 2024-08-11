@@ -5,15 +5,26 @@ import map from '~/utils/iterable/map.ts';
 
 const replace = async (text: string, resolveHomeUser: Options['resolveHomeUser']) => {
   let replaced = false;
-  let result = text.replace(/^~([^\/]*)\//, (_match, p1) => {
+
+  let result = text;
+  const regex = /^~([^\/]*)\//;
+  const match = text.match(regex);
+
+  if (match) {
     replaced = true;
-    return resolveHomeUser!(p1 || null) + '/';
-  });
+    const resolved = await resolveHomeUser!(match[1] || null);
+    result = text.replace(regex, resolved + '/');
+  }
+
   // console.log({result, replaced})
   if (!replaced) {
-    result = text.replace(/^~(.*)$/, (_match, p1) => {
-      return resolveHomeUser!(p1 || null);
-    });
+    const regex = /^~(.*)$/;
+    const match = text.match(regex);
+
+    if (match) {
+      const resolved = await resolveHomeUser!(match[1] || null);
+      result = text.replace(regex, resolved);
+    }
   }
 
   return result;

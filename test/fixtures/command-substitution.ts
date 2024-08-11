@@ -1,10 +1,15 @@
 export default {
   sourceCode: '"foo $(other) $(one) baz"',
+  options: {
+    execCommand: async () => {
+      return 'bar';
+    },
+  },
   result: {
     type: 'Script',
     commands: [
       {
-        type: 'SimpleCommand',
+        type: 'Command',
         name: {
           text: 'foo bar bar baz',
           expansion: [
@@ -19,7 +24,7 @@ export default {
                 type: 'Script',
                 commands: [
                   {
-                    type: 'SimpleCommand',
+                    type: 'Command',
                     name: {
                       text: 'other',
                       type: 'Word',
@@ -40,7 +45,7 @@ export default {
                 type: 'Script',
                 commands: [
                   {
-                    type: 'SimpleCommand',
+                    type: 'Command',
                     name: {
                       text: 'one',
                       type: 'Word',

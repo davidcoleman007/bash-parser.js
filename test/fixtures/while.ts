@@ -9,7 +9,7 @@ export default {
           type: 'CompoundList',
           commands: [
             {
-              type: 'SimpleCommand',
+              type: 'Command',
               name: {
                 text: 'true',
                 type: 'Word',
@@ -21,7 +21,7 @@ export default {
           type: 'CompoundList',
           commands: [
             {
-              type: 'SimpleCommand',
+              type: 'Command',
               name: {
                 text: 'sleep',
                 type: 'Word',

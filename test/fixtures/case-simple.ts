@@ -22,7 +22,7 @@ export default {
               type: 'CompoundList',
               commands: [
                 {
-                  type: 'SimpleCommand',
+                  type: 'Command',
                   name: {
                     text: 'echo',
                     type: 'Word',

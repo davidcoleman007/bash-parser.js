@@ -11,7 +11,7 @@ const expandAlias = (preAliasLexer: LexerPhaseFn, resolveAlias: Resolvers['resol
       yield token;
       return;
     }
-    const result = resolveAlias!(token.value!);
+    const result = await resolveAlias!(token.value!);
     if (result === undefined) {
       yield token;
     } else {

@@ -84,7 +84,7 @@ Deno.test('lexer', async (t) => {
 
   await t.step('unquoted parameter delimited by symbol', async () => {
     const result = await tokenize('echo word$test,,', true);
-    // utils.logResults(result);
+
     utils.checkResults(result, [{ token: 'WORD', value: { text: 'echo' } }, {
       token: 'WORD',
       value: {

@@ -27,7 +27,7 @@ Deno.test('loc', async (t) => {
 
   await t.step('subshell can include loc', async () => {
     const result = await bashParser('(echo)', { insertLOC: true });
-    // utils.logResults(result);
+
     utils.checkResults(result, {
       type: 'Script',
       commands: [
@@ -57,7 +57,7 @@ Deno.test('loc', async (t) => {
 
   await t.step('double command with only name', async () => {
     const result = await bashParser('echo; ciao;', { insertLOC: true });
-    // utils.logResults(result);
+
     utils.checkResults(result, {
       type: 'Script',
       loc: mkloc(1, 1, 1, 10, 0, 9),
@@ -247,7 +247,7 @@ done
 
   await t.step('loc in multi line commands', async () => {
     const result = await bashParser('echo;\nls;\n', { insertLOC: true });
-    // utils.logResults(result);
+
     utils.checkResults(result, {
       loc: mkloc(1, 1, 2, 2, 0, 7),
       type: 'Script',

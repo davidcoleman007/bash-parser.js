@@ -6,8 +6,6 @@ Deno.test('comments', async (t) => {
     const cmd = 'echo world #this is a comment\necho ciao';
     const result = await bashParser(cmd);
 
-    // utils.logResults(result);
-
     const expected = {
       type: 'Script',
       commands: [{

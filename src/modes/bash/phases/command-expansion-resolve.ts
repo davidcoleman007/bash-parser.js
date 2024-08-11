@@ -11,7 +11,7 @@ const commandExpansionResolve: LexerPhase = (ctx) =>
 
       for (const xp of token.expansion) {
         if (xp.type === 'command_expansion') {
-          const result = ctx.resolvers.execCommand(xp);
+          const result = await ctx.resolvers.execCommand(xp.command!, xp.commandAST!);
           const replacement = await fieldSplittingMark(result.replace(/\n+$/, ''), token.value!, ctx.resolvers.resolveEnv);
 
           rValue.replace(

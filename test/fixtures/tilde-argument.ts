@@ -1,10 +1,15 @@
 export default {
   sourceCode: 'echo ~username/subdir',
+  options: {
+    resolveHomeUser: async (name: string) => {
+      return `/home/${name}`;
+    },
+  },
   result: {
     type: 'Script',
     commands: [
       {
-        type: 'SimpleCommand',
+        type: 'Command',
         name: {
           text: 'echo',
           type: 'Word',

@@ -4,7 +4,7 @@ export default {
     type: 'Script',
     commands: [
       {
-        type: 'SimpleCommand',
+        type: 'Command',
         name: {
           text: '${other:+default_value}',
           expansion: [
@@ -18,6 +18,7 @@ export default {
               op: 'useAlternativeValue',
               word: {
                 text: 'default_value',
+                type: 'Word',
               },
             },
           ],

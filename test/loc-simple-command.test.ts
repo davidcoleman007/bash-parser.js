@@ -116,7 +116,7 @@ Deno.test('loc-simple-command', async (t) => {
 
   await t.step('simple command with numbered IO redirection', async () => {
     const result = await bashParser('echo 2> 43', { insertLOC: true });
-    // utils.logResults(result);
+
     const expected = {
       type: 'Command',
       name: {
