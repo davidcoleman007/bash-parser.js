@@ -1,16 +1,17 @@
-import operators from '~/modes/bash/enums/operators.ts';
 import last from '~/utils/last.ts';
 import { mkToken } from './token.ts';
 import type { Expansion, Reducer, ReducerLocation, ReducerNextState, Reducers, ReducerStateIf, TokenIf } from './types.ts';
 
 class State implements ReducerStateIf {
+  operators: Record<string, string>;
   current = '';
   escaping = false;
-  expansion: Expansion[] = []; // TODO;
+  expansion: Expansion[] = [];
   previousReducer: Reducer;
   loc: ReducerLocation;
 
-  constructor(reducers: Reducers) {
+  constructor(reducers: Reducers, operators: Record<string, string>) {
+    this.operators = operators;
     this.previousReducer = reducers.start;
     this.loc = {
       start: { col: 1, row: 1, char: 0 },
@@ -83,7 +84,7 @@ class State implements ReducerStateIf {
 
   deleteLastExpansionValue() {
     const xp = last(this.expansion);
-    delete xp!.value;
+    delete xp?.value;
     return this;
   }
 
@@ -138,8 +139,7 @@ class State implements ReducerStateIf {
   }
 
   operatorTokens() {
-    // TODO: operators should be passed into tokenize
-    const type = operators[this.current as keyof typeof operators];
+    const type = this.operators[this.current as keyof typeof this.operators];
     const token = mkToken(type, this.current, {
       loc: {
         start: Object.assign({}, this.loc.start),
@@ -151,11 +151,11 @@ class State implements ReducerStateIf {
   }
 
   isPartOfOperator(text: string) {
-    return Object.keys(operators).some((op) => op.slice(0, text.length) === text);
+    return Object.keys(this.operators).some((op) => op.slice(0, text.length) === text);
   }
 
   isOperator() {
-    return this.current in operators;
+    return this.current in this.operators;
   }
 }
 
@@ -164,8 +164,8 @@ class State implements ReducerStateIf {
  *
  * @returns A function that takes shell source code and returns an iterable of parsed tokens.
  */
-export const tokenize = (r: Reducers) => (async function* (src: string): AsyncIterable<TokenIf> {
-  let state = new State(r);
+export const tokenize = (r: Reducers, operators: Record<string, string>) => (async function* (src: string): AsyncIterable<TokenIf> {
+  let state = new State(r, operators);
 
   let reduction: Reducer | null = r.start;
   const source = Array.from(src);

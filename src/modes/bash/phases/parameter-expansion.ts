@@ -37,7 +37,7 @@ const handleParameter = async (obj: ParameterOp, match: RegExpMatchArray) => {
   return ret;
 };
 
-const expandParameter = async (xp: Expansion, enums: Enums) => {
+const expandParameter = async (xp: Expansion, enums: Enums): Promise<Expansion> => {
   const parameter = xp.parameter;
 
   for (const pair of Object.entries(enums.parameterOperators)) {
@@ -48,9 +48,10 @@ const expandParameter = async (xp: Expansion, enums: Enums) => {
       const opProps = await handleParameter(pair[1], match);
       const mergedObject = Object.assign({}, xp, opProps);
 
-      return Object.fromEntries(
-        Object.entries(mergedObject).filter(([_k, v]) => v !== undefined),
-      );
+      return JSON.parse(JSON.stringify(mergedObject));
+      // return Object.fromEntries(
+      // Object.entries(mergedObject).filter(([_k, v]) => v !== undefined),
+      // );
     }
   }
 

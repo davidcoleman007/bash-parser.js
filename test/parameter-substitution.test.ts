@@ -136,8 +136,7 @@ Deno.test('parameter-substitution', async (t) => {
 
   await t.step('resolve parameter', async () => {
     const result = await bashParser('"foo ${other} baz"', {
-      async resolveParameter(a: any) {
-        console.log('resolveParameter', a);
+      async resolveParameter() {
         return 'bar';
       },
     });

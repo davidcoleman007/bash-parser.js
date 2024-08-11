@@ -1,7 +1,6 @@
 import type { LexerPhase, LexerPhaseFn } from '~/lexer/types.ts';
 import { applyVisitor, type TokenIf, type Visitor } from '~/tokenizer/mod.ts';
 import type { Resolvers } from '~/types.ts';
-import flatten from '~/utils/iterable/flatten.ts';
 import map from '~/utils/iterable/map.ts';
 import compose from '../../../utils/iterable/compose.ts';
 
@@ -58,7 +57,6 @@ const aliasSubstitution: LexerPhase = (ctx) => {
   const visitor = expandAlias(preAliasLexer, ctx.resolvers.resolveAlias, Object.values(ctx.enums.reservedWords));
 
   return compose<TokenIf>(
-    flatten,
     map(
       applyVisitor(visitor),
     ),

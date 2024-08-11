@@ -21,7 +21,8 @@ const map = <T>(transform: MapFunction<T>): MapperFunction<T> => {
         continue;
       }
 
-      // TODO: Does this do flattening so we can remove that step when using map?
+      // This makes this into flatMap actually but that is
+      // usually what we want
       if (Array.isArray(result)) {
         for (const res of result) {
           yield res;

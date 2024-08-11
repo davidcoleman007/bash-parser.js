@@ -13,7 +13,7 @@ export class Lexer implements LexerIf {
   public yylineno: number = 0;
 
   constructor(mode: Mode, options: Options) {
-    const tokenizerPhase: LexerPhaseFn = tokenize(mode.reducers);
+    const tokenizerPhase: LexerPhaseFn = tokenize(mode.reducers, mode.enums.operators);
 
     let previousPhases: LexerPhaseFn[] = [
       tokenizerPhase,

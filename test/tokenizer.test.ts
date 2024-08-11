@@ -1,3 +1,4 @@
+import operators from '~/modes/bash/enums/operators.ts';
 import reducers from '~/modes/bash/reducers/mod.ts';
 import { tokenize as delimiterTokanize } from '~/tokenizer/mod.ts';
 import toArray from '~/utils/iterable/to-array.ts';
@@ -19,7 +20,7 @@ const mkloc = ([startCol, startRow, startChar]: number[], [endCol, endRow, endCh
 };
 
 const tokenize = async (text: string, keepLoc?: boolean) => {
-  const tokenizer = delimiterTokanize(reducers);
+  const tokenizer = delimiterTokanize(reducers, operators);
   const tokens = await toArray(tokenizer(text));
 
   const results = tokens.map((t) => {

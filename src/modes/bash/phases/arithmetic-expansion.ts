@@ -18,7 +18,6 @@ function parseArithmeticAST(xp: Expansion) {
     throw new SyntaxError(`Cannot parse arithmetic expression "${xp.expression}": Not an expression`);
   }
 
-  // TODO: structuedClone leaves undefined fields, JSON does not
   return JSON.parse(JSON.stringify(expression));
 }
 

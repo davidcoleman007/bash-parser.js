@@ -43,6 +43,7 @@ export type TokenIf = TokenFields & {
 export type Tokenizer = (code: string) => AsyncIterable<TokenIf>;
 
 export interface ReducerStateIf {
+  operators: Record<string, string>;
   current: string;
   escaping: boolean;
   expansion: Expansion[];
@@ -97,7 +98,6 @@ export type ExpansionLocation = {
   end: number;
 };
 
-// TODO: This type needs work
 export type Expansion = {
   parameter?: string;
 
@@ -108,7 +108,7 @@ export type Expansion = {
   arithmeticAST?: any;
 
   value?: string;
-  type?: string;
+  type?: 'parameter_expansion' | 'command_expansion' | 'arithmetic_expansion';
   resolved?: boolean;
   loc?: ExpansionLocation;
 };

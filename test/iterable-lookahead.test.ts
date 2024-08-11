@@ -160,4 +160,11 @@ Deno.test('iterable-lookahead', async (t) => {
     assert(err3 instanceof RangeError);
     assert(err4 instanceof RangeError);
   });
+
+  await t.step('throws if data is not iterable', async () => {
+    // @ts-expect-error Sending in 42 as an invalid argument
+    const err = assertThrows(() => iterableLookahead(42), 1) as Error;
+    assertEquals(err.message, 'argument must be an iterable');
+    assert(err instanceof TypeError);
+  });
 });

@@ -59,7 +59,7 @@ export type Resolvers = {
    * @param scriptAST - The AST of the complete command to execute.
    * @returns The output of the command.
    */
-  execShellScript?: (scriptAST: object) => string;
+  //execShellScript?: (scriptAST: object) => string;
 
   /**
    * A callback to execute an `arithmetic_expansion`. If specified, the parser calls it whenever it needs to resolve an arithmetic substitution. It receives as argument the AST of an `arithmetic_expansion` node, and shall return the result of the calculation. If the option is not specified, the parser won't try to resolve any arithmetic expansion substitution. Please note that the arithmetic expression AST is built using [babel/parser](https://babeljs.io/docs/babel-parser), the AST specification can be found there.
