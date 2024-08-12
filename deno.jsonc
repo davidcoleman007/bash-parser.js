@@ -1,6 +1,6 @@
 {
   "name": "@ein/bash-parser",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "exports": "./mod.ts",
   "description": "Bash parser - parse bash scripts into an AST",
   "repository": "https://github.com/mattiasrunge/bash-parser",
@@ -49,6 +49,7 @@
     "test": "deno task coverage-clean && deno test -A --coverage=coverage",
     "test-nc": "deno task coverage-clean && deno test -A --no-check --coverage=coverage",
     "test-fast": "deno test -A --parallel --no-check --quiet",
-    "build-parser": "deno run --allow-read --allow-write src/grammar/build-parser.ts"
+    "build-parser": "deno run --allow-read --allow-write src/grammar/build-parser.ts",
+    "test-single": "deno test -A  --no-check test/ast.test.ts"
   }
 }

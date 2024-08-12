@@ -420,6 +420,143 @@ Deno.test('ast', async (t) => {
     });
   });
 
+  await t.step('command with stdout redirection to file', async () => {
+    const result = await bashParser('ls > file.txt');
+
+    utils.checkResults(result, {
+      type: 'Script',
+      commands: [{
+        type: 'Command',
+        name: { type: 'Word', text: 'ls' },
+        suffix: [{
+          type: 'Redirect',
+          op: { type: 'great', text: '>' },
+          file: { type: 'Word', text: 'file.txt' },
+        }],
+      }],
+    });
+  });
+
+  await t.step('command with stdout append redirection to file', async () => {
+    const result = await bashParser('ls >> file.txt');
+
+    utils.checkResults(result, {
+      type: 'Script',
+      commands: [{
+        type: 'Command',
+        name: { type: 'Word', text: 'ls' },
+        suffix: [{
+          type: 'Redirect',
+          op: { type: 'dgreat', text: '>>' },
+          file: { type: 'Word', text: 'file.txt' },
+        }],
+      }],
+    });
+  });
+
+  await t.step('command with stderr redirection to file', async () => {
+    const result = await bashParser('ls 2> file.txt');
+
+    utils.checkResults(result, {
+      type: 'Script',
+      commands: [{
+        type: 'Command',
+        name: { type: 'Word', text: 'ls' },
+        suffix: [{
+          type: 'Redirect',
+          op: { type: 'great', text: '>' },
+          file: { type: 'Word', text: 'file.txt' },
+          numberIo: { type: 'io_number', text: '2' },
+        }],
+      }],
+    });
+  });
+
+  await t.step('command with stderr append redirection to file', async () => {
+    const result = await bashParser('ls 2>> file.txt');
+
+    utils.checkResults(result, {
+      type: 'Script',
+      commands: [{
+        type: 'Command',
+        name: { type: 'Word', text: 'ls' },
+        suffix: [{
+          type: 'Redirect',
+          op: { type: 'dgreat', text: '>>' },
+          file: { type: 'Word', text: 'file.txt' },
+          numberIo: { type: 'io_number', text: '2' },
+        }],
+      }],
+    });
+  });
+
+  await t.step('command with stdout and stderr redirection to file', async () => {
+    const result = await bashParser('ls > file.txt 2>&1');
+
+    utils.checkResults(result, {
+      type: 'Script',
+      commands: [{
+        type: 'Command',
+        name: { type: 'Word', text: 'ls' },
+        suffix: [
+          {
+            type: 'Redirect',
+            op: { type: 'great', text: '>' },
+            file: { type: 'Word', text: 'file.txt' },
+          },
+          {
+            type: 'Redirect',
+            op: { type: 'greatand', text: '>&' },
+            file: { type: 'Word', text: '1' },
+            numberIo: { type: 'io_number', text: '2' },
+          },
+        ],
+      }],
+    });
+  });
+
+  await t.step('command with stdout and stderr append redirection to file', async () => {
+    const result = await bashParser('ls >> file.txt 2>&1');
+
+    utils.checkResults(result, {
+      type: 'Script',
+      commands: [{
+        type: 'Command',
+        name: { type: 'Word', text: 'ls' },
+        suffix: [
+          {
+            type: 'Redirect',
+            op: { type: 'dgreat', text: '>>' },
+            file: { type: 'Word', text: 'file.txt' },
+          },
+          {
+            type: 'Redirect',
+            op: { type: 'greatand', text: '>&' },
+            file: { type: 'Word', text: '1' },
+            numberIo: { type: 'io_number', text: '2' },
+          },
+        ],
+      }],
+    });
+  });
+
+  await t.step('command with stdin redirection from file', async () => {
+    const result = await bashParser('ls < file.txt');
+
+    utils.checkResults(result, {
+      type: 'Script',
+      commands: [{
+        type: 'Command',
+        name: { type: 'Word', text: 'ls' },
+        suffix: [{
+          type: 'Redirect',
+          op: { type: 'less', text: '<' },
+          file: { type: 'Word', text: 'file.txt' },
+        }],
+      }],
+    });
+  });
+
   await t.step('parse subshell', async () => {
     const result = await bashParser('( ls )');
 

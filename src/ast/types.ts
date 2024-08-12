@@ -1,3 +1,5 @@
+import { ExpansionLocation } from '~/tokenizer/types.ts';
+
 /**
  * If the source is parsed specifing the `insertLOC` option, each node contins a `loc` property that contains the starting and ending lines and columns of the node, and the start and end index of the character in the source string.
  */
@@ -65,28 +67,8 @@ export type AstNodePipeline = AstNode & {
  */
 export type AstNodeLogicalExpression = AstNode & {
   op: string;
-  left:
-    | AstNodeLogicalExpression
-    | AstNodePipeline
-    | AstNodeCommand
-    | AstNodeFunction
-    | AstNodeSubshell
-    | AstNodeFor
-    | AstNodeCase
-    | AstNodeIf
-    | AstNodeWhile
-    | AstNodeUntil;
-  right:
-    | AstNodeLogicalExpression
-    | AstNodePipeline
-    | AstNodeCommand
-    | AstNodeFunction
-    | AstNodeSubshell
-    | AstNodeFor
-    | AstNodeCase
-    | AstNodeIf
-    | AstNodeWhile
-    | AstNodeUntil;
+  left: AstNode;
+  right: AstNode;
 };
 
 /**
@@ -224,9 +206,9 @@ export type AstNodeWord = AstNode & {
   type: 'Word';
   text: string;
   expansion: Array<
-    | AstNodeArithmeticExpansion
-    | AstNodeCommandExpansion
-    | AstNodeParameterExpansion
+    | AstArithmeticExpansion
+    | AstCommandExpansion
+    | AstParameterExpansion
   >;
 };
 
@@ -237,9 +219,9 @@ export type AstNodeAssignmentWord = AstNode & {
   type: 'AssignmentWord';
   text: string;
   expansion: Array<
-    | AstNodeArithmeticExpansion
-    | AstNodeCommandExpansion
-    | AstNodeParameterExpansion
+    | AstArithmeticExpansion
+    | AstCommandExpansion
+    | AstParameterExpansion
   >;
 };
 
@@ -250,11 +232,12 @@ export type AstNodeAssignmentWord = AstNode & {
  *
  * The `loc.start` property contains the index of the character in the Word text where the substitution starts. The `loc.end` property contains the index where it the ends.
  */
-export type AstNodeArithmeticExpansion = AstNode & {
+export type AstArithmeticExpansion = {
   type: 'ArithmeticExpansion';
   expression: string;
   resolved: boolean;
   arithmeticAST: AstNode; // Maybe this should be specialized
+  loc: ExpansionLocation;
 };
 
 /** A `CommandExpansion` represent a command substitution operation to perform on the Word.
@@ -263,11 +246,12 @@ export type AstNodeArithmeticExpansion = AstNode & {
  *
  * The `loc.start` property contains the index of the character in the Word text where the substitution starts. The `loc.end` property contains the index where it the ends.
  */
-export type AstNodeCommandExpansion = AstNode & {
+export type AstCommandExpansion = {
   type: 'CommandExpansion';
   command: string;
   resolved: boolean;
   commandAST: AstNodeScript;
+  loc: ExpansionLocation;
 };
 
 /**
@@ -277,12 +261,13 @@ export type AstNodeCommandExpansion = AstNode & {
  *
  * The `loc.start` property contains the index of the character in the Word text where the substitution starts. The `loc.end` property contains the index where it the ends.
  */
-export type AstNodeParameterExpansion = AstNode & {
+export type AstParameterExpansion = {
   type: 'ParameterExpansion';
   parameter: string;
   kind?: string;
   word?: string;
   op?: string;
+  loc: ExpansionLocation;
 };
 
 /**
