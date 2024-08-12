@@ -74,8 +74,6 @@ Temporary Items
 
 out
 
-**/built-grammar.*
-
 yarn.lock
 package-lock.json
 deno.lock
