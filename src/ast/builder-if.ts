@@ -15,6 +15,7 @@ import type {
   AstNodeRedirect,
   AstNodeScript,
   AstNodeSubshell,
+  AstNodeTestExpression,
   AstNodeUntil,
   AstNodeWhile,
   AstNodeWord,
@@ -113,6 +114,23 @@ export type AstBuilder = {
   pipeLine: (
     pipe: AstNodePipeline,
   ) => AstNodePipeline['commands'][0] | AstNodePipeline;
+
+  logicalExpression: (
+    left: AstNodeLogicalExpression['left'],
+    op: AstNodeLogicalExpression['op'],
+    right: AstNodeLogicalExpression['right'],
+    invert: AstNodeLogicalExpression['inverted'],
+    locStart: AstSourceLocation,
+    locEnd: AstSourceLocation,
+  ) => AstNodeLogicalExpression;
+
+  testExpression: (
+    op: AstNodeTestExpression['op'],
+    target: AstNodeTestExpression['target'],
+    invert: AstNodeTestExpression['inverted'],
+    locStart: AstSourceLocation,
+    locEnd: AstSourceLocation,
+  ) => AstNodeTestExpression;
 
   andAndOr: (
     left: AstNodeLogicalExpression['left'],

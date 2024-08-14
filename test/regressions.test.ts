@@ -14,7 +14,7 @@ Deno.test('regressions', async (t) => {
           { type: 'Word', text: 'foo' },
           {
             type: 'Redirect',
-            op: { type: 'great', text: '>' },
+            op: { type: 'Great', text: '>' },
             file: { type: 'Word', text: 'file.txt' },
           },
         ],

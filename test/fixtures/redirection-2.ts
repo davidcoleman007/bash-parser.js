@@ -14,7 +14,7 @@ export default {
             type: 'Redirect',
             op: {
               text: '>&',
-              type: 'greatand',
+              type: 'GreatAnd',
             },
             file: {
               text: '1',
@@ -22,7 +22,7 @@ export default {
             },
             numberIo: {
               text: '2',
-              type: 'io_number',
+              type: 'IoNumber',
             },
           },
         ],

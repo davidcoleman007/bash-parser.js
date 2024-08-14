@@ -1,0 +1,946 @@
+export const snapshot = {};
+
+snapshot[`conditions > if [ "\$a" -eq 10 ] 1`] = `
+{
+  commands: [
+    {
+      clause: {
+        left: {
+          expansion: [
+            {
+              loc: {
+                end: 2,
+                start: 1,
+              },
+              parameter: "a",
+              type: "ParameterExpansion",
+            },
+          ],
+          text: '"\$a"',
+          type: "Word",
+        },
+        op: {
+          text: "-eq",
+          type: "Equal",
+        },
+        right: {
+          text: "10",
+          type: "Word",
+        },
+        type: "LogicalExpression",
+      },
+      then: {
+        commands: [
+          {
+            name: {
+              text: "echo",
+              type: "Word",
+            },
+            suffix: [
+              {
+                text: "1",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
+      },
+      type: "If",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`conditions > if [ "\$a" -ne 10 ] 1`] = `
+{
+  commands: [
+    {
+      clause: {
+        left: {
+          expansion: [
+            {
+              loc: {
+                end: 2,
+                start: 1,
+              },
+              parameter: "a",
+              type: "ParameterExpansion",
+            },
+          ],
+          text: '"\$a"',
+          type: "Word",
+        },
+        op: {
+          text: "-ne",
+          type: "NotEqual",
+        },
+        right: {
+          text: "10",
+          type: "Word",
+        },
+        type: "LogicalExpression",
+      },
+      then: {
+        commands: [
+          {
+            name: {
+              text: "echo",
+              type: "Word",
+            },
+            suffix: [
+              {
+                text: "1",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
+      },
+      type: "If",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`conditions > [ "\$a" -gt 10 ] 1`] = `
+{
+  commands: [
+    {
+      clause: {
+        left: {
+          expansion: [
+            {
+              loc: {
+                end: 2,
+                start: 1,
+              },
+              parameter: "a",
+              type: "ParameterExpansion",
+            },
+          ],
+          text: '"\$a"',
+          type: "Word",
+        },
+        op: {
+          text: "-gt",
+          type: "GreaterThan",
+        },
+        right: {
+          text: "10",
+          type: "Word",
+        },
+        type: "LogicalExpression",
+      },
+      then: {
+        commands: [
+          {
+            name: {
+              text: "echo",
+              type: "Word",
+            },
+            suffix: [
+              {
+                text: "1",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
+      },
+      type: "If",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`conditions > if [ "\$a" -ge 10 ] 1`] = `
+{
+  commands: [
+    {
+      clause: {
+        left: {
+          expansion: [
+            {
+              loc: {
+                end: 2,
+                start: 1,
+              },
+              parameter: "a",
+              type: "ParameterExpansion",
+            },
+          ],
+          text: '"\$a"',
+          type: "Word",
+        },
+        op: {
+          text: "-ge",
+          type: "GreaterThanOrEqual",
+        },
+        right: {
+          text: "10",
+          type: "Word",
+        },
+        type: "LogicalExpression",
+      },
+      then: {
+        commands: [
+          {
+            name: {
+              text: "echo",
+              type: "Word",
+            },
+            suffix: [
+              {
+                text: "1",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
+      },
+      type: "If",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`conditions > [ "\$a" -lt 10 ] 1`] = `
+{
+  commands: [
+    {
+      clause: {
+        left: {
+          expansion: [
+            {
+              loc: {
+                end: 2,
+                start: 1,
+              },
+              parameter: "a",
+              type: "ParameterExpansion",
+            },
+          ],
+          text: '"\$a"',
+          type: "Word",
+        },
+        op: {
+          text: "-lt",
+          type: "LessThan",
+        },
+        right: {
+          text: "10",
+          type: "Word",
+        },
+        type: "LogicalExpression",
+      },
+      then: {
+        commands: [
+          {
+            name: {
+              text: "echo",
+              type: "Word",
+            },
+            suffix: [
+              {
+                text: "1",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
+      },
+      type: "If",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`conditions > if [ "\$a" -le 10 ] 1`] = `
+{
+  commands: [
+    {
+      clause: {
+        left: {
+          expansion: [
+            {
+              loc: {
+                end: 2,
+                start: 1,
+              },
+              parameter: "a",
+              type: "ParameterExpansion",
+            },
+          ],
+          text: '"\$a"',
+          type: "Word",
+        },
+        op: {
+          text: "-le",
+          type: "LessThanOrEqual",
+        },
+        right: {
+          text: "10",
+          type: "Word",
+        },
+        type: "LogicalExpression",
+      },
+      then: {
+        commands: [
+          {
+            name: {
+              text: "echo",
+              type: "Word",
+            },
+            suffix: [
+              {
+                text: "1",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
+      },
+      type: "If",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`conditions > if [ "\$a" == 10 ] 1`] = `
+{
+  commands: [
+    {
+      clause: {
+        left: {
+          expansion: [
+            {
+              loc: {
+                end: 2,
+                start: 1,
+              },
+              parameter: "a",
+              type: "ParameterExpansion",
+            },
+          ],
+          text: '"\$a"',
+          type: "Word",
+        },
+        op: {
+          text: "==",
+          type: "Equal",
+        },
+        right: {
+          text: "10",
+          type: "Word",
+        },
+        type: "LogicalExpression",
+      },
+      then: {
+        commands: [
+          {
+            name: {
+              text: "echo",
+              type: "Word",
+            },
+            suffix: [
+              {
+                text: "1",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
+      },
+      type: "If",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`conditions > if [ "\$a" != 10 ] 1`] = `
+{
+  commands: [
+    {
+      clause: {
+        left: {
+          expansion: [
+            {
+              loc: {
+                end: 2,
+                start: 1,
+              },
+              parameter: "a",
+              type: "ParameterExpansion",
+            },
+          ],
+          text: '"\$a"',
+          type: "Word",
+        },
+        op: {
+          text: "!=",
+          type: "NotEqual",
+        },
+        right: {
+          text: "10",
+          type: "Word",
+        },
+        type: "LogicalExpression",
+      },
+      then: {
+        commands: [
+          {
+            name: {
+              text: "echo",
+              type: "Word",
+            },
+            suffix: [
+              {
+                text: "1",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
+      },
+      type: "If",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`conditions > if [ ! "\$a" = 10 ] 1`] = `
+{
+  commands: [
+    {
+      clause: {
+        inverted: true,
+        left: {
+          expansion: [
+            {
+              loc: {
+                end: 2,
+                start: 1,
+              },
+              parameter: "a",
+              type: "ParameterExpansion",
+            },
+          ],
+          text: '"\$a"',
+          type: "Word",
+        },
+        op: {
+          text: "=",
+          type: "Equal",
+        },
+        right: {
+          text: "10",
+          type: "Word",
+        },
+        type: "LogicalExpression",
+      },
+      then: {
+        commands: [
+          {
+            name: {
+              text: "echo",
+              type: "Word",
+            },
+            suffix: [
+              {
+                text: "1",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
+      },
+      type: "If",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`conditions > if [ -z "\$a" ] 1`] = `
+{
+  commands: [
+    {
+      clause: {
+        op: {
+          text: "-z",
+          type: "IsStringNull",
+        },
+        target: {
+          expansion: [
+            {
+              loc: {
+                end: 2,
+                start: 1,
+              },
+              parameter: "a",
+              type: "ParameterExpansion",
+            },
+          ],
+          text: '"\$a"',
+          type: "Word",
+        },
+        type: "TestExpression",
+      },
+      then: {
+        commands: [
+          {
+            name: {
+              text: "echo",
+              type: "Word",
+            },
+            suffix: [
+              {
+                text: "1",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
+      },
+      type: "If",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`conditions > if [ -n "\$a" ] 1`] = `
+{
+  commands: [
+    {
+      clause: {
+        op: {
+          text: "-n",
+          type: "IsStringNotNull",
+        },
+        target: {
+          expansion: [
+            {
+              loc: {
+                end: 2,
+                start: 1,
+              },
+              parameter: "a",
+              type: "ParameterExpansion",
+            },
+          ],
+          text: '"\$a"',
+          type: "Word",
+        },
+        type: "TestExpression",
+      },
+      then: {
+        commands: [
+          {
+            name: {
+              text: "echo",
+              type: "Word",
+            },
+            suffix: [
+              {
+                text: "1",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
+      },
+      type: "If",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`conditions > if [ -d "\$a" ] 1`] = `
+{
+  commands: [
+    {
+      clause: {
+        op: {
+          text: "-d",
+          type: "IsDirectory",
+        },
+        target: {
+          expansion: [
+            {
+              loc: {
+                end: 2,
+                start: 1,
+              },
+              parameter: "a",
+              type: "ParameterExpansion",
+            },
+          ],
+          text: '"\$a"',
+          type: "Word",
+        },
+        type: "TestExpression",
+      },
+      then: {
+        commands: [
+          {
+            name: {
+              text: "echo",
+              type: "Word",
+            },
+            suffix: [
+              {
+                text: "1",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
+      },
+      type: "If",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`conditions > if [ -f "\$a" ] 1`] = `
+{
+  commands: [
+    {
+      clause: {
+        op: {
+          text: "-f",
+          type: "IsFile",
+        },
+        target: {
+          expansion: [
+            {
+              loc: {
+                end: 2,
+                start: 1,
+              },
+              parameter: "a",
+              type: "ParameterExpansion",
+            },
+          ],
+          text: '"\$a"',
+          type: "Word",
+        },
+        type: "TestExpression",
+      },
+      then: {
+        commands: [
+          {
+            name: {
+              text: "echo",
+              type: "Word",
+            },
+            suffix: [
+              {
+                text: "1",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
+      },
+      type: "If",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`conditions > if [ -r "\$a" ] 1`] = `
+{
+  commands: [
+    {
+      clause: {
+        op: {
+          text: "-r",
+          type: "IsReadable",
+        },
+        target: {
+          expansion: [
+            {
+              loc: {
+                end: 2,
+                start: 1,
+              },
+              parameter: "a",
+              type: "ParameterExpansion",
+            },
+          ],
+          text: '"\$a"',
+          type: "Word",
+        },
+        type: "TestExpression",
+      },
+      then: {
+        commands: [
+          {
+            name: {
+              text: "echo",
+              type: "Word",
+            },
+            suffix: [
+              {
+                text: "1",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
+      },
+      type: "If",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`conditions > if [ -w "\$a" ] 1`] = `
+{
+  commands: [
+    {
+      clause: {
+        op: {
+          text: "-w",
+          type: "IsWritable",
+        },
+        target: {
+          expansion: [
+            {
+              loc: {
+                end: 2,
+                start: 1,
+              },
+              parameter: "a",
+              type: "ParameterExpansion",
+            },
+          ],
+          text: '"\$a"',
+          type: "Word",
+        },
+        type: "TestExpression",
+      },
+      then: {
+        commands: [
+          {
+            name: {
+              text: "echo",
+              type: "Word",
+            },
+            suffix: [
+              {
+                text: "1",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
+      },
+      type: "If",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`conditions > if [ -x "\$a" ] 1`] = `
+{
+  commands: [
+    {
+      clause: {
+        op: {
+          text: "-x",
+          type: "IsExecutable",
+        },
+        target: {
+          expansion: [
+            {
+              loc: {
+                end: 2,
+                start: 1,
+              },
+              parameter: "a",
+              type: "ParameterExpansion",
+            },
+          ],
+          text: '"\$a"',
+          type: "Word",
+        },
+        type: "TestExpression",
+      },
+      then: {
+        commands: [
+          {
+            name: {
+              text: "echo",
+              type: "Word",
+            },
+            suffix: [
+              {
+                text: "1",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
+      },
+      type: "If",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`conditions > while [ "\$a" -le 10 ] 1`] = `
+{
+  commands: [
+    {
+      clause: {
+        left: {
+          expansion: [
+            {
+              loc: {
+                end: 2,
+                start: 1,
+              },
+              parameter: "a",
+              type: "ParameterExpansion",
+            },
+          ],
+          text: '"\$a"',
+          type: "Word",
+        },
+        op: {
+          text: "-le",
+          type: "LessThanOrEqual",
+        },
+        right: {
+          text: "10",
+          type: "Word",
+        },
+        type: "LogicalExpression",
+      },
+      do: {
+        commands: [
+          {
+            name: {
+              text: "echo",
+              type: "Word",
+            },
+            suffix: [
+              {
+                text: "1",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
+      },
+      type: "While",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`conditions > until [ "\$a" -ge 10 ] 1`] = `
+{
+  commands: [
+    {
+      clause: {
+        left: {
+          expansion: [
+            {
+              loc: {
+                end: 2,
+                start: 1,
+              },
+              parameter: "a",
+              type: "ParameterExpansion",
+            },
+          ],
+          text: '"\$a"',
+          type: "Word",
+        },
+        op: {
+          text: "-ge",
+          type: "GreaterThanOrEqual",
+        },
+        right: {
+          text: "10",
+          type: "Word",
+        },
+        type: "LogicalExpression",
+      },
+      do: {
+        commands: [
+          {
+            name: {
+              text: "echo",
+              type: "Word",
+            },
+            suffix: [
+              {
+                text: "1",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
+      },
+      type: "Until",
+    },
+  ],
+  type: "Script",
+}
+`;

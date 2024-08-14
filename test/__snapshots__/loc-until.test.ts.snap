@@ -1,0 +1,249 @@
+export const snapshot = {};
+
+snapshot[`loc-until > loc in until statement 1`] = `
+{
+  commands: [
+    {
+      clause: {
+        commands: [
+          {
+            left: {
+              loc: {
+                end: {
+                  char: 9,
+                  col: 10,
+                  row: 1,
+                },
+                start: {
+                  char: 6,
+                  col: 7,
+                  row: 1,
+                },
+              },
+              name: {
+                loc: {
+                  end: {
+                    char: 9,
+                    col: 10,
+                    row: 1,
+                  },
+                  start: {
+                    char: 6,
+                    col: 7,
+                    row: 1,
+                  },
+                },
+                text: "true",
+                type: "Word",
+              },
+              type: "Command",
+            },
+            loc: {
+              end: {
+                char: 14,
+                col: 15,
+                row: 1,
+              },
+              start: {
+                char: 6,
+                col: 7,
+                row: 1,
+              },
+            },
+            op: {
+              text: "||",
+              type: "Or",
+            },
+            right: {
+              loc: {
+                end: {
+                  char: 14,
+                  col: 15,
+                  row: 1,
+                },
+                start: {
+                  char: 14,
+                  col: 15,
+                  row: 1,
+                },
+              },
+              name: {
+                loc: {
+                  end: {
+                    char: 14,
+                    col: 15,
+                    row: 1,
+                  },
+                  start: {
+                    char: 14,
+                    col: 15,
+                    row: 1,
+                  },
+                },
+                text: "1",
+                type: "Word",
+              },
+              type: "Command",
+            },
+            type: "LogicalExpression",
+          },
+        ],
+        loc: {
+          end: {
+            char: 14,
+            col: 15,
+            row: 1,
+          },
+          start: {
+            char: 6,
+            col: 7,
+            row: 1,
+          },
+        },
+        type: "CompoundList",
+      },
+      do: {
+        commands: [
+          {
+            loc: {
+              end: {
+                char: 26,
+                col: 27,
+                row: 1,
+              },
+              start: {
+                char: 20,
+                col: 21,
+                row: 1,
+              },
+            },
+            name: {
+              loc: {
+                end: {
+                  char: 24,
+                  col: 25,
+                  row: 1,
+                },
+                start: {
+                  char: 20,
+                  col: 21,
+                  row: 1,
+                },
+              },
+              text: "sleep",
+              type: "Word",
+            },
+            suffix: [
+              {
+                loc: {
+                  end: {
+                    char: 26,
+                    col: 27,
+                    row: 1,
+                  },
+                  start: {
+                    char: 26,
+                    col: 27,
+                    row: 1,
+                  },
+                },
+                text: "1",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+          {
+            loc: {
+              end: {
+                char: 36,
+                col: 37,
+                row: 1,
+              },
+              start: {
+                char: 28,
+                col: 29,
+                row: 1,
+              },
+            },
+            name: {
+              loc: {
+                end: {
+                  char: 31,
+                  col: 32,
+                  row: 1,
+                },
+                start: {
+                  char: 28,
+                  col: 29,
+                  row: 1,
+                },
+              },
+              text: "echo",
+              type: "Word",
+            },
+            suffix: [
+              {
+                loc: {
+                  end: {
+                    char: 36,
+                    col: 37,
+                    row: 1,
+                  },
+                  start: {
+                    char: 33,
+                    col: 34,
+                    row: 1,
+                  },
+                },
+                text: "ciao",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        loc: {
+          end: {
+            char: 42,
+            col: 43,
+            row: 1,
+          },
+          start: {
+            char: 17,
+            col: 18,
+            row: 1,
+          },
+        },
+        type: "CompoundList",
+      },
+      loc: {
+        end: {
+          char: 42,
+          col: 43,
+          row: 1,
+        },
+        start: {
+          char: 0,
+          col: 1,
+          row: 1,
+        },
+      },
+      type: "Until",
+    },
+  ],
+  loc: {
+    end: {
+      char: 42,
+      col: 43,
+      row: 1,
+    },
+    start: {
+      char: 0,
+      col: 1,
+      row: 1,
+    },
+  },
+  type: "Script",
+}
+`;

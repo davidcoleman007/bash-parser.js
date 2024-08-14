@@ -1,4 +1,4 @@
-import { ExpansionLocation } from '~/tokenizer/types.ts';
+import type { ExpansionLocation } from '~/tokenizer/types.ts';
 
 /**
  * If the source is parsed specifing the `insertLOC` option, each node contins a `loc` property that contains the starting and ending lines and columns of the node, and the start and end index of the character in the source string.
@@ -61,14 +61,34 @@ export type AstNodePipeline = AstNode & {
 };
 
 /**
+ * `ConditionOp` represents an operation in a `LogicalExpresison` or
+ * `TestExpression`.
+ */
+export type AstNodeConditionOp = AstNode & {
+  text: string;
+};
+
+/**
  * `LogicalExpression` represents two commands (left and right) concateneted in a `and` (&&) or `or` (||) operation.
  *
  * In the `and` Case, the right command is executed only if the left one is executed successfully. In the `or` Case, the right command is executed only if the left one fails.
  */
 export type AstNodeLogicalExpression = AstNode & {
-  op: string;
+  type: 'LogicalExpression';
+  op: AstNodeConditionOp;
   left: AstNode;
   right: AstNode;
+  inverted?: boolean;
+};
+
+/**
+ * `TestExpression` represents one command that operates on a value of some sort to produce a boolean.
+ */
+export type AstNodeTestExpression = AstNode & {
+  type: 'TestExpression';
+  op: AstNodeConditionOp;
+  target: AstNode;
+  inverted?: boolean;
 };
 
 /**
@@ -113,6 +133,7 @@ export type AstNodeCompoundList = AstNode & {
   type: 'CompoundList';
   commands: Array<
     | AstNodeLogicalExpression
+    | AstNodeTestExpression
     | AstNodePipeline
     | AstNodeCommand
     | AstNodeFunction
@@ -168,7 +189,7 @@ export type AstNodeCaseItem = AstNode & {
  */
 export type AstNodeIf = AstNode & {
   type: 'If';
-  clause: AstNodeCompoundList;
+  clause: AstCondition;
   then: AstNodeCompoundList;
   else?: AstNodeCompoundList;
 };
@@ -178,7 +199,7 @@ export type AstNodeIf = AstNode & {
  */
 export type AstNodeWhile = AstNode & {
   type: 'While';
-  clause: AstNodeCompoundList;
+  clause: AstCondition;
   do: AstNodeCompoundList;
 };
 
@@ -187,7 +208,7 @@ export type AstNodeWhile = AstNode & {
  */
 export type AstNodeUntil = AstNode & {
   type: 'Until';
-  clause: AstNodeCompoundList;
+  clause: AstCondition;
   do: AstNodeCompoundList;
 };
 
@@ -278,3 +299,5 @@ export type AstIoNumber = AstNode & {
   type: 'io_number';
   text: string;
 };
+
+export type AstCondition = AstNodeLogicalExpression | AstNodeTestExpression | AstNodeCompoundList;

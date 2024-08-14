@@ -100,7 +100,7 @@ Deno.test('loc-simple-command', async (t) => {
       suffix: [{
         type: 'Redirect',
         op: {
-          type: 'great',
+          type: 'Great',
           text: '>',
           loc: mkloc(1, 6, 1, 6, 5, 5),
         },
@@ -128,7 +128,7 @@ Deno.test('loc-simple-command', async (t) => {
       suffix: [{
         type: 'Redirect',
         op: {
-          type: 'great',
+          type: 'Great',
           text: '>',
           loc: mkloc(1, 7, 1, 7, 6, 6),
         },
@@ -140,7 +140,7 @@ Deno.test('loc-simple-command', async (t) => {
         loc: mkloc(1, 6, 1, 10, 5, 9),
         numberIo: {
           text: '2',
-          type: 'io_number',
+          type: 'IoNumber',
           loc: mkloc(1, 6, 1, 6, 5, 5),
         },
       }],

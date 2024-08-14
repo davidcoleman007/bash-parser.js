@@ -25,7 +25,7 @@ const check = async (rule: LexerPhase, actual: TokenIf[], expected: TokenIf[]) =
 
 Deno.test('tokenization-rules', async (t) => {
   await t.step('operatorTokens - identify operator with their tokens', async () => {
-    await check(rules.operatorTokens, [mkToken('OPERATOR', '<<')], [mkToken('DLESS', '<<')]);
+    await check(rules.operatorTokens, [mkToken('OPERATOR', '<<')], [mkToken('DOUBLE_LESS', '<<')]);
   });
 
   await t.step('reservedWords - identify reserved words or WORD', async () => {

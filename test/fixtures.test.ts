@@ -4,12 +4,15 @@ import type { Options } from '~/types.ts';
 import utils from './_utils.ts';
 
 // various example taken from http://www.etalabs.net/sh_tricks.html
-
-type Fixture = {
+type Test = {
   sourceCode: string;
   result: any;
-  name: string;
   options?: Options;
+};
+
+type Fixture = {
+  name: string;
+  tests: Test[];
 };
 
 const loadFixtures = async (): Promise<Fixture[]> => {
@@ -19,11 +22,12 @@ const loadFixtures = async (): Promise<Fixture[]> => {
   for await (const dirEntry of Deno.readDir(path)) {
     if (dirEntry.isFile) {
       const f = await import(join(path, dirEntry.name));
-      const fix = f.default;
+      const testOrTests = f.default;
 
-      fix.name = dirEntry.name.replace(/\.ts$/, '').replaceAll('-', ' ');
-
-      fixtures.push(fix);
+      fixtures.push({
+        name: dirEntry.name.replace(/\.ts$/, '').replaceAll('-', ' '),
+        tests: Array.isArray(testOrTests) ? testOrTests : [testOrTests],
+      });
     }
   }
 
@@ -34,10 +38,14 @@ Deno.test('fixtures', async (t) => {
   const fixtures = await loadFixtures();
 
   for (const fixture of fixtures) {
-    await t.step(fixture.name, async () => {
-      const result = await bashParser(fixture.sourceCode, fixture.options);
+    await t.step(fixture.name, async (t) => {
+      for (const test of fixture.tests) {
+        await t.step(test.sourceCode, async () => {
+          const result = await bashParser(test.sourceCode, test.options);
 
-      utils.checkResults(result, fixture.result);
+          utils.checkResults(result, test.result);
+        });
+      }
     });
   }
 });

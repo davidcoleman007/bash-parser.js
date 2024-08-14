@@ -41,7 +41,7 @@ Deno.test('function', async (t) => {
           name: { type: 'Name', text: 'foo' },
           redirections: [{
             type: 'Redirect',
-            op: { type: 'great', text: '>' },
+            op: { type: 'Great', text: '>' },
             file: { type: 'Word', text: 'file.txt' },
           }],
           body: {

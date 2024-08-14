@@ -13,6 +13,7 @@ import type {
   AstNodeRedirect,
   AstNodeScript,
   AstNodeSubshell,
+  AstNodeTestExpression,
   AstNodeUntil,
   AstNodeWhile,
   AstSourceLocation,
@@ -193,8 +194,38 @@ export const astBuilder = (insertLOC?: boolean) => {
       return pipe;
     },
 
+    logicalExpression: (left, op, right, inverted, locStart, locEnd) => {
+      const node: AstNodeLogicalExpression = { type: 'LogicalExpression', op, left, right };
+
+      if (inverted) {
+        node.inverted = true;
+      }
+
+      if (insertLOC) {
+        node.loc = setLocEnd(setLocStart({ start: {}, end: {} }, locStart), locEnd);
+      }
+
+      // console.log('logicalExpression', node);
+      return node;
+    },
+
+    testExpression: (op, target, inverted, locStart, locEnd) => {
+      const node: AstNodeTestExpression = { type: 'TestExpression', op, target };
+
+      if (inverted) {
+        node.inverted = true;
+      }
+
+      if (insertLOC) {
+        node.loc = setLocEnd(setLocStart({ start: {}, end: {} }, locStart), locEnd);
+      }
+
+      // console.log('testExpression', node);
+      return node;
+    },
+
     andAndOr: (left, right) => {
-      const node: AstNodeLogicalExpression = { type: 'LogicalExpression', op: 'and', left, right };
+      const node: AstNodeLogicalExpression = { type: 'LogicalExpression', op: { text: '&&', type: 'And' }, left, right };
 
       if (insertLOC) {
         node.loc = setLocEnd(setLocStart({ start: {}, end: {} }, left.loc), right.loc);
@@ -204,7 +235,7 @@ export const astBuilder = (insertLOC?: boolean) => {
     },
 
     orAndOr: (left, right) => {
-      const node: AstNodeLogicalExpression = { type: 'LogicalExpression', op: 'or', left, right };
+      const node: AstNodeLogicalExpression = { type: 'LogicalExpression', op: { text: '||', type: 'Or' }, left, right };
 
       if (insertLOC) {
         node.loc = setLocEnd(setLocStart({ start: {}, end: {} }, left.loc), right.loc);

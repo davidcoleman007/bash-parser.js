@@ -41,7 +41,7 @@ export default {
             type: 'Redirect',
             op: {
               text: '>',
-              type: 'great',
+              type: 'Great',
               loc: {
                 start: {
                   col: 7,
@@ -85,7 +85,7 @@ export default {
             },
             numberIo: {
               text: '2',
-              type: 'io_number',
+              type: 'IoNumber',
               loc: {
                 start: {
                   col: 6,

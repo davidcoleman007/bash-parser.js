@@ -66,7 +66,7 @@ Deno.test('ast', async (t) => {
       type: 'Script',
       commands: [{
         type: 'LogicalExpression',
-        op: 'and',
+        op: { type: 'And', text: '&&' },
         left: { type: 'Command', name: { type: 'Word', text: 'run' } },
         right: { type: 'Command', name: { type: 'Word', text: 'stop' } },
       }],
@@ -80,7 +80,7 @@ Deno.test('ast', async (t) => {
       type: 'Script',
       commands: [{
         type: 'LogicalExpression',
-        op: 'and',
+        op: { type: 'And', text: '&&' },
         left: { type: 'Command', name: { type: 'Word', text: 'run' } },
         right: { type: 'Command', name: { type: 'Word', text: 'stop' } },
       }],
@@ -93,7 +93,7 @@ Deno.test('ast', async (t) => {
       type: 'Script',
       commands: [{
         type: 'LogicalExpression',
-        op: 'or',
+        op: { type: 'Or', text: '||' },
         left: { type: 'Command', name: { type: 'Word', text: 'run' } },
         right: { type: 'Command', name: { type: 'Word', text: 'cry' } },
       }],
@@ -206,7 +206,7 @@ Deno.test('ast', async (t) => {
         }],
         redirections: [{
           type: 'Redirect',
-          op: { type: 'great', text: '>' },
+          op: { type: 'Great', text: '>' },
           file: { type: 'Word', text: 'file.txt' },
         }],
       }],
@@ -226,11 +226,11 @@ Deno.test('ast', async (t) => {
           text: 'world',
         }, {
           type: 'Redirect',
-          op: { type: 'great', text: '>' },
+          op: { type: 'Great', text: '>' },
           file: { type: 'Word', text: 'file.txt' },
         }, {
           type: 'Redirect',
-          op: { type: 'less', text: '<' },
+          op: { type: 'Less', text: '<' },
           file: { type: 'Word', text: 'input.dat' },
         }],
       }],
@@ -252,11 +252,11 @@ Deno.test('ast', async (t) => {
         }],
         redirections: [{
           type: 'Redirect',
-          op: { type: 'great', text: '>' },
+          op: { type: 'Great', text: '>' },
           file: { type: 'Word', text: 'file.txt' },
         }, {
           type: 'Redirect',
-          op: { type: 'less', text: '<' },
+          op: { type: 'Less', text: '<' },
           file: { type: 'Word', text: 'input.dat' },
         }],
       }],
@@ -302,7 +302,7 @@ Deno.test('ast', async (t) => {
       commands: [
         {
           type: 'LogicalExpression',
-          op: 'and',
+          op: { type: 'And', text: '&&' },
           left: {
             type: 'Command',
             name: {
@@ -330,7 +330,10 @@ Deno.test('ast', async (t) => {
       commands: [
         {
           type: 'LogicalExpression',
-          op: 'and',
+          op: {
+            text: '&&',
+            type: 'And',
+          },
           left: {
             type: 'Command',
             name: {
@@ -383,7 +386,7 @@ Deno.test('ast', async (t) => {
         name: { type: 'Word', text: 'ls' },
         suffix: [{
           type: 'Redirect',
-          op: { type: 'great', text: '>' },
+          op: { type: 'Great', text: '>' },
           file: { type: 'Word', text: 'file.txt' },
         }],
       }],
@@ -412,9 +415,9 @@ Deno.test('ast', async (t) => {
         name: { type: 'Word', text: 'ls' },
         suffix: [{
           type: 'Redirect',
-          op: { type: 'great', text: '>' },
+          op: { type: 'Great', text: '>' },
           file: { type: 'Word', text: 'file.txt' },
-          numberIo: { type: 'io_number', text: '2' },
+          numberIo: { type: 'IoNumber', text: '2' },
         }],
       }],
     });
@@ -430,7 +433,7 @@ Deno.test('ast', async (t) => {
         name: { type: 'Word', text: 'ls' },
         suffix: [{
           type: 'Redirect',
-          op: { type: 'great', text: '>' },
+          op: { type: 'Great', text: '>' },
           file: { type: 'Word', text: 'file.txt' },
         }],
       }],
@@ -447,7 +450,7 @@ Deno.test('ast', async (t) => {
         name: { type: 'Word', text: 'ls' },
         suffix: [{
           type: 'Redirect',
-          op: { type: 'dgreat', text: '>>' },
+          op: { type: 'DoubleGreat', text: '>>' },
           file: { type: 'Word', text: 'file.txt' },
         }],
       }],
@@ -464,9 +467,9 @@ Deno.test('ast', async (t) => {
         name: { type: 'Word', text: 'ls' },
         suffix: [{
           type: 'Redirect',
-          op: { type: 'great', text: '>' },
+          op: { type: 'Great', text: '>' },
           file: { type: 'Word', text: 'file.txt' },
-          numberIo: { type: 'io_number', text: '2' },
+          numberIo: { type: 'IoNumber', text: '2' },
         }],
       }],
     });
@@ -482,9 +485,9 @@ Deno.test('ast', async (t) => {
         name: { type: 'Word', text: 'ls' },
         suffix: [{
           type: 'Redirect',
-          op: { type: 'dgreat', text: '>>' },
+          op: { type: 'DoubleGreat', text: '>>' },
           file: { type: 'Word', text: 'file.txt' },
-          numberIo: { type: 'io_number', text: '2' },
+          numberIo: { type: 'IoNumber', text: '2' },
         }],
       }],
     });
@@ -501,14 +504,14 @@ Deno.test('ast', async (t) => {
         suffix: [
           {
             type: 'Redirect',
-            op: { type: 'great', text: '>' },
+            op: { type: 'Great', text: '>' },
             file: { type: 'Word', text: 'file.txt' },
           },
           {
             type: 'Redirect',
-            op: { type: 'greatand', text: '>&' },
+            op: { type: 'GreatAnd', text: '>&' },
             file: { type: 'Word', text: '1' },
-            numberIo: { type: 'io_number', text: '2' },
+            numberIo: { type: 'IoNumber', text: '2' },
           },
         ],
       }],
@@ -526,14 +529,14 @@ Deno.test('ast', async (t) => {
         suffix: [
           {
             type: 'Redirect',
-            op: { type: 'dgreat', text: '>>' },
+            op: { type: 'DoubleGreat', text: '>>' },
             file: { type: 'Word', text: 'file.txt' },
           },
           {
             type: 'Redirect',
-            op: { type: 'greatand', text: '>&' },
+            op: { type: 'GreatAnd', text: '>&' },
             file: { type: 'Word', text: '1' },
-            numberIo: { type: 'io_number', text: '2' },
+            numberIo: { type: 'IoNumber', text: '2' },
           },
         ],
       }],
@@ -550,7 +553,7 @@ Deno.test('ast', async (t) => {
         name: { type: 'Word', text: 'ls' },
         suffix: [{
           type: 'Redirect',
-          op: { type: 'less', text: '<' },
+          op: { type: 'Less', text: '<' },
           file: { type: 'Word', text: 'file.txt' },
         }],
       }],

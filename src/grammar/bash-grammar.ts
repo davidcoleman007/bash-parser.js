@@ -197,20 +197,20 @@ export default {
     ],
     case_item: [
       [
-        'pattern CLOSE_PAREN linebreak DSEMI linebreak',
-        '$$ = yy.caseItem($pattern, null, $pattern[0].loc, $DSEMI.loc);',
+        'pattern CLOSE_PAREN linebreak DOUBLE_SEMICOLON linebreak',
+        '$$ = yy.caseItem($pattern, null, $pattern[0].loc, $DOUBLE_SEMICOLON.loc);',
       ],
       [
-        'pattern CLOSE_PAREN compound_list DSEMI linebreak',
-        '$$ = yy.caseItem($pattern, $compound_list, $pattern[0].loc, $DSEMI.loc);',
+        'pattern CLOSE_PAREN compound_list DOUBLE_SEMICOLON linebreak',
+        '$$ = yy.caseItem($pattern, $compound_list, $pattern[0].loc, $DOUBLE_SEMICOLON.loc);',
       ],
       [
-        'OPEN_PAREN pattern CLOSE_PAREN linebreak DSEMI linebreak',
-        '$$ = yy.caseItem($pattern, null, $OPEN_PAREN.loc, $DSEMI.loc );',
+        'OPEN_PAREN pattern CLOSE_PAREN linebreak DOUBLE_SEMICOLON linebreak',
+        '$$ = yy.caseItem($pattern, null, $OPEN_PAREN.loc, $DOUBLE_SEMICOLON.loc );',
       ],
       [
-        'OPEN_PAREN pattern CLOSE_PAREN compound_list DSEMI linebreak',
-        '$$ = yy.caseItem($pattern, $compound_list, $OPEN_PAREN.loc, $DSEMI.loc);',
+        'OPEN_PAREN pattern CLOSE_PAREN compound_list DOUBLE_SEMICOLON linebreak',
+        '$$ = yy.caseItem($pattern, $compound_list, $OPEN_PAREN.loc, $DOUBLE_SEMICOLON.loc);',
       ],
     ],
     pattern: [
@@ -223,23 +223,79 @@ export default {
         '$$ = yy.patternAppend($pattern, $WORD);',
       ],
     ],
+    condition: [
+      [
+        'OPEN_BRACKET Bang test_op WORD CLOSE_BRACKET SEPARATOR_OP',
+        '$$ = yy.testExpression($3, $4, true, $OPEN_BRACKET.loc, $CLOSE_BRACKET.loc);',
+      ],
+      [
+        'OPEN_BRACKET Bang WORD op WORD CLOSE_BRACKET SEPARATOR_OP',
+        '$$ = yy.logicalExpression($3, $4, $5, true, $OPEN_BRACKET.loc, $CLOSE_BRACKET.loc);',
+      ],
+      [
+        'OPEN_BRACKET test_op WORD CLOSE_BRACKET SEPARATOR_OP',
+        '$$ = yy.testExpression($2, $3, false, $OPEN_BRACKET.loc, $CLOSE_BRACKET.loc);',
+      ],
+      [
+        'OPEN_BRACKET WORD op WORD CLOSE_BRACKET SEPARATOR_OP',
+        '$$ = yy.logicalExpression($2, $3, $4, false, $OPEN_BRACKET.loc, $CLOSE_BRACKET.loc);',
+      ],
+      [
+        'DOPEN_BRACKET Bang test_op WORD DCLOSE_BRACKET SEPARATOR_OP',
+        '$$ = yy.testExpression($3, $4, true, $DOPEN_BRACKET.loc, $DCLOSE_BRACKET.loc);',
+      ],
+      [
+        'DOPEN_BRACKET Bang WORD op WORD DCLOSE_BRACKET SEPARATOR_OP',
+        '$$ = yy.logicalExpression($3, $4, $5, true, $DOPEN_BRACKET.loc, $DCLOSE_BRACKET.loc);',
+      ],
+      [
+        'DOPEN_BRACKET test_op WORD DCLOSE_BRACKET SEPARATOR_OP',
+        '$$ = yy.testExpression($2, $3, false, $DOPEN_BRACKET.loc, $DCLOSE_BRACKET.loc);',
+      ],
+      [
+        'DOPEN_BRACKET WORD op WORD DCLOSE_BRACKET SEPARATOR_OP',
+        '$$ = yy.logicalExpression($2, $3, $4, false, $DOPEN_BRACKET.loc, $DCLOSE_BRACKET.loc);',
+      ],
+      'compound_list',
+    ],
+    op: [
+      'Equal',
+      'NotEqual',
+      'LessThan',
+      'LessThanOrEqual',
+      'GreaterThan',
+      'GreaterThanOrEqual',
+      'And',
+      'Or',
+    ],
+    test_op: [
+      'IsStringNull',
+      'IsStringNotNull',
+      'IsDirectory',
+      'FileExists',
+      'IsFile',
+      'IsFileNotEmpty',
+      'IsReadable',
+      'IsWritable',
+      'IsExecutable',
+    ],
     if_clause: [
       [
-        'If compound_list Then compound_list else_part Fi',
+        'If condition Then compound_list else_part Fi',
         '$$ = yy.ifClause($2, $4, $else_part, $If.loc, $Fi.loc);',
       ],
       [
-        'If compound_list Then compound_list Fi',
+        'If condition Then compound_list Fi',
         '$$ = yy.ifClause($2, $4, null, $If.loc, $Fi.loc);',
       ],
     ],
     else_part: [
       [
-        'Elif compound_list Then compound_list',
+        'Elif condition Then compound_list',
         '$$ = yy.ifClause($2, $4, null, $Elif.loc, $4.loc);',
       ],
       [
-        'Elif compound_list Then compound_list else_part',
+        'Elif condition Then compound_list else_part',
         '$$ = yy.ifClause($2, $4, $else_part, $Elif.loc, $else_part.loc);',
       ],
       [
@@ -249,13 +305,13 @@ export default {
     ],
     while_clause: [
       [
-        'While compound_list do_group',
+        'While condition do_group',
         '$$ = yy.while($2, $3, $While);',
       ],
     ],
     until_clause: [
       [
-        'Until compound_list do_group',
+        'Until condition do_group',
         '$$ = yy.until($2, $3, $Until);',
       ],
     ],
@@ -388,7 +444,7 @@ export default {
         '$$ =yy.ioRedirect($1, $filename);',
       ],
       [
-        'LESSAND filename',
+        'LESS_AND filename',
         '$$ =yy.ioRedirect($1, $filename);',
       ],
       [
@@ -396,15 +452,15 @@ export default {
         '$$ =yy.ioRedirect($1, $filename);',
       ],
       [
-        'GREATAND filename',
+        'GREAT_AND filename',
         '$$ =yy.ioRedirect($1, $filename);',
       ],
       [
-        'DGREAT filename',
+        'DOUBLE_GREAT filename',
         '$$ =yy.ioRedirect($1, $filename);',
       ],
       [
-        'LESSGREAT filename',
+        'LESS_GREAT filename',
         '$$ =yy.ioRedirect($1, $filename);',
       ],
       [
@@ -416,8 +472,8 @@ export default {
       'WORD',
     ],
     io_here: [
-      'DLESS here_end',
-      'DLESSDASH here_end',
+      'DOUBLE_LESS here_end',
+      'DOUBLE_LESS_DASH here_end',
     ],
     here_end: [
       'WORD',

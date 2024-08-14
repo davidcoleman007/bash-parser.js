@@ -10,7 +10,7 @@ export default {
           commands: [
             {
               type: 'LogicalExpression',
-              op: 'or',
+              op: { type: 'Or', text: '||' },
               left: {
                 type: 'Command',
                 name: {
