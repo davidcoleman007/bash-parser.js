@@ -109,7 +109,7 @@ Deno.test('lexer', async (t) => {
   await t.step('parse single operator', async () => {
     utils.checkResults(
       await tokenize('<<'),
-      [{ token: 'DOUBLE_LESS', value: '<<' }],
+      [{ token: 'DLESS', value: '<<' }],
     );
   });
 
@@ -130,7 +130,7 @@ Deno.test('lexer', async (t) => {
   await t.step('parse two operators on two lines', async () => {
     utils.checkResults(
       await tokenize('<<\n>>'),
-      [{ token: 'DOUBLE_LESS', value: '<<' }, { token: 'NEWLINE_LIST', value: '\n' }, { token: 'DOUBLE_GREAT', value: '>>' }],
+      [{ token: 'DLESS', value: '<<' }, { token: 'NEWLINE_LIST', value: '\n' }, { token: 'DGREAT', value: '>>' }],
     );
   });
 
@@ -243,10 +243,10 @@ Deno.test('lexer', async (t) => {
       await tokenize('while [[ -e foo ]]; do sleep 1; done'),
       [
         { token: 'While', value: 'while' },
-        { token: 'DOPEN_BRACKET', value: '[[' },
+        { token: 'WORD', value: '[[' },
         { token: 'WORD', value: '-e' },
         { token: 'WORD', value: 'foo' },
-        { token: 'DCLOSE_BRACKET', value: ']]' },
+        { token: 'WORD', value: ']]' },
         { token: 'SEPARATOR_OP', value: ';' },
         { token: 'Do', value: 'do' },
         { token: 'WORD', value: 'sleep' },

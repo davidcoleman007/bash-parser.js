@@ -5,29 +5,44 @@ snapshot[`conditions > if [ "\$a" -eq 10 ] 1`] = `
   commands: [
     {
       clause: {
-        left: {
-          expansion: [
-            {
-              loc: {
-                end: 2,
-                start: 1,
-              },
-              parameter: "a",
-              type: "ParameterExpansion",
+        commands: [
+          {
+            name: {
+              text: "[",
+              type: "Word",
             },
-          ],
-          text: '"\$a"',
-          type: "Word",
-        },
-        op: {
-          text: "-eq",
-          type: "Equal",
-        },
-        right: {
-          text: "10",
-          type: "Word",
-        },
-        type: "LogicalExpression",
+            suffix: [
+              {
+                expansion: [
+                  {
+                    loc: {
+                      end: 2,
+                      start: 1,
+                    },
+                    parameter: "a",
+                    type: "ParameterExpansion",
+                  },
+                ],
+                text: '"\$a"',
+                type: "Word",
+              },
+              {
+                text: "-eq",
+                type: "Word",
+              },
+              {
+                text: "10",
+                type: "Word",
+              },
+              {
+                text: "]",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
       },
       then: {
         commands: [
@@ -59,29 +74,44 @@ snapshot[`conditions > if [ "\$a" -ne 10 ] 1`] = `
   commands: [
     {
       clause: {
-        left: {
-          expansion: [
-            {
-              loc: {
-                end: 2,
-                start: 1,
-              },
-              parameter: "a",
-              type: "ParameterExpansion",
+        commands: [
+          {
+            name: {
+              text: "[",
+              type: "Word",
             },
-          ],
-          text: '"\$a"',
-          type: "Word",
-        },
-        op: {
-          text: "-ne",
-          type: "NotEqual",
-        },
-        right: {
-          text: "10",
-          type: "Word",
-        },
-        type: "LogicalExpression",
+            suffix: [
+              {
+                expansion: [
+                  {
+                    loc: {
+                      end: 2,
+                      start: 1,
+                    },
+                    parameter: "a",
+                    type: "ParameterExpansion",
+                  },
+                ],
+                text: '"\$a"',
+                type: "Word",
+              },
+              {
+                text: "-ne",
+                type: "Word",
+              },
+              {
+                text: "10",
+                type: "Word",
+              },
+              {
+                text: "]",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
       },
       then: {
         commands: [
@@ -113,29 +143,44 @@ snapshot[`conditions > [ "\$a" -gt 10 ] 1`] = `
   commands: [
     {
       clause: {
-        left: {
-          expansion: [
-            {
-              loc: {
-                end: 2,
-                start: 1,
-              },
-              parameter: "a",
-              type: "ParameterExpansion",
+        commands: [
+          {
+            name: {
+              text: "[",
+              type: "Word",
             },
-          ],
-          text: '"\$a"',
-          type: "Word",
-        },
-        op: {
-          text: "-gt",
-          type: "GreaterThan",
-        },
-        right: {
-          text: "10",
-          type: "Word",
-        },
-        type: "LogicalExpression",
+            suffix: [
+              {
+                expansion: [
+                  {
+                    loc: {
+                      end: 2,
+                      start: 1,
+                    },
+                    parameter: "a",
+                    type: "ParameterExpansion",
+                  },
+                ],
+                text: '"\$a"',
+                type: "Word",
+              },
+              {
+                text: "-gt",
+                type: "Word",
+              },
+              {
+                text: "10",
+                type: "Word",
+              },
+              {
+                text: "]",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
       },
       then: {
         commands: [
@@ -167,29 +212,44 @@ snapshot[`conditions > if [ "\$a" -ge 10 ] 1`] = `
   commands: [
     {
       clause: {
-        left: {
-          expansion: [
-            {
-              loc: {
-                end: 2,
-                start: 1,
-              },
-              parameter: "a",
-              type: "ParameterExpansion",
+        commands: [
+          {
+            name: {
+              text: "[",
+              type: "Word",
             },
-          ],
-          text: '"\$a"',
-          type: "Word",
-        },
-        op: {
-          text: "-ge",
-          type: "GreaterThanOrEqual",
-        },
-        right: {
-          text: "10",
-          type: "Word",
-        },
-        type: "LogicalExpression",
+            suffix: [
+              {
+                expansion: [
+                  {
+                    loc: {
+                      end: 2,
+                      start: 1,
+                    },
+                    parameter: "a",
+                    type: "ParameterExpansion",
+                  },
+                ],
+                text: '"\$a"',
+                type: "Word",
+              },
+              {
+                text: "-ge",
+                type: "Word",
+              },
+              {
+                text: "10",
+                type: "Word",
+              },
+              {
+                text: "]",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
       },
       then: {
         commands: [
@@ -221,29 +281,44 @@ snapshot[`conditions > [ "\$a" -lt 10 ] 1`] = `
   commands: [
     {
       clause: {
-        left: {
-          expansion: [
-            {
-              loc: {
-                end: 2,
-                start: 1,
-              },
-              parameter: "a",
-              type: "ParameterExpansion",
+        commands: [
+          {
+            name: {
+              text: "[",
+              type: "Word",
             },
-          ],
-          text: '"\$a"',
-          type: "Word",
-        },
-        op: {
-          text: "-lt",
-          type: "LessThan",
-        },
-        right: {
-          text: "10",
-          type: "Word",
-        },
-        type: "LogicalExpression",
+            suffix: [
+              {
+                expansion: [
+                  {
+                    loc: {
+                      end: 2,
+                      start: 1,
+                    },
+                    parameter: "a",
+                    type: "ParameterExpansion",
+                  },
+                ],
+                text: '"\$a"',
+                type: "Word",
+              },
+              {
+                text: "-lt",
+                type: "Word",
+              },
+              {
+                text: "10",
+                type: "Word",
+              },
+              {
+                text: "]",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
       },
       then: {
         commands: [
@@ -275,29 +350,44 @@ snapshot[`conditions > if [ "\$a" -le 10 ] 1`] = `
   commands: [
     {
       clause: {
-        left: {
-          expansion: [
-            {
-              loc: {
-                end: 2,
-                start: 1,
-              },
-              parameter: "a",
-              type: "ParameterExpansion",
+        commands: [
+          {
+            name: {
+              text: "[",
+              type: "Word",
             },
-          ],
-          text: '"\$a"',
-          type: "Word",
-        },
-        op: {
-          text: "-le",
-          type: "LessThanOrEqual",
-        },
-        right: {
-          text: "10",
-          type: "Word",
-        },
-        type: "LogicalExpression",
+            suffix: [
+              {
+                expansion: [
+                  {
+                    loc: {
+                      end: 2,
+                      start: 1,
+                    },
+                    parameter: "a",
+                    type: "ParameterExpansion",
+                  },
+                ],
+                text: '"\$a"',
+                type: "Word",
+              },
+              {
+                text: "-le",
+                type: "Word",
+              },
+              {
+                text: "10",
+                type: "Word",
+              },
+              {
+                text: "]",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
       },
       then: {
         commands: [
@@ -329,29 +419,44 @@ snapshot[`conditions > if [ "\$a" == 10 ] 1`] = `
   commands: [
     {
       clause: {
-        left: {
-          expansion: [
-            {
-              loc: {
-                end: 2,
-                start: 1,
-              },
-              parameter: "a",
-              type: "ParameterExpansion",
+        commands: [
+          {
+            name: {
+              text: "[",
+              type: "Word",
             },
-          ],
-          text: '"\$a"',
-          type: "Word",
-        },
-        op: {
-          text: "==",
-          type: "Equal",
-        },
-        right: {
-          text: "10",
-          type: "Word",
-        },
-        type: "LogicalExpression",
+            suffix: [
+              {
+                expansion: [
+                  {
+                    loc: {
+                      end: 2,
+                      start: 1,
+                    },
+                    parameter: "a",
+                    type: "ParameterExpansion",
+                  },
+                ],
+                text: '"\$a"',
+                type: "Word",
+              },
+              {
+                text: "==",
+                type: "Word",
+              },
+              {
+                text: "10",
+                type: "Word",
+              },
+              {
+                text: "]",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
       },
       then: {
         commands: [
@@ -383,29 +488,44 @@ snapshot[`conditions > if [ "\$a" != 10 ] 1`] = `
   commands: [
     {
       clause: {
-        left: {
-          expansion: [
-            {
-              loc: {
-                end: 2,
-                start: 1,
-              },
-              parameter: "a",
-              type: "ParameterExpansion",
+        commands: [
+          {
+            name: {
+              text: "[",
+              type: "Word",
             },
-          ],
-          text: '"\$a"',
-          type: "Word",
-        },
-        op: {
-          text: "!=",
-          type: "NotEqual",
-        },
-        right: {
-          text: "10",
-          type: "Word",
-        },
-        type: "LogicalExpression",
+            suffix: [
+              {
+                expansion: [
+                  {
+                    loc: {
+                      end: 2,
+                      start: 1,
+                    },
+                    parameter: "a",
+                    type: "ParameterExpansion",
+                  },
+                ],
+                text: '"\$a"',
+                type: "Word",
+              },
+              {
+                text: "!=",
+                type: "Word",
+              },
+              {
+                text: "10",
+                type: "Word",
+              },
+              {
+                text: "]",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
       },
       then: {
         commands: [
@@ -437,30 +557,48 @@ snapshot[`conditions > if [ ! "\$a" = 10 ] 1`] = `
   commands: [
     {
       clause: {
-        inverted: true,
-        left: {
-          expansion: [
-            {
-              loc: {
-                end: 2,
-                start: 1,
-              },
-              parameter: "a",
-              type: "ParameterExpansion",
+        commands: [
+          {
+            name: {
+              text: "[",
+              type: "Word",
             },
-          ],
-          text: '"\$a"',
-          type: "Word",
-        },
-        op: {
-          text: "=",
-          type: "Equal",
-        },
-        right: {
-          text: "10",
-          type: "Word",
-        },
-        type: "LogicalExpression",
+            suffix: [
+              {
+                text: "!",
+                type: "Word",
+              },
+              {
+                expansion: [
+                  {
+                    loc: {
+                      end: 2,
+                      start: 1,
+                    },
+                    parameter: "a",
+                    type: "ParameterExpansion",
+                  },
+                ],
+                text: '"\$a"',
+                type: "Word",
+              },
+              {
+                text: "=",
+                type: "Word",
+              },
+              {
+                text: "10",
+                type: "Word",
+              },
+              {
+                text: "]",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
       },
       then: {
         commands: [
@@ -492,25 +630,40 @@ snapshot[`conditions > if [ -z "\$a" ] 1`] = `
   commands: [
     {
       clause: {
-        op: {
-          text: "-z",
-          type: "IsStringNull",
-        },
-        target: {
-          expansion: [
-            {
-              loc: {
-                end: 2,
-                start: 1,
-              },
-              parameter: "a",
-              type: "ParameterExpansion",
+        commands: [
+          {
+            name: {
+              text: "[",
+              type: "Word",
             },
-          ],
-          text: '"\$a"',
-          type: "Word",
-        },
-        type: "TestExpression",
+            suffix: [
+              {
+                text: "-z",
+                type: "Word",
+              },
+              {
+                expansion: [
+                  {
+                    loc: {
+                      end: 2,
+                      start: 1,
+                    },
+                    parameter: "a",
+                    type: "ParameterExpansion",
+                  },
+                ],
+                text: '"\$a"',
+                type: "Word",
+              },
+              {
+                text: "]",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
       },
       then: {
         commands: [
@@ -542,25 +695,40 @@ snapshot[`conditions > if [ -n "\$a" ] 1`] = `
   commands: [
     {
       clause: {
-        op: {
-          text: "-n",
-          type: "IsStringNotNull",
-        },
-        target: {
-          expansion: [
-            {
-              loc: {
-                end: 2,
-                start: 1,
-              },
-              parameter: "a",
-              type: "ParameterExpansion",
+        commands: [
+          {
+            name: {
+              text: "[",
+              type: "Word",
             },
-          ],
-          text: '"\$a"',
-          type: "Word",
-        },
-        type: "TestExpression",
+            suffix: [
+              {
+                text: "-n",
+                type: "Word",
+              },
+              {
+                expansion: [
+                  {
+                    loc: {
+                      end: 2,
+                      start: 1,
+                    },
+                    parameter: "a",
+                    type: "ParameterExpansion",
+                  },
+                ],
+                text: '"\$a"',
+                type: "Word",
+              },
+              {
+                text: "]",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
       },
       then: {
         commands: [
@@ -592,25 +760,40 @@ snapshot[`conditions > if [ -d "\$a" ] 1`] = `
   commands: [
     {
       clause: {
-        op: {
-          text: "-d",
-          type: "IsDirectory",
-        },
-        target: {
-          expansion: [
-            {
-              loc: {
-                end: 2,
-                start: 1,
-              },
-              parameter: "a",
-              type: "ParameterExpansion",
+        commands: [
+          {
+            name: {
+              text: "[",
+              type: "Word",
             },
-          ],
-          text: '"\$a"',
-          type: "Word",
-        },
-        type: "TestExpression",
+            suffix: [
+              {
+                text: "-d",
+                type: "Word",
+              },
+              {
+                expansion: [
+                  {
+                    loc: {
+                      end: 2,
+                      start: 1,
+                    },
+                    parameter: "a",
+                    type: "ParameterExpansion",
+                  },
+                ],
+                text: '"\$a"',
+                type: "Word",
+              },
+              {
+                text: "]",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
       },
       then: {
         commands: [
@@ -642,25 +825,40 @@ snapshot[`conditions > if [ -f "\$a" ] 1`] = `
   commands: [
     {
       clause: {
-        op: {
-          text: "-f",
-          type: "IsFile",
-        },
-        target: {
-          expansion: [
-            {
-              loc: {
-                end: 2,
-                start: 1,
-              },
-              parameter: "a",
-              type: "ParameterExpansion",
+        commands: [
+          {
+            name: {
+              text: "[",
+              type: "Word",
             },
-          ],
-          text: '"\$a"',
-          type: "Word",
-        },
-        type: "TestExpression",
+            suffix: [
+              {
+                text: "-f",
+                type: "Word",
+              },
+              {
+                expansion: [
+                  {
+                    loc: {
+                      end: 2,
+                      start: 1,
+                    },
+                    parameter: "a",
+                    type: "ParameterExpansion",
+                  },
+                ],
+                text: '"\$a"',
+                type: "Word",
+              },
+              {
+                text: "]",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
       },
       then: {
         commands: [
@@ -692,25 +890,40 @@ snapshot[`conditions > if [ -r "\$a" ] 1`] = `
   commands: [
     {
       clause: {
-        op: {
-          text: "-r",
-          type: "IsReadable",
-        },
-        target: {
-          expansion: [
-            {
-              loc: {
-                end: 2,
-                start: 1,
-              },
-              parameter: "a",
-              type: "ParameterExpansion",
+        commands: [
+          {
+            name: {
+              text: "[",
+              type: "Word",
             },
-          ],
-          text: '"\$a"',
-          type: "Word",
-        },
-        type: "TestExpression",
+            suffix: [
+              {
+                text: "-r",
+                type: "Word",
+              },
+              {
+                expansion: [
+                  {
+                    loc: {
+                      end: 2,
+                      start: 1,
+                    },
+                    parameter: "a",
+                    type: "ParameterExpansion",
+                  },
+                ],
+                text: '"\$a"',
+                type: "Word",
+              },
+              {
+                text: "]",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
       },
       then: {
         commands: [
@@ -742,25 +955,40 @@ snapshot[`conditions > if [ -w "\$a" ] 1`] = `
   commands: [
     {
       clause: {
-        op: {
-          text: "-w",
-          type: "IsWritable",
-        },
-        target: {
-          expansion: [
-            {
-              loc: {
-                end: 2,
-                start: 1,
-              },
-              parameter: "a",
-              type: "ParameterExpansion",
+        commands: [
+          {
+            name: {
+              text: "[",
+              type: "Word",
             },
-          ],
-          text: '"\$a"',
-          type: "Word",
-        },
-        type: "TestExpression",
+            suffix: [
+              {
+                text: "-w",
+                type: "Word",
+              },
+              {
+                expansion: [
+                  {
+                    loc: {
+                      end: 2,
+                      start: 1,
+                    },
+                    parameter: "a",
+                    type: "ParameterExpansion",
+                  },
+                ],
+                text: '"\$a"',
+                type: "Word",
+              },
+              {
+                text: "]",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
       },
       then: {
         commands: [
@@ -792,25 +1020,40 @@ snapshot[`conditions > if [ -x "\$a" ] 1`] = `
   commands: [
     {
       clause: {
-        op: {
-          text: "-x",
-          type: "IsExecutable",
-        },
-        target: {
-          expansion: [
-            {
-              loc: {
-                end: 2,
-                start: 1,
-              },
-              parameter: "a",
-              type: "ParameterExpansion",
+        commands: [
+          {
+            name: {
+              text: "[",
+              type: "Word",
             },
-          ],
-          text: '"\$a"',
-          type: "Word",
-        },
-        type: "TestExpression",
+            suffix: [
+              {
+                text: "-x",
+                type: "Word",
+              },
+              {
+                expansion: [
+                  {
+                    loc: {
+                      end: 2,
+                      start: 1,
+                    },
+                    parameter: "a",
+                    type: "ParameterExpansion",
+                  },
+                ],
+                text: '"\$a"',
+                type: "Word",
+              },
+              {
+                text: "]",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
       },
       then: {
         commands: [
@@ -842,29 +1085,44 @@ snapshot[`conditions > while [ "\$a" -le 10 ] 1`] = `
   commands: [
     {
       clause: {
-        left: {
-          expansion: [
-            {
-              loc: {
-                end: 2,
-                start: 1,
-              },
-              parameter: "a",
-              type: "ParameterExpansion",
+        commands: [
+          {
+            name: {
+              text: "[",
+              type: "Word",
             },
-          ],
-          text: '"\$a"',
-          type: "Word",
-        },
-        op: {
-          text: "-le",
-          type: "LessThanOrEqual",
-        },
-        right: {
-          text: "10",
-          type: "Word",
-        },
-        type: "LogicalExpression",
+            suffix: [
+              {
+                expansion: [
+                  {
+                    loc: {
+                      end: 2,
+                      start: 1,
+                    },
+                    parameter: "a",
+                    type: "ParameterExpansion",
+                  },
+                ],
+                text: '"\$a"',
+                type: "Word",
+              },
+              {
+                text: "-le",
+                type: "Word",
+              },
+              {
+                text: "10",
+                type: "Word",
+              },
+              {
+                text: "]",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
       },
       do: {
         commands: [
@@ -896,29 +1154,44 @@ snapshot[`conditions > until [ "\$a" -ge 10 ] 1`] = `
   commands: [
     {
       clause: {
-        left: {
-          expansion: [
-            {
-              loc: {
-                end: 2,
-                start: 1,
-              },
-              parameter: "a",
-              type: "ParameterExpansion",
+        commands: [
+          {
+            name: {
+              text: "[",
+              type: "Word",
             },
-          ],
-          text: '"\$a"',
-          type: "Word",
-        },
-        op: {
-          text: "-ge",
-          type: "GreaterThanOrEqual",
-        },
-        right: {
-          text: "10",
-          type: "Word",
-        },
-        type: "LogicalExpression",
+            suffix: [
+              {
+                expansion: [
+                  {
+                    loc: {
+                      end: 2,
+                      start: 1,
+                    },
+                    parameter: "a",
+                    type: "ParameterExpansion",
+                  },
+                ],
+                text: '"\$a"',
+                type: "Word",
+              },
+              {
+                text: "-ge",
+                type: "Word",
+              },
+              {
+                text: "10",
+                type: "Word",
+              },
+              {
+                text: "]",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
       },
       do: {
         commands: [
@@ -950,41 +1223,56 @@ snapshot[`conditions > if [ "\$(command)" -eq 1 ] 1`] = `
   commands: [
     {
       clause: {
-        left: {
-          expansion: [
-            {
-              command: "command",
-              commandAST: {
-                commands: [
+        commands: [
+          {
+            name: {
+              text: "[",
+              type: "Word",
+            },
+            suffix: [
+              {
+                expansion: [
                   {
-                    name: {
-                      text: "command",
-                      type: "Word",
+                    command: "command",
+                    commandAST: {
+                      commands: [
+                        {
+                          name: {
+                            text: "command",
+                            type: "Word",
+                          },
+                          type: "Command",
+                        },
+                      ],
+                      type: "Script",
                     },
-                    type: "Command",
+                    loc: {
+                      end: 10,
+                      start: 1,
+                    },
+                    type: "CommandExpansion",
                   },
                 ],
-                type: "Script",
+                text: '"\$(command)"',
+                type: "Word",
               },
-              loc: {
-                end: 10,
-                start: 1,
+              {
+                text: "-eq",
+                type: "Word",
               },
-              type: "CommandExpansion",
-            },
-          ],
-          text: '"\$(command)"',
-          type: "Word",
-        },
-        op: {
-          text: "-eq",
-          type: "Equal",
-        },
-        right: {
-          text: "1",
-          type: "Word",
-        },
-        type: "LogicalExpression",
+              {
+                text: "1",
+                type: "Word",
+              },
+              {
+                text: "]",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
       },
       then: {
         commands: [

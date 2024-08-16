@@ -8,28 +8,16 @@ class State implements ReducerStateIf {
   escaping = false;
   expansion: Expansion[] = [];
   previousReducer: Reducer;
-  reducers: Reducers;
   loc: ReducerLocation;
 
   constructor(reducers: Reducers, operators: Record<string, string>) {
     this.operators = operators;
-    this.reducers = reducers;
     this.previousReducer = reducers.start;
     this.loc = {
       start: { col: 1, row: 1, char: 0 },
       previous: null,
       current: { col: 1, row: 1, char: 0 },
     };
-  }
-
-  clone() {
-    return Object.assign(new State(this.reducers, this.operators), {
-      current: this.current,
-      escaping: this.escaping,
-      expansion: structuredClone(this.expansion),
-      previousReducer: this.previousReducer,
-      loc: structuredClone(this.loc),
-    }) as this;
   }
 
   setLoc(loc: ReducerLocation) {
@@ -39,11 +27,6 @@ class State implements ReducerStateIf {
 
   setEscaping(escaping: boolean) {
     this.escaping = escaping;
-    return this;
-  }
-
-  resetExpansion() {
-    this.expansion = [];
     return this;
   }
 

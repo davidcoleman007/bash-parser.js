@@ -5,7 +5,7 @@ export default {
     commands: [
       {
         type: 'LogicalExpression',
-        op: { type: 'And', text: '&&' },
+        op: 'and',
         left: {
           type: 'Command',
           name: {

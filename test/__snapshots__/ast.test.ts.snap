@@ -1,0 +1,941 @@
+export const snapshot = {};
+
+snapshot[`ast 1`] = `
+{
+  commands: [
+    {
+      name: {
+        text: "echo",
+        type: "Word",
+      },
+      suffix: [
+        {
+          text: "world",
+          type: "Word",
+        },
+      ],
+      type: "Command",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 2`] = `
+{
+  commands: [
+    {
+      name: {
+        text: "echo",
+        type: "Word",
+      },
+      suffix: [
+        {
+          text: "world",
+          type: "Word",
+        },
+      ],
+      type: "Command",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 3`] = `
+{
+  commands: [
+    {
+      name: {
+        text: "echo",
+        type: "Word",
+      },
+      suffix: [
+        {
+          text: "there",
+          type: "Word",
+        },
+      ],
+      type: "Command",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 4`] = `
+{
+  commands: [
+    {
+      name: {
+        text: "run",
+        type: "Word",
+      },
+      prefix: [
+        {
+          text: "TEST=1",
+          type: "AssignmentWord",
+        },
+      ],
+      type: "Command",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 5`] = `
+{
+  commands: [
+    {
+      prefix: [
+        {
+          text: "TEST=1",
+          type: "AssignmentWord",
+        },
+      ],
+      type: "Command",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 6`] = `
+{
+  commands: [
+    {
+      left: {
+        name: {
+          text: "run",
+          type: "Word",
+        },
+        type: "Command",
+      },
+      op: "and",
+      right: {
+        name: {
+          text: "stop",
+          type: "Word",
+        },
+        type: "Command",
+      },
+      type: "LogicalExpression",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 7`] = `
+{
+  commands: [
+    {
+      left: {
+        name: {
+          text: "run",
+          type: "Word",
+        },
+        type: "Command",
+      },
+      op: "and",
+      right: {
+        name: {
+          text: "stop",
+          type: "Word",
+        },
+        type: "Command",
+      },
+      type: "LogicalExpression",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 8`] = `
+{
+  commands: [
+    {
+      left: {
+        name: {
+          text: "run",
+          type: "Word",
+        },
+        type: "Command",
+      },
+      op: "or",
+      right: {
+        name: {
+          text: "cry",
+          type: "Word",
+        },
+        type: "Command",
+      },
+      type: "LogicalExpression",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 9`] = `
+{
+  commands: [
+    {
+      commands: [
+        {
+          name: {
+            text: "run",
+            type: "Word",
+          },
+          type: "Command",
+        },
+        {
+          name: {
+            text: "cry",
+            type: "Word",
+          },
+          type: "Command",
+        },
+      ],
+      type: "Pipeline",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 10`] = `
+{
+  commands: [
+    {
+      bang: true,
+      commands: [
+        {
+          name: {
+            text: "run",
+            type: "Word",
+          },
+          type: "Command",
+        },
+        {
+          name: {
+            text: "cry",
+            type: "Word",
+          },
+          type: "Command",
+        },
+      ],
+      type: "Pipeline",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 11`] = `
+{
+  commands: [
+    {
+      name: {
+        text: "echo",
+        type: "Word",
+      },
+      suffix: [
+        {
+          text: "TEST=1",
+          type: "Word",
+        },
+      ],
+      type: "Command",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 12`] = `
+{
+  commands: [
+    {
+      name: {
+        text: "echo",
+        type: "Word",
+      },
+      prefix: [
+        {
+          text: "TEST1=1",
+          type: "AssignmentWord",
+        },
+        {
+          text: "TEST2=2",
+          type: "AssignmentWord",
+        },
+      ],
+      suffix: [
+        {
+          text: "world",
+          type: "Word",
+        },
+      ],
+      type: "Command",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 13`] = `
+{
+  commands: [
+    {
+      name: {
+        text: "echo",
+        type: "Word",
+      },
+      type: "Command",
+    },
+    {
+      name: {
+        text: "ls",
+        type: "Word",
+      },
+      type: "Command",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 14`] = `
+{
+  commands: [
+    {
+      commands: [
+        {
+          name: {
+            text: "echo",
+            type: "Word",
+          },
+          type: "Command",
+        },
+        {
+          name: {
+            text: "ls",
+            type: "Word",
+          },
+          type: "Command",
+        },
+      ],
+      type: "CompoundList",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 15`] = `
+{
+  commands: [
+    {
+      commands: [
+        {
+          name: {
+            text: "echo",
+            type: "Word",
+          },
+          type: "Command",
+        },
+        {
+          name: {
+            text: "ls",
+            type: "Word",
+          },
+          type: "Command",
+        },
+      ],
+      redirections: [
+        {
+          file: {
+            text: "file.txt",
+            type: "Word",
+          },
+          op: {
+            text: ">",
+            type: "Great",
+          },
+          type: "Redirect",
+        },
+      ],
+      type: "CompoundList",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 16`] = `
+{
+  commands: [
+    {
+      name: {
+        text: "echo",
+        type: "Word",
+      },
+      suffix: [
+        {
+          text: "world",
+          type: "Word",
+        },
+        {
+          file: {
+            text: "file.txt",
+            type: "Word",
+          },
+          op: {
+            text: ">",
+            type: "Great",
+          },
+          type: "Redirect",
+        },
+        {
+          file: {
+            text: "input.dat",
+            type: "Word",
+          },
+          op: {
+            text: "<",
+            type: "Less",
+          },
+          type: "Redirect",
+        },
+      ],
+      type: "Command",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 17`] = `
+{
+  commands: [
+    {
+      commands: [
+        {
+          name: {
+            text: "echo",
+            type: "Word",
+          },
+          type: "Command",
+        },
+        {
+          name: {
+            text: "ls",
+            type: "Word",
+          },
+          type: "Command",
+        },
+      ],
+      redirections: [
+        {
+          file: {
+            text: "file.txt",
+            type: "Word",
+          },
+          op: {
+            text: ">",
+            type: "Great",
+          },
+          type: "Redirect",
+        },
+        {
+          file: {
+            text: "input.dat",
+            type: "Word",
+          },
+          op: {
+            text: "<",
+            type: "Less",
+          },
+          type: "Redirect",
+        },
+      ],
+      type: "CompoundList",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 18`] = `
+{
+  commands: [
+    {
+      name: {
+        text: "echo",
+        type: "Word",
+      },
+      type: "Command",
+    },
+    {
+      name: {
+        text: "ls",
+        type: "Word",
+      },
+      type: "Command",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 19`] = `
+{
+  commands: [
+    {
+      async: true,
+      name: {
+        text: "echo",
+        type: "Word",
+      },
+      type: "Command",
+    },
+    {
+      name: {
+        text: "ls",
+        type: "Word",
+      },
+      type: "Command",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 20`] = `
+{
+  commands: [
+    {
+      async: true,
+      left: {
+        name: {
+          text: "echo",
+          type: "Word",
+        },
+        type: "Command",
+      },
+      op: "and",
+      right: {
+        name: {
+          text: "ls",
+          type: "Word",
+        },
+        type: "Command",
+      },
+      type: "LogicalExpression",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 21`] = `
+{
+  commands: [
+    {
+      async: true,
+      left: {
+        name: {
+          text: "echo",
+          type: "Word",
+        },
+        type: "Command",
+      },
+      op: "and",
+      right: {
+        name: {
+          text: "ls",
+          type: "Word",
+        },
+        type: "Command",
+      },
+      type: "LogicalExpression",
+    },
+    {
+      name: {
+        text: "ciao",
+        type: "Word",
+      },
+      type: "Command",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 22`] = `
+{
+  commands: [
+    {
+      async: true,
+      name: {
+        text: "echo",
+        type: "Word",
+      },
+      type: "Command",
+    },
+    {
+      name: {
+        text: "ls",
+        type: "Word",
+      },
+      type: "Command",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 23`] = `
+{
+  commands: [
+    {
+      name: {
+        text: "ls",
+        type: "Word",
+      },
+      suffix: [
+        {
+          file: {
+            text: "file.txt",
+            type: "Word",
+          },
+          op: {
+            text: ">",
+            type: "Great",
+          },
+          type: "Redirect",
+        },
+      ],
+      type: "Command",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 24`] = `
+{
+  commands: [
+    {
+      name: {
+        text: "command",
+        type: "Word",
+      },
+      suffix: [
+        {
+          text: "foo",
+          type: "Word",
+        },
+        {
+          text: "--lol",
+          type: "Word",
+        },
+      ],
+      type: "Command",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 25`] = `
+{
+  commands: [
+    {
+      name: {
+        text: "ls",
+        type: "Word",
+      },
+      suffix: [
+        {
+          file: {
+            text: "file.txt",
+            type: "Word",
+          },
+          numberIo: {
+            text: "2",
+            type: "IoNumber",
+          },
+          op: {
+            text: ">",
+            type: "Great",
+          },
+          type: "Redirect",
+        },
+      ],
+      type: "Command",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 26`] = `
+{
+  commands: [
+    {
+      name: {
+        text: "ls",
+        type: "Word",
+      },
+      suffix: [
+        {
+          file: {
+            text: "file.txt",
+            type: "Word",
+          },
+          op: {
+            text: ">",
+            type: "Great",
+          },
+          type: "Redirect",
+        },
+      ],
+      type: "Command",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 27`] = `
+{
+  commands: [
+    {
+      name: {
+        text: "ls",
+        type: "Word",
+      },
+      suffix: [
+        {
+          file: {
+            text: "file.txt",
+            type: "Word",
+          },
+          op: {
+            text: ">>",
+            type: "Dgreat",
+          },
+          type: "Redirect",
+        },
+      ],
+      type: "Command",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 28`] = `
+{
+  commands: [
+    {
+      name: {
+        text: "ls",
+        type: "Word",
+      },
+      suffix: [
+        {
+          file: {
+            text: "file.txt",
+            type: "Word",
+          },
+          numberIo: {
+            text: "2",
+            type: "IoNumber",
+          },
+          op: {
+            text: ">",
+            type: "Great",
+          },
+          type: "Redirect",
+        },
+      ],
+      type: "Command",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 29`] = `
+{
+  commands: [
+    {
+      name: {
+        text: "ls",
+        type: "Word",
+      },
+      suffix: [
+        {
+          file: {
+            text: "file.txt",
+            type: "Word",
+          },
+          numberIo: {
+            text: "2",
+            type: "IoNumber",
+          },
+          op: {
+            text: ">>",
+            type: "Dgreat",
+          },
+          type: "Redirect",
+        },
+      ],
+      type: "Command",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 30`] = `
+{
+  commands: [
+    {
+      name: {
+        text: "ls",
+        type: "Word",
+      },
+      suffix: [
+        {
+          file: {
+            text: "file.txt",
+            type: "Word",
+          },
+          op: {
+            text: ">",
+            type: "Great",
+          },
+          type: "Redirect",
+        },
+        {
+          file: {
+            text: "1",
+            type: "Word",
+          },
+          numberIo: {
+            text: "2",
+            type: "IoNumber",
+          },
+          op: {
+            text: ">&",
+            type: "Greatand",
+          },
+          type: "Redirect",
+        },
+      ],
+      type: "Command",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 31`] = `
+{
+  commands: [
+    {
+      name: {
+        text: "ls",
+        type: "Word",
+      },
+      suffix: [
+        {
+          file: {
+            text: "file.txt",
+            type: "Word",
+          },
+          op: {
+            text: ">>",
+            type: "Dgreat",
+          },
+          type: "Redirect",
+        },
+        {
+          file: {
+            text: "1",
+            type: "Word",
+          },
+          numberIo: {
+            text: "2",
+            type: "IoNumber",
+          },
+          op: {
+            text: ">&",
+            type: "Greatand",
+          },
+          type: "Redirect",
+        },
+      ],
+      type: "Command",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 32`] = `
+{
+  commands: [
+    {
+      name: {
+        text: "ls",
+        type: "Word",
+      },
+      suffix: [
+        {
+          file: {
+            text: "file.txt",
+            type: "Word",
+          },
+          op: {
+            text: "<",
+            type: "Less",
+          },
+          type: "Redirect",
+        },
+      ],
+      type: "Command",
+    },
+  ],
+  type: "Script",
+}
+`;
+
+snapshot[`ast 33`] = `
+{
+  commands: [
+    {
+      list: {
+        commands: [
+          {
+            name: {
+              text: "ls",
+              type: "Word",
+            },
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
+      },
+      type: "Subshell",
+    },
+  ],
+  type: "Script",
+}
+`;

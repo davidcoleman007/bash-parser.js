@@ -14,7 +14,7 @@ export default {
             type: 'Redirect',
             op: {
               text: '>&',
-              type: 'GreatAnd',
+              type: 'Greatand',
             },
             file: {
               text: '1',

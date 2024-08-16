@@ -1,5 +1,4 @@
 import type {
-  AstCondition,
   AstIoNumber,
   AstNode,
   AstNodeAssignmentWord,
@@ -16,7 +15,6 @@ import type {
   AstNodeRedirect,
   AstNodeScript,
   AstNodeSubshell,
-  AstNodeTestExpression,
   AstNodeUntil,
   AstNodeWhile,
   AstNodeWord,
@@ -116,23 +114,6 @@ export type AstBuilder = {
     pipe: AstNodePipeline,
   ) => AstNodePipeline['commands'][0] | AstNodePipeline;
 
-  logicalExpression: (
-    left: AstNodeLogicalExpression['left'],
-    op: AstNodeLogicalExpression['op'],
-    right: AstNodeLogicalExpression['right'],
-    invert: AstNodeLogicalExpression['inverted'],
-    locStart: AstSourceLocation,
-    locEnd: AstSourceLocation,
-  ) => AstNodeLogicalExpression;
-
-  testExpression: (
-    op: AstNodeTestExpression['op'],
-    target: AstNodeTestExpression['target'],
-    invert: AstNodeTestExpression['inverted'],
-    locStart: AstSourceLocation,
-    locEnd: AstSourceLocation,
-  ) => AstNodeTestExpression;
-
   andAndOr: (
     left: AstNodeLogicalExpression['left'],
     right: AstNodeLogicalExpression['right'],
@@ -167,7 +148,7 @@ export type AstBuilder = {
   ) => AstNodeCompoundList;
 
   ifClause: (
-    clause: AstCondition,
+    clause: AstNodeCompoundList,
     then: AstNodeCompoundList,
     elseBranch: AstNodeCompoundList,
     locStart: AstSourceLocation,
@@ -175,7 +156,7 @@ export type AstBuilder = {
   ) => AstNodeIf;
 
   while: (
-    clause: AstCondition,
+    clause: AstNodeCompoundList,
     body: AstNodeCompoundList,
     whileWord: AstNodeWord,
   ) => AstNodeWhile;

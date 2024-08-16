@@ -47,27 +47,6 @@ const start: Reducer = (state, source, reducers) => {
     };
   }
 
-  // if (!state.escaping && state.isPartOfOperator(char)) {
-  //   console.log('this.current + char', state.current, char);
-  //   const opState = state.clone().resetCurrent().saveCurrentLocAsStart().resetExpansion();
-  //   console.log('before operator', opState);
-  //   const ret = reducers.operator(opState, [char, ...source], reducers);
-  //   console.log('after operator tokensToEmit', ret.tokensToEmit);
-  //   if (ret.tokensToEmit && ret.tokensToEmit.length > 0) {
-  //     console.log('EMIT after opertor');
-  //     return {
-  //       nextReduction: ret.nextReduction,
-  //       tokensToEmit: [...state.tokenOrEmpty(), ...ret.tokensToEmit],
-  //       nextState: ret.nextState,
-  //     };
-  //   }
-
-  //   return {
-  //     nextReduction: reducers.start,
-  //     nextState: state.appendChar(char),
-  //   };
-  // }
-
   if (!state.escaping && char === "'") {
     return {
       nextReduction: reducers.singleQuoting,

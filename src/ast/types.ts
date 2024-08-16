@@ -61,34 +61,14 @@ export type AstNodePipeline = AstNode & {
 };
 
 /**
- * `ConditionOp` represents an operation in a `LogicalExpresison` or
- * `TestExpression`.
- */
-export type AstNodeConditionOp = AstNode & {
-  text: string;
-};
-
-/**
  * `LogicalExpression` represents two commands (left and right) concateneted in a `and` (&&) or `or` (||) operation.
  *
  * In the `and` Case, the right command is executed only if the left one is executed successfully. In the `or` Case, the right command is executed only if the left one fails.
  */
 export type AstNodeLogicalExpression = AstNode & {
-  type: 'LogicalExpression';
-  op: AstNodeConditionOp;
-  left: AstNodeWord;
-  right: AstNodeWord;
-  inverted?: boolean;
-};
-
-/**
- * `TestExpression` represents one command that operates on a value of some sort to produce a boolean.
- */
-export type AstNodeTestExpression = AstNode & {
-  type: 'TestExpression';
-  op: AstNodeConditionOp;
-  target: AstNodeWord;
-  inverted?: boolean;
+  op: string;
+  left: AstNode;
+  right: AstNode;
 };
 
 /**
@@ -133,7 +113,6 @@ export type AstNodeCompoundList = AstNode & {
   type: 'CompoundList';
   commands: Array<
     | AstNodeLogicalExpression
-    | AstNodeTestExpression
     | AstNodePipeline
     | AstNodeCommand
     | AstNodeFunction
@@ -189,7 +168,7 @@ export type AstNodeCaseItem = AstNode & {
  */
 export type AstNodeIf = AstNode & {
   type: 'If';
-  clause: AstCondition;
+  clause: AstNodeCompoundList;
   then: AstNodeCompoundList;
   else?: AstNodeCompoundList;
 };
@@ -199,7 +178,7 @@ export type AstNodeIf = AstNode & {
  */
 export type AstNodeWhile = AstNode & {
   type: 'While';
-  clause: AstCondition;
+  clause: AstNodeCompoundList;
   do: AstNodeCompoundList;
 };
 
@@ -208,7 +187,7 @@ export type AstNodeWhile = AstNode & {
  */
 export type AstNodeUntil = AstNode & {
   type: 'Until';
-  clause: AstCondition;
+  clause: AstNodeCompoundList;
   do: AstNodeCompoundList;
 };
 
@@ -255,10 +234,11 @@ export type AstNodeAssignmentWord = AstNode & {
  */
 export type AstArithmeticExpansion = {
   type: 'ArithmeticExpansion';
-  expression: string;
   resolved: boolean;
-  arithmeticAST: AstNode; // Maybe this should be specialized
   loc: ExpansionLocation;
+
+  expression: string;
+  arithmeticAST: AstNode; // Maybe this should be specialized
 };
 
 /** A `CommandExpansion` represent a command substitution operation to perform on the Word.
@@ -269,10 +249,11 @@ export type AstArithmeticExpansion = {
  */
 export type AstCommandExpansion = {
   type: 'CommandExpansion';
-  command: string;
   resolved: boolean;
-  commandAST: AstNodeScript;
   loc: ExpansionLocation;
+
+  command: string;
+  commandAST: AstNodeScript;
 };
 
 /**
@@ -284,12 +265,13 @@ export type AstCommandExpansion = {
  */
 export type AstParameterExpansion = {
   type: 'ParameterExpansion';
+  resolved: boolean;
+  loc: ExpansionLocation;
+
   parameter: string;
-  resolved?: boolean;
   kind?: string;
   word?: string;
   op?: string;
-  loc: ExpansionLocation;
 };
 
 /**
@@ -300,5 +282,3 @@ export type AstIoNumber = AstNode & {
   type: 'io_number';
   text: string;
 };
-
-export type AstCondition = AstNodeLogicalExpression | AstNodeTestExpression | AstNodeCompoundList;

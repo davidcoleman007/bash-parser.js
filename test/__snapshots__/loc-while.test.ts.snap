@@ -50,10 +50,7 @@ snapshot[`loc-while > loc in while statement 1`] = `
                 row: 1,
               },
             },
-            op: {
-              text: "&&",
-              type: "And",
-            },
+            op: "and",
             right: {
               loc: {
                 end: {

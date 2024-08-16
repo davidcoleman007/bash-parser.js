@@ -44,16 +44,13 @@ export type Tokenizer = (code: string) => AsyncIterable<TokenIf>;
 
 export interface ReducerStateIf {
   operators: Record<string, string>;
-  reducers: Reducers;
   current: string;
   escaping: boolean;
   expansion: Expansion[];
   previousReducer: Reducer;
   loc: ReducerLocation;
 
-  clone(): this;
   setLoc(loc: ReducerLocation): this;
-  resetExpansion(): this;
   setEscaping(escaping: boolean): this;
   setExpansion(expansion: Expansion[]): this;
   setPreviousReducer(previousReducer: Reducer): this;

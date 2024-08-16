@@ -1,11 +1,11 @@
 const ioFileOperators = [
   'LESS',
-  'DOUBLE_LESS',
-  'DOUBLE_GREAT',
-  'LESS_AND',
-  'GREAT_AND',
+  'DLESS',
+  'DGREAT',
+  'LESSAND',
+  'GREATAND',
   'GREAT',
-  'LESS_GREAT',
+  'LESSGREAT',
   'CLOBBER',
 ];
 

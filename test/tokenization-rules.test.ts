@@ -1,9 +1,9 @@
 import { assertEquals } from '@std/assert';
 import type { LexerContext, LexerPhase } from '~/lexer/types.ts';
+import enums from '~/modes/bash/enums/mod.ts';
 import rules from '~/modes/bash/phases/mod.ts';
 import { mkToken, type TokenIf } from '~/tokenizer/mod.ts';
 import fromArray from '~/utils/iterable/from-array.ts';
-import enums from '../src/modes/bash/enums/mod.ts';
 // const _utils = require('./_utils');
 
 const check = async (rule: LexerPhase, actual: TokenIf[], expected: TokenIf[]) => {
@@ -25,7 +25,7 @@ const check = async (rule: LexerPhase, actual: TokenIf[], expected: TokenIf[]) =
 
 Deno.test('tokenization-rules', async (t) => {
   await t.step('operatorTokens - identify operator with their tokens', async () => {
-    await check(rules.operatorTokens, [mkToken('OPERATOR', '<<')], [mkToken('DOUBLE_LESS', '<<')]);
+    await check(rules.operatorTokens, [mkToken('OPERATOR', '<<')], [mkToken('DLESS', '<<')]);
   });
 
   await t.step('reservedWords - identify reserved words or WORD', async () => {

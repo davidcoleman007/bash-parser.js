@@ -48,7 +48,7 @@ Deno.test('tokenize', async (t) => {
     utils.checkResults(
       result,
       [
-        { DOUBLE_LESS: '<<' },
+        { DLESS: '<<' },
         { EOF: '' },
       ],
     );
@@ -143,9 +143,9 @@ Deno.test('tokenize', async (t) => {
     utils.checkResults(
       await tokenize('<<\n>>'),
       [
-        { DOUBLE_LESS: '<<' },
+        { DLESS: '<<' },
         { NEWLINE: '\n' },
-        { DOUBLE_GREAT: '>>' },
+        { DGREAT: '>>' },
         { EOF: '' },
       ],
     );
@@ -155,8 +155,8 @@ Deno.test('tokenize', async (t) => {
     utils.checkResults(
       await tokenize('<< >>'),
       [
-        { DOUBLE_LESS: '<<' },
-        { DOUBLE_GREAT: '>>' },
+        { DLESS: '<<' },
+        { DGREAT: '>>' },
         { EOF: '' },
       ],
     );
@@ -329,7 +329,7 @@ Deno.test('tokenize', async (t) => {
       result,
       [
         { LESS: '<', loc: mkloc([1, 1, 0], [1, 1, 0]) },
-        { DOUBLE_LESS: '<<', loc: mkloc([3, 1, 2], [4, 1, 3]) },
+        { DLESS: '<<', loc: mkloc([3, 1, 2], [4, 1, 3]) },
         { EOF: '' },
       ],
     );
@@ -342,7 +342,7 @@ Deno.test('tokenize', async (t) => {
       [
         { LESS: '<', loc: mkloc([1, 1, 0], [1, 1, 0]) },
         { NEWLINE: '\n' },
-        { DOUBLE_LESS: '<<', loc: mkloc([1, 2, 2], [2, 2, 3]) },
+        { DLESS: '<<', loc: mkloc([1, 2, 2], [2, 2, 3]) },
         { EOF: '' },
       ],
     );

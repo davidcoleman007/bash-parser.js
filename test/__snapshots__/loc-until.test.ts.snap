@@ -50,10 +50,7 @@ snapshot[`loc-until > loc in until statement 1`] = `
                 row: 1,
               },
             },
-            op: {
-              text: "||",
-              type: "Or",
-            },
+            op: "or",
             right: {
               loc: {
                 end: {
