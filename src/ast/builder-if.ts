@@ -1,5 +1,5 @@
 import type {
-AstCondition,
+  AstCondition,
   AstIoNumber,
   AstNode,
   AstNodeAssignmentWord,
