@@ -127,4 +127,11 @@ Deno.test('conditions', async (t) => {
       await bashParser('until [ "$a" -ge 10 ]; do echo 1; done'),
     );
   });
+
+  await t.step('if [ "$(command)" -eq 1 ]', async (t) => {
+    await assertSnapshot(
+      t,
+      await bashParser('if [ "$(command)" -eq 1 ]; then echo 1; fi'),
+    );
+  });
 });

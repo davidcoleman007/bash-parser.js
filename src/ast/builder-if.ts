@@ -1,4 +1,5 @@
 import type {
+AstCondition,
   AstIoNumber,
   AstNode,
   AstNodeAssignmentWord,
@@ -166,7 +167,7 @@ export type AstBuilder = {
   ) => AstNodeCompoundList;
 
   ifClause: (
-    clause: AstNodeCompoundList,
+    clause: AstCondition,
     then: AstNodeCompoundList,
     elseBranch: AstNodeCompoundList,
     locStart: AstSourceLocation,
@@ -174,7 +175,7 @@ export type AstBuilder = {
   ) => AstNodeIf;
 
   while: (
-    clause: AstNodeCompoundList,
+    clause: AstCondition,
     body: AstNodeCompoundList,
     whileWord: AstNodeWord,
   ) => AstNodeWhile;

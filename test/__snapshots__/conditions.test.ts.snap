@@ -944,3 +944,69 @@ snapshot[`conditions > until [ "\$a" -ge 10 ] 1`] = `
   type: "Script",
 }
 `;
+
+snapshot[`conditions > if [ "\$(command)" -eq 1 ] 1`] = `
+{
+  commands: [
+    {
+      clause: {
+        left: {
+          expansion: [
+            {
+              command: "command",
+              commandAST: {
+                commands: [
+                  {
+                    name: {
+                      text: "command",
+                      type: "Word",
+                    },
+                    type: "Command",
+                  },
+                ],
+                type: "Script",
+              },
+              loc: {
+                end: 10,
+                start: 1,
+              },
+              type: "CommandExpansion",
+            },
+          ],
+          text: '"\$(command)"',
+          type: "Word",
+        },
+        op: {
+          text: "-eq",
+          type: "Equal",
+        },
+        right: {
+          text: "1",
+          type: "Word",
+        },
+        type: "LogicalExpression",
+      },
+      then: {
+        commands: [
+          {
+            name: {
+              text: "echo",
+              type: "Word",
+            },
+            suffix: [
+              {
+                text: "1",
+                type: "Word",
+              },
+            ],
+            type: "Command",
+          },
+        ],
+        type: "CompoundList",
+      },
+      type: "If",
+    },
+  ],
+  type: "Script",
+}
+`;

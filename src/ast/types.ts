@@ -76,8 +76,8 @@ export type AstNodeConditionOp = AstNode & {
 export type AstNodeLogicalExpression = AstNode & {
   type: 'LogicalExpression';
   op: AstNodeConditionOp;
-  left: AstNode;
-  right: AstNode;
+  left: AstNodeWord;
+  right: AstNodeWord;
   inverted?: boolean;
 };
 
@@ -87,7 +87,7 @@ export type AstNodeLogicalExpression = AstNode & {
 export type AstNodeTestExpression = AstNode & {
   type: 'TestExpression';
   op: AstNodeConditionOp;
-  target: AstNode;
+  target: AstNodeWord;
   inverted?: boolean;
 };
 
