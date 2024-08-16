@@ -285,6 +285,7 @@ export type AstCommandExpansion = {
 export type AstParameterExpansion = {
   type: 'ParameterExpansion';
   parameter: string;
+  resolved?: boolean;
   kind?: string;
   word?: string;
   op?: string;
