@@ -30,7 +30,7 @@ const toSpaceCase = (str: string) => {
   }).trim();
 };
 
-const toPascalCase = (str: string) => {
+const toPascalCase = (str: string): string => {
   const result = toSpaceCase(str).replace(/(?:^|\s)(\w)/g, (_, letter) => {
     return letter.toUpperCase();
   });

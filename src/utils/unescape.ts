@@ -44,7 +44,7 @@ const fromOct = (str: string) => String.fromCodePoint(Number.parseInt(str, 8));
  * @param str
  * @returns unescaped string
  */
-const unescape = (str: string) => {
+const unescape = (str: string): string => {
   return str.replace(jsEscapeRegex, (
     _,
     __,
