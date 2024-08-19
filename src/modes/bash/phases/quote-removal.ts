@@ -2,10 +2,10 @@ import type { LexerPhase } from '~/lexer/types.ts';
 import type { Expansion, TokenIf } from '~/tokenizer/mod.ts';
 import map from '~/utils/iterable/map.ts';
 import unescape from '~/utils/unescape.ts';
-import parse from '~/utils/unquote-word.ts';
+import unquoteWord from '~/utils/unquote-word.ts';
 
 const unquote = (text: string) => {
-  const result = parse(text);
+  const result = unquoteWord(text);
 
   if (result.values.length === 0) {
     return text;

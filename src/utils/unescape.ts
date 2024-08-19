@@ -72,3 +72,4 @@ const unescape = (str: string) => {
 };
 
 export default unescape;
+export { unescape };

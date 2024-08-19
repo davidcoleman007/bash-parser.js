@@ -74,7 +74,7 @@ const parseChunk = (chunks: string[], idx: number): SingleParseResult => {
   return result;
 };
 
-const parse = (s: string): ParseResult => {
+const unquoteWord = (s: string): ParseResult => {
   const chunker = new RegExp(
     '(' + RE_BAREWORD + '|' + RE_SINGLE_QUOTE + '|' + RE_DOUBLE_QUOTE + ')*',
     'g',
@@ -99,4 +99,5 @@ const parse = (s: string): ParseResult => {
   return result;
 };
 
-export default parse;
+export default unquoteWord;
+export { unquoteWord };

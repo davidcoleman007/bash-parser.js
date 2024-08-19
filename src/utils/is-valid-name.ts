@@ -8,3 +8,4 @@ const isValidName = (text: string) => {
 };
 
 export default isValidName;
+export { isValidName };

@@ -39,3 +39,4 @@ const toPascalCase = (str: string) => {
 };
 
 export default toPascalCase;
+export { toPascalCase };
