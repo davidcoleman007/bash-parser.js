@@ -47,7 +47,7 @@ export class ReplaceString {
     this.chunks.splice(index, 1, prefix, replacement, suffix);
   }
 
-  get text() {
+  get text(): string {
     return this.chunks.map(({ text }) => text).join('');
   }
 }
