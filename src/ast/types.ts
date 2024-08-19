@@ -66,7 +66,8 @@ export type AstNodePipeline = AstNode & {
  * In the `and` Case, the right command is executed only if the left one is executed successfully. In the `or` Case, the right command is executed only if the left one fails.
  */
 export type AstNodeLogicalExpression = AstNode & {
-  op: string;
+  type: 'LogicalExpression';
+  op: 'and' | 'or';
   left: AstNode;
   right: AstNode;
 };

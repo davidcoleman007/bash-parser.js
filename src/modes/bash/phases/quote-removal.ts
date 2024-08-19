@@ -4,7 +4,7 @@ import map from '~/utils/iterable/map.ts';
 import unescape from '~/utils/unescape.ts';
 import parse from '~/utils/unquote-word.ts';
 
-function unquote(text: string) {
+const unquote = (text: string) => {
   const result = parse(text);
 
   if (result.values.length === 0) {
@@ -16,15 +16,15 @@ function unquote(text: string) {
   }
 
   return unescape(result.values[0]);
-}
+};
 
-function unresolvedExpansions(token: TokenIf) {
+const unresolvedExpansions = (token: TokenIf) => {
   if (!token.expansion) {
     return false;
   }
-  const unresolved = token.expansion.filter((xp: Expansion) => !xp.resolved);
-  return unresolved.length > 0;
-}
+
+  return token.expansion.some((xp: Expansion) => !xp.resolved);
+};
 
 const quoteRemoval: LexerPhase = () =>
   map(async (token: TokenIf) => {
@@ -33,6 +33,7 @@ const quoteRemoval: LexerPhase = () =>
         return token.setValue(unquote(token.value!));
       }
     }
+
     return token;
   });
 
