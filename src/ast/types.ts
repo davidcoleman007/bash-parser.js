@@ -133,6 +133,7 @@ export type AstNodeCompoundList = AstNode & {
 export type AstNodeSubshell = AstNode & {
   type: 'Subshell';
   list: AstNodeCompoundList;
+  async?: boolean;
 };
 
 /**

@@ -8,7 +8,7 @@ on:
       - 'v*'
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -28,7 +28,11 @@ jobs:
       # runs with all permissions, but it is recommended to run with the minimal permissions your program needs (for example --allow-read).
       - run: deno task test
 
+      # Check if the code is publishable.
+      - run: deno publish --dry-run
+
   publish:
+    needs: test
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     permissions:
