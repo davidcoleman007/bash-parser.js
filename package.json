@@ -1,6 +1,6 @@
 {
   "name": "@isdk/bash-parser",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "homepage": "https://github.com/isdk/bash-parser.js",
   "type": "module",
   "dependencies": {
