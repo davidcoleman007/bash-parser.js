@@ -1,4 +1,5 @@
 import Jison from '@ts-jison/parser-generator';
+import fs from 'fs';
 import { resolve } from 'path';
 import grammar from './bash-grammar.ts';
 
@@ -31,10 +32,10 @@ export const Parser = parser.Parser;
 
   console.log('Grammar compiled.');
 
-  await Deno.writeTextFile(outPath, source);
+  fs.writeFileSync(outPath, source);
 
   console.log(`Grammar saved to ${outPath}.`);
 } catch (err) {
   console.error(`Failed to compile grammar: \n${err}`);
-  Deno.exit(1);
+  process.exit(1);
 }
