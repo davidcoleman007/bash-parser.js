@@ -1,5 +1,5 @@
-import { resolve } from '@std/path';
-import { Jison } from 'jison';
+import Jison from '@ts-jison/parser-generator';
+import { resolve } from 'path';
 import grammar from './bash-grammar.ts';
 
 try {

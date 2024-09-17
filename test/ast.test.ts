@@ -1,235 +1,137 @@
-import { assertSnapshot } from '@std/testing/snapshot';
+import { describe, expect, it } from 'vitest';
 import bashParser from '~/parse.ts';
 
-Deno.test('ast', async (t) => {
-  await t.step('command with one argument', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('echo world'),
-    );
+describe('ast', async (t) => {
+  it('command with one argument', async () => {
+    const result = await bashParser('echo world')
+    expect(result).toMatchSnapshot()
   });
 
-  await t.step('command with multiple new lines', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('\n\n\necho world'),
-    );
+  it('command with multiple new lines', async () => {
+    expect(await bashParser('\n\n\necho world')).toMatchSnapshot()
   });
 
-  await t.step('command with multiple lines continuation', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('echo \\\n\\\n\\\n\\\nthere'),
-    );
+  it('command with multiple lines continuation', async () => {
+    expect(await bashParser('echo \\\n\\\n\\\n\\\nthere')).toMatchSnapshot()
   });
 
-  await t.step('command with pre-assignment', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('TEST=1 run'),
-    );
+  it('command with pre-assignment', async () => {
+    expect(await bashParser('TEST=1 run')).toMatchSnapshot()
   });
 
-  await t.step('assignment alone', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('TEST=1'),
-    );
+  it('assignment alone', async () => {
+    expect(await bashParser('TEST=1')).toMatchSnapshot();
   });
 
-  await t.step('commands with AND', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('run && stop'),
-    );
+  it('commands with AND', async () => {
+    expect(await bashParser('run && stop')).toMatchSnapshot();
   });
 
-  await t.step('commands with AND \\n', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('run && \n stop'),
-    );
+  it('commands with AND \\n', async () => {
+    expect(await bashParser('run && \n stop')).toMatchSnapshot();
   });
 
-  await t.step('commands with OR', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('run || cry'),
-    );
+  it('commands with OR', async () => {
+    expect(await bashParser('run || cry')).toMatchSnapshot();
   });
 
-  await t.step('pipelines', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('run | cry'),
-    );
+  it('pipelines', async () => {
+    expect(await bashParser('run | cry')).toMatchSnapshot();
   });
 
-  await t.step('bang pipelines', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('! run | cry'),
-    );
+  it('bang pipelines', async () => {
+    expect(await bashParser('! run | cry')).toMatchSnapshot();
   });
 
-  await t.step('no pre-assignment on suffix', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('echo TEST=1'),
-    );
+  it('no pre-assignment on suffix', async () => {
+    expect(await bashParser('echo TEST=1')).toMatchSnapshot();
   });
 
-  await t.step('command with multiple prefixes', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('TEST1=1 TEST2=2 echo world'),
-    );
+  it('command with multiple prefixes', async () => {
+    expect(await bashParser('TEST1=1 TEST2=2 echo world')).toMatchSnapshot();
   });
 
-  await t.step('multi line commands', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('echo; \nls;\n'),
-    );
+  it('multi line commands', async () => {
+    expect(await bashParser('echo; \nls;\n')).toMatchSnapshot();
   });
 
-  await t.step('Compound list', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('{ echo; ls; }'),
-    );
+  it('Compound list', async () => {
+    expect(await bashParser('{ echo; ls; }')).toMatchSnapshot();
   });
 
-  await t.step('Compound list with redirections', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('{ echo; ls; } > file.txt'),
-    );
+  it('Compound list with redirections', async () => {
+    expect(await bashParser('{ echo; ls; } > file.txt')).toMatchSnapshot();
   });
 
-  await t.step('command with multiple redirections', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('echo world > file.txt < input.dat'),
-    );
+  it('command with multiple redirections', async () => {
+    expect(await bashParser('echo world > file.txt < input.dat')).toMatchSnapshot();
   });
 
-  await t.step('Compound list with multiple redirections', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('{ echo; ls; } > file.txt < input.dat'),
-    );
+  it('Compound list with multiple redirections', async () => {
+    expect(await bashParser('{ echo; ls; } > file.txt < input.dat')).toMatchSnapshot();
   });
 
-  await t.step('single line commands', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('echo;ls'),
-    );
+  it('single line commands', async () => {
+    expect(await bashParser('echo;ls')).toMatchSnapshot();
   });
 
-  await t.step('single line commands separated by &', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('echo&ls'),
-    );
+  it('single line commands separated by &', async () => {
+    expect(await bashParser('echo&ls')).toMatchSnapshot();
   });
 
-  await t.step('LogicalExpression separated by &', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('echo && ls &'),
-    );
+  it('LogicalExpression separated by &', async () => {
+    expect(await bashParser('echo && ls &')).toMatchSnapshot();
   });
 
-  await t.step('LogicalExpressions separated by &', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('echo && ls & ciao'),
-    );
+  it('LogicalExpressions separated by &', async () => {
+    expect(await bashParser('echo && ls & ciao')).toMatchSnapshot();
   });
 
-  await t.step('single line commands separated by &;', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('echo&;ls'),
-    );
+  it('single line commands separated by &;', async () => {
+    expect(await bashParser('echo&;ls')).toMatchSnapshot();
   });
 
-  await t.step('command with redirection to file', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('ls > file.txt'),
-    );
+  it('command with redirection to file', async () => {
+    expect(await bashParser('ls > file.txt')).toMatchSnapshot();
   });
 
-  await t.step('parse multiple suffix', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('command foo --lol'),
-    );
+  it('parse multiple suffix', async () => {
+    expect(await bashParser('command foo --lol')).toMatchSnapshot();
   });
 
-  await t.step('command with stderr redirection to file', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('ls 2> file.txt'),
-    );
+  it('command with stderr redirection to file', async () => {
+    expect(await bashParser('ls 2> file.txt')).toMatchSnapshot();
   });
 
-  await t.step('command with stdout redirection to file', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('ls > file.txt'),
-    );
+  it('command with stdout redirection to file', async () => {
+    expect(await bashParser('ls > file.txt')).toMatchSnapshot();
   });
 
-  await t.step('command with stdout append redirection to file', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('ls >> file.txt'),
-    );
+  it('command with stdout append redirection to file', async () => {
+    expect(await bashParser('ls >> file.txt')).toMatchSnapshot();
   });
 
-  await t.step('command with stderr redirection to file', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('ls 2> file.txt'),
-    );
+  it('command with stderr redirection to file', async () => {
+    expect(await bashParser('ls 2> file.txt')).toMatchSnapshot();
   });
 
-  await t.step('command with stderr append redirection to file', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('ls 2>> file.txt'),
-    );
+  it('command with stderr append redirection to file', async () => {
+    expect(await bashParser('ls 2>> file.txt')).toMatchSnapshot();
   });
 
-  await t.step('command with stdout and stderr redirection to file', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('ls > file.txt 2>&1'),
-    );
+  it('command with stdout and stderr redirection to file', async () => {
+    expect(await bashParser('ls > file.txt 2>&1')).toMatchSnapshot();
   });
 
-  await t.step('command with stdout and stderr append redirection to file', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('ls >> file.txt 2>&1'),
-    );
+  it('command with stdout and stderr append redirection to file', async () => {
+    expect(await bashParser('ls >> file.txt 2>&1')).toMatchSnapshot();
   });
 
-  await t.step('command with stdin redirection from file', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('ls < file.txt'),
-    );
+  it('command with stdin redirection from file', async () => {
+    expect(await bashParser('ls < file.txt')).toMatchSnapshot();
   });
 
-  await t.step('parse subshell', async () => {
-    await assertSnapshot(
-      t,
-      await bashParser('( ls )'),
-    );
+  it('parse subshell', async () => {
+    expect(await bashParser('( ls )')).toMatchSnapshot();
   });
 });

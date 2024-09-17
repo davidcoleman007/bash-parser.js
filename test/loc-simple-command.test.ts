@@ -1,8 +1,8 @@
 import bashParser from '~/parse.ts';
 import utils, { mkloc2 as mkloc } from './_utils.ts';
 
-Deno.test('loc-simple-command', async (t) => {
-  await t.step('simple command with prefixes and name', async () => {
+describe('loc-simple-command', async (t) => {
+  it('simple command with prefixes and name', async () => {
     const result = await bashParser('a=1 b=2 echo', { insertLOC: true });
     utils.checkResults(result.commands[0], {
       type: 'Command',
@@ -24,7 +24,7 @@ Deno.test('loc-simple-command', async (t) => {
     });
   });
 
-  await t.step('simple command with only name', async () => {
+  it('simple command with only name', async () => {
     const result = await bashParser('echo', { insertLOC: true });
     utils.checkResults(result.commands[0], {
       type: 'Command',
@@ -37,7 +37,7 @@ Deno.test('loc-simple-command', async (t) => {
     });
   });
 
-  await t.step('simple command with pipeline', async () => {
+  it('simple command with pipeline', async () => {
     const result = await bashParser('echo | grep', { insertLOC: true });
     // console.log(JSON.stringify(result, null, 4));
     utils.checkResults(result.commands[0], {
@@ -63,7 +63,7 @@ Deno.test('loc-simple-command', async (t) => {
     });
   });
 
-  await t.step('simple command with suffixes', async () => {
+  it('simple command with suffixes', async () => {
     const result = await bashParser('echo 42 43', { insertLOC: true });
     utils.checkResults(result.commands[0], {
       type: 'Command',
@@ -85,7 +85,7 @@ Deno.test('loc-simple-command', async (t) => {
     });
   });
 
-  await t.step('simple command with IO redirection', async () => {
+  it('simple command with IO redirection', async () => {
     const result = await bashParser('echo > 43', { insertLOC: true });
     // utils.logResults(result)
 
@@ -114,7 +114,7 @@ Deno.test('loc-simple-command', async (t) => {
     });
   });
 
-  await t.step('simple command with numbered IO redirection', async () => {
+  it('simple command with numbered IO redirection', async () => {
     const result = await bashParser('echo 2> 43', { insertLOC: true });
 
     const expected = {
@@ -150,7 +150,7 @@ Deno.test('loc-simple-command', async (t) => {
     utils.checkResults(result.commands[0], expected);
   });
 
-  await t.step('simple command with suffixes & prefixes', async () => {
+  it('simple command with suffixes & prefixes', async () => {
     const result = await bashParser('a=1 b=2 echo 42 43', { insertLOC: true });
     utils.checkResults(result.commands[0], {
       type: 'Command',

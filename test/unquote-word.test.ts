@@ -1,8 +1,8 @@
 import parse from '~/utils/unquote-word.ts';
 import utils from './_utils.ts';
 
-Deno.test('unquote-word', async (t) => {
-  await t.step('comment', () => {
+describe('unquote-word', async (t) => {
+  it('comment', () => {
     utils.checkResults(parse('beep#boop'), { values: ['beep'], comment: 'boop' });
     utils.checkResults(parse('beep #boop'), { values: ['beep'], comment: 'boop' });
     utils.checkResults(parse('beep # boop'), { values: ['beep'], comment: 'boop' });
@@ -12,7 +12,7 @@ Deno.test('unquote-word', async (t) => {
     utils.checkResults(parse('echo "foo = \\"foo\\"" # boop'), { values: ['echo', 'foo = "foo"'], comment: 'boop' });
   });
 
-  await t.step('parse shell commands', () => {
+  it('parse shell commands', () => {
     utils.checkResults(parse('a \'b\' "c"'), { values: ['a', 'b', 'c'] });
     utils.checkResults(
       parse('beep "boop" \'foo bar baz\' "it\'s \\"so\\" groovy"'),

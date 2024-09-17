@@ -1,8 +1,8 @@
 import bashParser from '~/parse.ts';
 import utils from './_utils.ts';
 
-Deno.test('special parameter', async (t) => {
-  await t.step('positional list parameter', async () => {
+describe('special parameter', async (t) => {
+  it('positional list parameter', async () => {
     const result = await bashParser('echoword=$@');
     // console.log(JSON.stringify(result, null, 5))
     utils.checkResults(result, {
@@ -26,7 +26,7 @@ Deno.test('special parameter', async (t) => {
     });
   });
 
-  await t.step('positional string parameter', async () => {
+  it('positional string parameter', async () => {
     const result = await bashParser('echoword=$*');
     utils.checkResults(result, {
       type: 'Script',
@@ -49,7 +49,7 @@ Deno.test('special parameter', async (t) => {
     });
   });
 
-  await t.step('positional count parameter', async () => {
+  it('positional count parameter', async () => {
     const result = await bashParser('echoword=$#');
     utils.checkResults(result, {
       type: 'Script',
@@ -72,7 +72,7 @@ Deno.test('special parameter', async (t) => {
     });
   });
 
-  await t.step('last exit status', async () => {
+  it('last exit status', async () => {
     const result = await bashParser('echoword=$?');
     utils.checkResults(result, {
       type: 'Script',
@@ -95,7 +95,7 @@ Deno.test('special parameter', async (t) => {
     });
   });
 
-  await t.step('current option flags', async () => {
+  it('current option flags', async () => {
     const result = await bashParser('echoword=$-');
     utils.checkResults(result, {
       type: 'Script',
@@ -118,7 +118,7 @@ Deno.test('special parameter', async (t) => {
     });
   });
 
-  await t.step('shell process id', async () => {
+  it('shell process id', async () => {
     const result = await bashParser('echoword=$$');
     utils.checkResults(result, {
       type: 'Script',
@@ -141,7 +141,7 @@ Deno.test('special parameter', async (t) => {
     });
   });
 
-  await t.step('last background pid', async () => {
+  it('last background pid', async () => {
     const result = await bashParser('echoword=$!');
     utils.checkResults(result, {
       type: 'Script',
@@ -164,7 +164,7 @@ Deno.test('special parameter', async (t) => {
     });
   });
 
-  await t.step('shell script name', async () => {
+  it('shell script name', async () => {
     const result = await bashParser('echoword=$0');
     // logResults(result);
     utils.checkResults(result, {

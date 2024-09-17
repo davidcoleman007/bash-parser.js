@@ -1,8 +1,8 @@
 import bashParser from '~/parse.ts';
 import utils from './_utils.ts';
 
-Deno.test('function', async (t) => {
-  await t.step('parse function declaration multiple lines', async () => {
+describe('function', async (t) => {
+  it('parse function declaration multiple lines', async () => {
     const result = await bashParser('foo () \n{\n command bar --lol;\n}');
 
     utils.checkResults(
@@ -25,7 +25,7 @@ Deno.test('function', async (t) => {
     );
   });
 
-  await t.step('parse function declaration with redirections', async () => {
+  it('parse function declaration with redirections', async () => {
     const src = `foo () {
      command bar --lol;
     } > file.txt`;
@@ -57,7 +57,7 @@ Deno.test('function', async (t) => {
     );
   });
 
-  await t.step('parse function declaration', async () => {
+  it('parse function declaration', async () => {
     const result = await bashParser('foo	(){ command bar --lol;  }');
 
     utils.checkResults(

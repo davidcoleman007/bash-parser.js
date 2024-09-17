@@ -1,8 +1,8 @@
 import bashParser from '~/parse.ts';
 import utils from './_utils.ts';
 
-Deno.test('quote-removal', async (t) => {
-  await t.step('remove double quote from string', async () => {
+describe('quote-removal', async (t) => {
+  it('remove double quote from string', async () => {
     const result = await bashParser('"echo"');
     utils.checkResults((result as any).commands[0].name, {
       type: 'Word',
@@ -10,7 +10,7 @@ Deno.test('quote-removal', async (t) => {
     });
   });
 
-  await t.step('remove single quotes from string', async () => {
+  it('remove single quotes from string', async () => {
     const result = await bashParser("'echo'");
     utils.checkResults((result as any).commands[0].name, {
       type: 'Word',
@@ -18,7 +18,7 @@ Deno.test('quote-removal', async (t) => {
     });
   });
 
-  await t.step('remove unnecessary slashes from string', async () => {
+  it('remove unnecessary slashes from string', async () => {
     const result = await bashParser('ec\\%ho');
     utils.checkResults((result as any).commands[0].name, {
       type: 'Word',
@@ -26,7 +26,7 @@ Deno.test('quote-removal', async (t) => {
     });
   });
 
-  await t.step('not remove quotes from middle of string if escaped', async () => {
+  it('not remove quotes from middle of string if escaped', async () => {
     const result = await bashParser('ec\\\'\\"ho');
     utils.checkResults((result as any).commands[0].name, {
       type: 'Word',
@@ -34,7 +34,7 @@ Deno.test('quote-removal', async (t) => {
     });
   });
 
-  await t.step('transform escaped characters', async () => {
+  it('transform escaped characters', async () => {
     const result = await bashParser('"ec\\t\\nho"');
     utils.checkResults((result as any).commands[0].name, {
       type: 'Word',
@@ -42,7 +42,7 @@ Deno.test('quote-removal', async (t) => {
     });
   });
 
-  await t.step('not remove special characters', async () => {
+  it('not remove special characters', async () => {
     const result = await bashParser('"ec\tho"');
     utils.checkResults((result as any).commands[0].name, {
       type: 'Word',
@@ -50,7 +50,7 @@ Deno.test('quote-removal', async (t) => {
     });
   });
 
-  await t.step('remove quotes from middle of string', async () => {
+  it('remove quotes from middle of string', async () => {
     const result = await bashParser("ec'h'o");
     utils.checkResults((result as any).commands[0].name, {
       type: 'Word',
@@ -58,7 +58,7 @@ Deno.test('quote-removal', async (t) => {
     });
   });
 
-  await t.step('remove quotes on assignment', async () => {
+  it('remove quotes on assignment', async () => {
     const result = await bashParser('echo="ciao mondo"');
     utils.checkResults((result as any).commands[0].prefix[0], {
       text: 'echo=ciao mondo',
@@ -66,7 +66,7 @@ Deno.test('quote-removal', async (t) => {
     });
   });
 
-  await t.step('remove quotes followed by single quotes', async () => {
+  it('remove quotes followed by single quotes', async () => {
     const result = await bashParser('echo"ciao"\'mondo\'');
     utils.checkResults((result as any).commands[0].name, {
       text: 'echociaomondo',
@@ -74,7 +74,7 @@ Deno.test('quote-removal', async (t) => {
     });
   });
 
-  await t.step('remove single quotes followed by quotes', async () => {
+  it('remove single quotes followed by quotes', async () => {
     const result = await bashParser('echo\'ciao\'"mondo"');
     utils.checkResults((result as any).commands[0].name, {
       text: 'echociaomondo',

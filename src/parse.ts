@@ -32,7 +32,7 @@ export const parse: Parse = async (sourceCode, options?) => {
     parser.yy = astBuilder(options.insertLOC);
 
     return parser.parse(sourceCode);
-  } catch (err) {
+  } catch (err: any) {
     if (err instanceof SyntaxError) {
       throw err;
     }

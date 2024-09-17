@@ -1,9 +1,9 @@
-import { assert, assertRejects } from '@std/assert';
 import bashParser from '~/parse.ts';
+import { assert, assertRejects } from '~/utils/assert';
 import utils from './_utils.ts';
 
-Deno.test('command substitution', async (t) => {
-  await t.step('command substitution', async () => {
+describe('command substitution', async (t) => {
+  it('command substitution', async () => {
     const result = await bashParser('variable=$(echo ciao)');
     // utils.logResults(result)
     delete (result as any).commands[0].prefix[0].expansion[0].commandAST;
@@ -21,7 +21,7 @@ Deno.test('command substitution', async (t) => {
     }]);
   });
 
-  await t.step('command substitution skip escaped dollar', async () => {
+  it('command substitution skip escaped dollar', async () => {
     const result = await bashParser('echo "\\$\\(echo ciao)"');
     // utils.logResults(result)
     utils.checkResults((result as any).commands[0].suffix, [{
@@ -30,12 +30,12 @@ Deno.test('command substitution', async (t) => {
     }]);
   });
 
-  await t.step('command substitution skip escaped backtick', async () => {
+  it('command substitution skip escaped backtick', async () => {
     const err = (await assertRejects(() => bashParser('echo "\\`echo ciao`"'))) as Error;
     assert(err.message, 'Unclosed `');
   });
 
-  await t.step('command substitution skip single quoted words', async () => {
+  it('command substitution skip single quoted words', async () => {
     const result = await bashParser("echo '$(echo ciao)'");
     // utils.logResults(result)
     utils.checkResults((result as any).commands[0].suffix, [{
@@ -44,13 +44,13 @@ Deno.test('command substitution', async (t) => {
     }]);
   });
 
-  await t.step('command substitution with backticks skip single quoted words', async () => {
+  it('command substitution with backticks skip single quoted words', async () => {
     const result = await bashParser("echo '`echo ciao`'");
     // utils.logResults(result)
     utils.checkResults((result as any).commands[0].suffix, [{ type: 'Word', text: '`echo ciao`' }]);
   });
 
-  await t.step('command substitution in suffix', async () => {
+  it('command substitution in suffix', async () => {
     const result = await bashParser('echo $(ciao)');
     delete (result as any).commands[0].suffix[0].expansion[0].commandAST;
     utils.checkResults((result as any).commands[0].suffix, [{
@@ -67,7 +67,7 @@ Deno.test('command substitution', async (t) => {
     }]);
   });
 
-  await t.step('command substitution in suffix with backticks', async () => {
+  it('command substitution in suffix with backticks', async () => {
     const result = await bashParser('echo `ciao`');
     delete (result as any).commands[0].suffix[0].expansion[0].commandAST;
 
@@ -85,7 +85,7 @@ Deno.test('command substitution', async (t) => {
     }]);
   });
 
-  await t.step('command ast is recursively parsed', async () => {
+  it('command ast is recursively parsed', async () => {
     const result = await bashParser('variable=$(echo ciao)');
 
     utils.checkResults((result as any).commands[0].prefix[0].expansion[0].commandAST, {
@@ -98,7 +98,7 @@ Deno.test('command substitution', async (t) => {
     });
   });
 
-  await t.step('command substitution with backticks', async () => {
+  it('command substitution with backticks', async () => {
     const result = await bashParser('variable=`echo ciao`');
     delete (result as any).commands[0].prefix[0].expansion[0].commandAST;
 
@@ -116,7 +116,7 @@ Deno.test('command substitution', async (t) => {
     }]);
   });
 
-  await t.step('quoted backtick are removed within command substitution with backticks', async () => {
+  it('quoted backtick are removed within command substitution with backticks', async () => {
     const result = await bashParser('variable=`echo \\`echo ciao\\``');
     delete (result as any).commands[0].prefix[0].expansion[0].commandAST;
 
@@ -134,7 +134,7 @@ Deno.test('command substitution', async (t) => {
     }]);
   });
 
-  await t.step('quoted backtick are not removed within command substitution with parenthesis', async () => {
+  it('quoted backtick are not removed within command substitution with parenthesis', async () => {
     const result = await bashParser('variable=$(echo \\`echo ciao\\`)');
     delete (result as any).commands[0].prefix[0].expansion[0].commandAST;
     utils.checkResults((result as any).commands[0].prefix, [{
@@ -151,7 +151,7 @@ Deno.test('command substitution', async (t) => {
     }]);
   });
 
-  await t.step('resolve double command', async () => {
+  it('resolve double command', async () => {
     const result = await bashParser('"foo $(other) $(one) baz"', {
       async execCommand() {
         return 'bar';
@@ -183,7 +183,7 @@ Deno.test('command substitution', async (t) => {
     });
   });
 
-  await t.step('resolve double command with backticks', async () => {
+  it('resolve double command with backticks', async () => {
     const result = await bashParser('"foo `other` `one` baz"', {
       async execCommand() {
         return 'bar';
@@ -214,7 +214,7 @@ Deno.test('command substitution', async (t) => {
     });
   });
 
-  await t.step('last newlines are removed from command output', async () => {
+  it('last newlines are removed from command output', async () => {
     const result = await bashParser('"foo $(other) baz"', {
       async execCommand() {
         return 'bar\n\n';
@@ -238,7 +238,7 @@ Deno.test('command substitution', async (t) => {
     });
   });
 
-  await t.step('field splitting', async () => {
+  it('field splitting', async () => {
     const result = await bashParser('say $(other) plz', {
       async execCommand() {
         return 'foo\tbar baz';

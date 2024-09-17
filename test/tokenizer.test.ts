@@ -42,8 +42,8 @@ const tokenize = async (text: string, keepLoc?: boolean) => {
   return results;
 };
 
-Deno.test('tokenize', async (t) => {
-  await t.step('parse single operator', async () => {
+describe('tokenize', async (t) => {
+  it('parse single operator', async () => {
     const result = await tokenize('<<');
     utils.checkResults(
       result,
@@ -54,7 +54,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('parse word', async () => {
+  it('parse word', async () => {
     const result = await tokenize('abc');
     utils.checkResults(
       result,
@@ -65,7 +65,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('parse word followed by newline', async () => {
+  it('parse word followed by newline', async () => {
     const result = await tokenize('abc\n');
     utils.checkResults(
       result,
@@ -77,7 +77,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('parse invalid operator', async () => {
+  it('parse invalid operator', async () => {
     const result = await tokenize('^');
     utils.checkResults(
       result,
@@ -88,14 +88,14 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('emit EOF at end', async () => {
+  it('emit EOF at end', async () => {
     utils.checkResults(
       await tokenize(''),
       [{ EOF: '' }],
     );
   });
 
-  await t.step('parse new lines', async () => {
+  it('parse new lines', async () => {
     utils.checkResults(
       await tokenize('\n'),
       [
@@ -105,7 +105,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('operator breaks words', async () => {
+  it('operator breaks words', async () => {
     utils.checkResults(
       await tokenize('e<'),
       [
@@ -116,7 +116,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('double breaks', async () => {
+  it('double breaks', async () => {
     utils.checkResults(
       await tokenize('echo>ciao'),
       [
@@ -128,7 +128,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('word breaks operators', async () => {
+  it('word breaks operators', async () => {
     utils.checkResults(
       await tokenize('<e'),
       [
@@ -139,7 +139,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('parse two operators on two lines', async () => {
+  it('parse two operators on two lines', async () => {
     utils.checkResults(
       await tokenize('<<\n>>'),
       [
@@ -151,7 +151,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('parse two operators on one line', async () => {
+  it('parse two operators on one line', async () => {
     utils.checkResults(
       await tokenize('<< >>'),
       [
@@ -162,7 +162,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('parse two tokens', async () => {
+  it('parse two tokens', async () => {
     utils.checkResults(
       await tokenize('echo 42'),
       [
@@ -173,7 +173,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('parse two tokens on two lines', async () => {
+  it('parse two tokens on two lines', async () => {
     utils.checkResults(
       await tokenize('echo\n42'),
       [
@@ -185,7 +185,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('keep multiple newlines', async () => {
+  it('keep multiple newlines', async () => {
     const result = await tokenize('echo\n\n\n42');
     utils.checkResults(
       result,
@@ -200,7 +200,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('support escaping chars', async () => {
+  it('support escaping chars', async () => {
     utils.checkResults(
       await tokenize('echo\\<'),
       [
@@ -210,7 +210,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('character escaping is resetted on each char', async () => {
+  it('character escaping is resetted on each char', async () => {
     utils.checkResults(
       await tokenize('echo\\<<'),
       [
@@ -221,7 +221,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('support quoting with single', async () => {
+  it('support quoting with single', async () => {
     const result = await tokenize("echo '< world >' other");
 
     utils.checkResults(
@@ -235,7 +235,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('in single quote escaping single quotes is not working', async () => {
+  it('in single quote escaping single quotes is not working', async () => {
     const result = await tokenize("'\\''");
 
     utils.checkResults(
@@ -247,7 +247,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('single quote does not break words', async () => {
+  it('single quote does not break words', async () => {
     const result = await tokenize("a'b'c");
 
     utils.checkResults(
@@ -259,7 +259,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('support quoting with double', async () => {
+  it('support quoting with double', async () => {
     utils.checkResults(
       await tokenize('echo "< world >" other'),
       [
@@ -271,7 +271,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('escaped double quotes within double quotes', async () => {
+  it('escaped double quotes within double quotes', async () => {
     const result = await tokenize('echo "TEST1 \\"TEST2" ucci ucci');
     utils.checkResults(
       result,
@@ -285,7 +285,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('escaped escape double quotes within double quotes', async () => {
+  it('escaped escape double quotes within double quotes', async () => {
     const result = await tokenize('echo "TEST1 \\\\" TEST2 " u i"');
     utils.checkResults(
       result,
@@ -299,7 +299,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('parse loc', async () => {
+  it('parse loc', async () => {
     const result = await tokenize('abc', true);
     utils.checkResults(
       result,
@@ -310,7 +310,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('reset start loc on each token', async () => {
+  it('reset start loc on each token', async () => {
     const result = await tokenize('abc def', true);
     utils.checkResults(
       result,
@@ -322,7 +322,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('loc on operators', async () => {
+  it('loc on operators', async () => {
     const result = await tokenize('< <<', true);
     // console.log(JSON.stringify(result, null, 4))
     utils.checkResults(
@@ -335,7 +335,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('loc on newlines', async () => {
+  it('loc on newlines', async () => {
     const result = await tokenize('<\n<<', true);
     utils.checkResults(
       result,
@@ -348,7 +348,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('loc on line continuations', async () => {
+  it('loc on line continuations', async () => {
     const result = await tokenize('a\\\nbc', true);
 
     utils.checkResults(
@@ -360,7 +360,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('parse parameter expansion', async () => {
+  it('parse parameter expansion', async () => {
     const result = await tokenize('a$b-c');
 
     const expansion = [{
@@ -378,7 +378,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('parse special parameter expansion', async () => {
+  it('parse special parameter expansion', async () => {
     const result = await tokenize('a$@cd');
     const expansion = [{
       type: 'parameter_expansion',
@@ -394,7 +394,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('parse extended parameter expansion', async () => {
+  it('parse extended parameter expansion', async () => {
     const result = await tokenize('a${b}cd');
     const expansion = [{
       type: 'parameter_expansion',
@@ -410,7 +410,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('parse command expansion', async () => {
+  it('parse command expansion', async () => {
     const result = await tokenize('a$(b)cd');
     const expansion = [{
       type: 'command_expansion',
@@ -426,7 +426,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('parse command with backticks', async () => {
+  it('parse command with backticks', async () => {
     const result = await tokenize('a`b`cd');
     const expansion = [{
       type: 'command_expansion',
@@ -442,7 +442,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('parse arithmetic expansion', async () => {
+  it('parse arithmetic expansion', async () => {
     const result = await tokenize('a$((b))cd');
     const expansion = [{
       type: 'arithmetic_expansion',
@@ -459,7 +459,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('within double quotes parse parameter expansion', async () => {
+  it('within double quotes parse parameter expansion', async () => {
     const result = await tokenize('"a$b-c"');
     const expansion = [{
       type: 'parameter_expansion',
@@ -476,7 +476,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('within double quotes parse special parameter expansion', async () => {
+  it('within double quotes parse special parameter expansion', async () => {
     const result = await tokenize('"a$@cd"');
     const expansion = [{
       type: 'parameter_expansion',
@@ -492,7 +492,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('within double quotes parse extended parameter expansion', async () => {
+  it('within double quotes parse extended parameter expansion', async () => {
     const result = await tokenize('"a${b}cd"');
     const expansion = [{
       type: 'parameter_expansion',
@@ -508,7 +508,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('within double quotes parse command expansion', async () => {
+  it('within double quotes parse command expansion', async () => {
     const result = await tokenize('"a$(b)cd"');
     const expansion = [{
       type: 'command_expansion',
@@ -525,7 +525,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('within double quotes parse command with backticks', async () => {
+  it('within double quotes parse command with backticks', async () => {
     const result = await tokenize('"a`b`cd"');
     const expansion = [{
       type: 'command_expansion',
@@ -543,7 +543,7 @@ Deno.test('tokenize', async (t) => {
     );
   });
 
-  await t.step('within double quotes parse arithmetic expansion', async () => {
+  it('within double quotes parse arithmetic expansion', async () => {
     const result = await tokenize('"a$((b))cd"');
     const expansion = [{
       type: 'arithmetic_expansion',

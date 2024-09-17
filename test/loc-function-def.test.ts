@@ -1,8 +1,8 @@
 import bashParser from '~/parse.ts';
 import utils from './_utils.ts';
 
-Deno.test('loc-function-def', async (t) => {
-  await t.step('loc in function declaration', async () => {
+describe('loc-function-def', async (t) => {
+  it('loc in function declaration', async () => {
     const cmd = `foo () {
  command bar --lol;
 }

@@ -1,8 +1,8 @@
 import bashParser from '~/parse.ts';
 import utils from './_utils.ts';
 
-Deno.test('special parameter substitution', async (t) => {
-  await t.step('parameter with use default value', async () => {
+describe('special parameter substitution', async (t) => {
+  it('parameter with use default value', async () => {
     const result = await bashParser('${other:-default_value}');
 
     // utils.logResults((result as any).commands[0].name)
@@ -25,7 +25,7 @@ Deno.test('special parameter substitution', async (t) => {
     });
   });
 
-  await t.step('parameter with use default value if unset', async () => {
+  it('parameter with use default value if unset', async () => {
     const result = await bashParser('${other-default_value}');
 
     utils.checkResults((result as any).commands[0].name, {
@@ -47,7 +47,7 @@ Deno.test('special parameter substitution', async (t) => {
     });
   });
 
-  await t.step('parameter with string length', async () => {
+  it('parameter with string length', async () => {
     const result = await bashParser('${#default_value}');
 
     utils.checkResults((result as any).commands[0].name, {
@@ -65,7 +65,7 @@ Deno.test('special parameter substitution', async (t) => {
     });
   });
 
-  await t.step('parameter with assign default value', async () => {
+  it('parameter with assign default value', async () => {
     const result = await bashParser('${other:=default_value}');
     utils.checkResults((result as any).commands[0].name, {
       type: 'Word',
@@ -86,7 +86,7 @@ Deno.test('special parameter substitution', async (t) => {
     });
   });
 
-  await t.step('parameter with assign default value if unset', async () => {
+  it('parameter with assign default value if unset', async () => {
     const result = await bashParser('${other=default_value}');
     utils.checkResults((result as any).commands[0].name, {
       type: 'Word',
@@ -107,7 +107,7 @@ Deno.test('special parameter substitution', async (t) => {
     });
   });
 
-  await t.step('parameter with other parameter in word', async () => {
+  it('parameter with other parameter in word', async () => {
     const result = await bashParser('${other:=default$value}');
     // utils.logResults(result)
     utils.checkResults(structuredClone((result as any).commands[0].name), {
@@ -137,7 +137,7 @@ Deno.test('special parameter substitution', async (t) => {
     });
   });
 
-  await t.step('parameter with indicate error if null', async () => {
+  it('parameter with indicate error if null', async () => {
     const result = await bashParser('${other:?default_value}');
     utils.checkResults((result as any).commands[0].name, {
       text: '${other:?default_value}',
@@ -158,7 +158,7 @@ Deno.test('special parameter substitution', async (t) => {
     });
   });
 
-  await t.step('parameter with indicate error if unset', async () => {
+  it('parameter with indicate error if unset', async () => {
     const result = await bashParser('${other?default_value}');
     utils.checkResults((result as any).commands[0].name, {
       text: '${other?default_value}',
@@ -179,7 +179,7 @@ Deno.test('special parameter substitution', async (t) => {
     });
   });
 
-  await t.step('parameter with use alternative value', async () => {
+  it('parameter with use alternative value', async () => {
     const result = await bashParser('${other:+default_value}');
     utils.checkResults((result as any).commands[0].name, {
       text: '${other:+default_value}',
@@ -200,7 +200,7 @@ Deno.test('special parameter substitution', async (t) => {
     });
   });
 
-  await t.step('parameter with use alternative value if unset', async () => {
+  it('parameter with use alternative value if unset', async () => {
     const result = await bashParser('${other+default_value}');
     utils.checkResults((result as any).commands[0].name, {
       text: '${other+default_value}',
@@ -221,7 +221,7 @@ Deno.test('special parameter substitution', async (t) => {
     });
   });
 
-  await t.step('parameter with Remove Smallest Suffix Pattern', async () => {
+  it('parameter with Remove Smallest Suffix Pattern', async () => {
     const result = await bashParser('${other%default$value}');
     // utils.logResults(result)
     utils.checkResults(structuredClone((result as any).commands[0].name), {
@@ -251,7 +251,7 @@ Deno.test('special parameter substitution', async (t) => {
     });
   });
 
-  await t.step('parameter with Remove Smallest Prefix Pattern', async () => {
+  it('parameter with Remove Smallest Prefix Pattern', async () => {
     const result = await bashParser('${other#default$value}');
     // utils.logResults(result)
     utils.checkResults(structuredClone((result as any).commands[0].name), {
@@ -281,7 +281,7 @@ Deno.test('special parameter substitution', async (t) => {
     });
   });
 
-  await t.step('parameter with Remove Largest Suffix Pattern', async () => {
+  it('parameter with Remove Largest Suffix Pattern', async () => {
     const result = await bashParser('${other%%default$value}');
     // utils.logResults(result)
     utils.checkResults(structuredClone((result as any).commands[0].name), {
@@ -311,7 +311,7 @@ Deno.test('special parameter substitution', async (t) => {
     });
   });
 
-  await t.step('parameter with Remove Largest Prefix Pattern', async () => {
+  it('parameter with Remove Largest Prefix Pattern', async () => {
     const result = await bashParser('${other##default$value}');
     // utils.logResults(result)
     utils.checkResults(structuredClone((result as any).commands[0].name), {

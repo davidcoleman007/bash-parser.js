@@ -1,11 +1,8 @@
-import { assertSnapshot } from '@std/testing/snapshot';
+import { describe, expect, it } from 'vitest';
 import bashParser from '~/parse.ts';
 
-Deno.test('loc-while', async (t) => {
-  await t.step('loc in while statement', async (t) => {
-    await assertSnapshot(
-      t,
-      await bashParser('while true && 1; do sleep 1;echo ciao; done', { insertLOC: true }),
-    );
+describe('loc-while', async (t) => {
+  it('loc in while statement', async (t) => {
+    expect(await bashParser('while true && 1; do sleep 1;echo ciao; done', { insertLOC: true })).toMatchSnapshot();
   });
 });

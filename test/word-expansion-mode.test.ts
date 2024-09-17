@@ -1,8 +1,8 @@
 import bashParser from '~/parse.ts';
 import utils from './_utils.ts';
 
-Deno.test('word-expansion-mode', async (t) => {
-  await t.step('expand on a single word', async () => {
+describe('word-expansion-mode', async (t) => {
+  it('expand on a single word', async () => {
     const result = await bashParser('ls $var > res.txt', {
       mode: 'word-expansion',
     });

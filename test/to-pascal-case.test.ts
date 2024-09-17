@@ -13,9 +13,9 @@ const cases: { [key: string]: string } = {
   junk: '-this__is$%a-string...',
 };
 
-Deno.test('to-pascal-case', async (t) => {
+describe('to-pascal-case', async (t) => {
   for (const key in cases) {
-    await t.step(`should convert ${key} case`, () => {
+    it(`should convert ${key} case`, () => {
       utils.checkResults(toPascalCase(cases[key]), 'ThisIsAString');
     });
   }

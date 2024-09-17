@@ -1,8 +1,8 @@
 import unescape from '~/utils/unescape.ts';
 import utils from './_utils.ts';
 
-Deno.test('unescape', async (t) => {
-  await t.step('usual escape sequences', () => {
+describe('unescape', async (t) => {
+  it('usual escape sequences', () => {
     utils.checkResults(unescape('---\\0---'), '---\0---');
     utils.checkResults(unescape('---\\b---'), '---\b---');
     utils.checkResults(unescape('---\\f---'), '---\f---');
@@ -15,7 +15,7 @@ Deno.test('unescape', async (t) => {
     utils.checkResults(unescape('---\\\\---'), '---\\---');
   });
 
-  await t.step('octal escape sequences', () => {
+  it('octal escape sequences', () => {
     // '---S---' instead of '---\123---' because octal literals are prohibited in strict mode
     utils.checkResults(unescape('---\\123---'), '---S---');
     utils.checkResults(unescape('---\\040---'), '--- ---');
@@ -23,25 +23,25 @@ Deno.test('unescape', async (t) => {
     utils.checkResults(unescape('---\\4---'), '---\u{4}---');
   });
 
-  await t.step('short hex escape sequences', () => {
+  it('short hex escape sequences', () => {
     utils.checkResults(unescape('---\\xAC---'), '---\xAC---');
   });
 
-  await t.step('long hex escape sequences', () => {
+  it('long hex escape sequences', () => {
     utils.checkResults(unescape('---\\u00A9---'), '---\u00A9---');
   });
 
-  await t.step('variable hex escape sequences', () => {
+  it('variable hex escape sequences', () => {
     utils.checkResults(unescape('---\\u{A9}---'), '---\u{A9}---');
     utils.checkResults(unescape('---\\u{2F804}---'), '---\u{2F804}---');
   });
 
-  await t.step('avoids double unescape cascade', () => {
+  it('avoids double unescape cascade', () => {
     utils.checkResults(unescape('---\\\\x41---'), '---\\x41---');
     utils.checkResults(unescape('---\\x5cx41---'), '---\\x41---');
   });
 
-  await t.step('python hex escape sequences', () => {
+  it('python hex escape sequences', () => {
     utils.checkResults(unescape('---\\U000000A9---'), '---\u00A9---');
     utils.checkResults(unescape('---\\U0001F3B5---'), '---\uD83C\uDFB5---');
   });

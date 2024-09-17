@@ -1,4 +1,5 @@
-import { join, resolve } from '@std/path';
+import fs from 'fs';
+import { join, resolve } from 'path';
 import bashParser from '~/parse.ts';
 import type { Options } from '~/types.ts';
 import utils from './_utils.ts';
@@ -16,8 +17,8 @@ const loadFixtures = async (): Promise<Fixture[]> => {
   const fixtures: Fixture[] = [];
 
   const path = resolve(import.meta.dirname!, 'fixtures');
-  for await (const dirEntry of Deno.readDir(path)) {
-    if (dirEntry.isFile) {
+  for await (const dirEntry of fs.readdirSync(path, {withFileTypes: true})) {
+    if (dirEntry.isFile()) {
       const f = await import(join(path, dirEntry.name));
       const fix = f.default;
 
@@ -30,11 +31,11 @@ const loadFixtures = async (): Promise<Fixture[]> => {
   return fixtures;
 };
 
-Deno.test('fixtures', async (t) => {
+describe('fixtures', async (t) => {
   const fixtures = await loadFixtures();
 
   for (const fixture of fixtures) {
-    await t.step(fixture.name, async () => {
+    it(fixture.name, async () => {
       const result = await bashParser(fixture.sourceCode, fixture.options);
 
       utils.checkResults(result, fixture.result);

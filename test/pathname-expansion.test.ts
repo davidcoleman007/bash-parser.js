@@ -1,8 +1,8 @@
 import bashParser from '~/parse.ts';
 import utils from './_utils.ts';
 
-Deno.test('pathname-expansion', async (t) => {
-  await t.step('parameter substitution in commands', async () => {
+describe('pathname-expansion', async (t) => {
+  it('parameter substitution in commands', async () => {
     const result = await bashParser('echo', {
       async resolvePath() {
         return 'ciao';
@@ -14,7 +14,7 @@ Deno.test('pathname-expansion', async (t) => {
     });
   });
 
-  await t.step('parameter substitution in assignment', async () => {
+  it('parameter substitution in assignment', async () => {
     const result = await bashParser('a=echo', {
       async resolvePath() {
         return 'ciao';

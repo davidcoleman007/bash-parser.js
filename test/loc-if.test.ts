@@ -1,8 +1,8 @@
 import bashParser from '~/parse.ts';
 import utils from './_utils.ts';
 
-Deno.test('loc-if', async (t) => {
-  await t.step('parse if elif else', async () => {
+describe('loc-if', async (t) => {
+  it('parse if elif else', async () => {
     const cmd = `if true; then
  echo 1;
 elif false; then

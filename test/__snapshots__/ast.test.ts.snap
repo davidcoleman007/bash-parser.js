@@ -1,941 +1,941 @@
-export const snapshot = {};
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-snapshot[`ast 1`] = `
+exports[`ast > Compound list 1`] = `
 {
-  commands: [
+  "commands": [
     {
-      name: {
-        text: "echo",
-        type: "Word",
-      },
-      suffix: [
+      "commands": [
         {
-          text: "world",
-          type: "Word",
+          "name": {
+            "text": "echo",
+            "type": "Word",
+          },
+          "type": "Command",
+        },
+        {
+          "name": {
+            "text": "ls",
+            "type": "Word",
+          },
+          "type": "Command",
         },
       ],
-      type: "Command",
+      "type": "CompoundList",
     },
   ],
-  type: "Script",
+  "type": "Script",
 }
 `;
 
-snapshot[`ast 2`] = `
+exports[`ast > Compound list with multiple redirections 1`] = `
 {
-  commands: [
+  "commands": [
     {
-      name: {
-        text: "echo",
-        type: "Word",
-      },
-      suffix: [
+      "commands": [
         {
-          text: "world",
-          type: "Word",
+          "name": {
+            "text": "echo",
+            "type": "Word",
+          },
+          "type": "Command",
+        },
+        {
+          "name": {
+            "text": "ls",
+            "type": "Word",
+          },
+          "type": "Command",
         },
       ],
-      type: "Command",
-    },
-  ],
-  type: "Script",
-}
-`;
-
-snapshot[`ast 3`] = `
-{
-  commands: [
-    {
-      name: {
-        text: "echo",
-        type: "Word",
-      },
-      suffix: [
+      "redirections": [
         {
-          text: "there",
-          type: "Word",
+          "file": {
+            "text": "file.txt",
+            "type": "Word",
+          },
+          "op": {
+            "text": ">",
+            "type": "Great",
+          },
+          "type": "Redirect",
+        },
+        {
+          "file": {
+            "text": "input.dat",
+            "type": "Word",
+          },
+          "op": {
+            "text": "<",
+            "type": "Less",
+          },
+          "type": "Redirect",
         },
       ],
-      type: "Command",
+      "type": "CompoundList",
     },
   ],
-  type: "Script",
+  "type": "Script",
 }
 `;
 
-snapshot[`ast 4`] = `
+exports[`ast > Compound list with redirections 1`] = `
 {
-  commands: [
+  "commands": [
     {
-      name: {
-        text: "run",
-        type: "Word",
-      },
-      prefix: [
+      "commands": [
         {
-          text: "TEST=1",
-          type: "AssignmentWord",
+          "name": {
+            "text": "echo",
+            "type": "Word",
+          },
+          "type": "Command",
+        },
+        {
+          "name": {
+            "text": "ls",
+            "type": "Word",
+          },
+          "type": "Command",
         },
       ],
-      type: "Command",
-    },
-  ],
-  type: "Script",
-}
-`;
-
-snapshot[`ast 5`] = `
-{
-  commands: [
-    {
-      prefix: [
+      "redirections": [
         {
-          text: "TEST=1",
-          type: "AssignmentWord",
+          "file": {
+            "text": "file.txt",
+            "type": "Word",
+          },
+          "op": {
+            "text": ">",
+            "type": "Great",
+          },
+          "type": "Redirect",
         },
       ],
-      type: "Command",
+      "type": "CompoundList",
     },
   ],
-  type: "Script",
+  "type": "Script",
 }
 `;
 
-snapshot[`ast 6`] = `
+exports[`ast > LogicalExpression separated by & 1`] = `
 {
-  commands: [
+  "commands": [
     {
-      left: {
-        name: {
-          text: "run",
-          type: "Word",
+      "async": true,
+      "left": {
+        "name": {
+          "text": "echo",
+          "type": "Word",
         },
-        type: "Command",
+        "type": "Command",
       },
-      op: "and",
-      right: {
-        name: {
-          text: "stop",
-          type: "Word",
+      "op": "and",
+      "right": {
+        "name": {
+          "text": "ls",
+          "type": "Word",
         },
-        type: "Command",
+        "type": "Command",
       },
-      type: "LogicalExpression",
+      "type": "LogicalExpression",
     },
   ],
-  type: "Script",
+  "type": "Script",
 }
 `;
 
-snapshot[`ast 7`] = `
+exports[`ast > LogicalExpressions separated by & 1`] = `
 {
-  commands: [
+  "commands": [
     {
-      left: {
-        name: {
-          text: "run",
-          type: "Word",
+      "async": true,
+      "left": {
+        "name": {
+          "text": "echo",
+          "type": "Word",
         },
-        type: "Command",
+        "type": "Command",
       },
-      op: "and",
-      right: {
-        name: {
-          text: "stop",
-          type: "Word",
+      "op": "and",
+      "right": {
+        "name": {
+          "text": "ls",
+          "type": "Word",
         },
-        type: "Command",
+        "type": "Command",
       },
-      type: "LogicalExpression",
+      "type": "LogicalExpression",
+    },
+    {
+      "name": {
+        "text": "ciao",
+        "type": "Word",
+      },
+      "type": "Command",
     },
   ],
-  type: "Script",
+  "type": "Script",
 }
 `;
 
-snapshot[`ast 8`] = `
+exports[`ast > assignment alone 1`] = `
 {
-  commands: [
+  "commands": [
     {
-      left: {
-        name: {
-          text: "run",
-          type: "Word",
-        },
-        type: "Command",
-      },
-      op: "or",
-      right: {
-        name: {
-          text: "cry",
-          type: "Word",
-        },
-        type: "Command",
-      },
-      type: "LogicalExpression",
-    },
-  ],
-  type: "Script",
-}
-`;
-
-snapshot[`ast 9`] = `
-{
-  commands: [
-    {
-      commands: [
+      "prefix": [
         {
-          name: {
-            text: "run",
-            type: "Word",
-          },
-          type: "Command",
-        },
-        {
-          name: {
-            text: "cry",
-            type: "Word",
-          },
-          type: "Command",
+          "text": "TEST=1",
+          "type": "AssignmentWord",
         },
       ],
-      type: "Pipeline",
+      "type": "Command",
     },
   ],
-  type: "Script",
+  "type": "Script",
 }
 `;
 
-snapshot[`ast 10`] = `
+exports[`ast > bang pipelines 1`] = `
 {
-  commands: [
+  "commands": [
     {
-      bang: true,
-      commands: [
+      "bang": true,
+      "commands": [
         {
-          name: {
-            text: "run",
-            type: "Word",
+          "name": {
+            "text": "run",
+            "type": "Word",
           },
-          type: "Command",
+          "type": "Command",
         },
         {
-          name: {
-            text: "cry",
-            type: "Word",
+          "name": {
+            "text": "cry",
+            "type": "Word",
           },
-          type: "Command",
+          "type": "Command",
         },
       ],
-      type: "Pipeline",
+      "type": "Pipeline",
     },
   ],
-  type: "Script",
+  "type": "Script",
 }
 `;
 
-snapshot[`ast 11`] = `
+exports[`ast > command with multiple lines continuation 1`] = `
 {
-  commands: [
+  "commands": [
     {
-      name: {
-        text: "echo",
-        type: "Word",
+      "name": {
+        "text": "echo",
+        "type": "Word",
       },
-      suffix: [
+      "suffix": [
         {
-          text: "TEST=1",
-          type: "Word",
+          "text": "there",
+          "type": "Word",
         },
       ],
-      type: "Command",
+      "type": "Command",
     },
   ],
-  type: "Script",
+  "type": "Script",
 }
 `;
 
-snapshot[`ast 12`] = `
+exports[`ast > command with multiple new lines 1`] = `
 {
-  commands: [
+  "commands": [
     {
-      name: {
-        text: "echo",
-        type: "Word",
+      "name": {
+        "text": "echo",
+        "type": "Word",
       },
-      prefix: [
+      "suffix": [
         {
-          text: "TEST1=1",
-          type: "AssignmentWord",
-        },
-        {
-          text: "TEST2=2",
-          type: "AssignmentWord",
+          "text": "world",
+          "type": "Word",
         },
       ],
-      suffix: [
+      "type": "Command",
+    },
+  ],
+  "type": "Script",
+}
+`;
+
+exports[`ast > command with multiple prefixes 1`] = `
+{
+  "commands": [
+    {
+      "name": {
+        "text": "echo",
+        "type": "Word",
+      },
+      "prefix": [
         {
-          text: "world",
-          type: "Word",
+          "text": "TEST1=1",
+          "type": "AssignmentWord",
+        },
+        {
+          "text": "TEST2=2",
+          "type": "AssignmentWord",
         },
       ],
-      type: "Command",
-    },
-  ],
-  type: "Script",
-}
-`;
-
-snapshot[`ast 13`] = `
-{
-  commands: [
-    {
-      name: {
-        text: "echo",
-        type: "Word",
-      },
-      type: "Command",
-    },
-    {
-      name: {
-        text: "ls",
-        type: "Word",
-      },
-      type: "Command",
-    },
-  ],
-  type: "Script",
-}
-`;
-
-snapshot[`ast 14`] = `
-{
-  commands: [
-    {
-      commands: [
+      "suffix": [
         {
-          name: {
-            text: "echo",
-            type: "Word",
-          },
-          type: "Command",
-        },
-        {
-          name: {
-            text: "ls",
-            type: "Word",
-          },
-          type: "Command",
+          "text": "world",
+          "type": "Word",
         },
       ],
-      type: "CompoundList",
+      "type": "Command",
     },
   ],
-  type: "Script",
+  "type": "Script",
 }
 `;
 
-snapshot[`ast 15`] = `
+exports[`ast > command with multiple redirections 1`] = `
 {
-  commands: [
+  "commands": [
     {
-      commands: [
+      "name": {
+        "text": "echo",
+        "type": "Word",
+      },
+      "suffix": [
         {
-          name: {
-            text: "echo",
-            type: "Word",
-          },
-          type: "Command",
+          "text": "world",
+          "type": "Word",
         },
         {
-          name: {
-            text: "ls",
-            type: "Word",
+          "file": {
+            "text": "file.txt",
+            "type": "Word",
           },
-          type: "Command",
+          "op": {
+            "text": ">",
+            "type": "Great",
+          },
+          "type": "Redirect",
+        },
+        {
+          "file": {
+            "text": "input.dat",
+            "type": "Word",
+          },
+          "op": {
+            "text": "<",
+            "type": "Less",
+          },
+          "type": "Redirect",
         },
       ],
-      redirections: [
+      "type": "Command",
+    },
+  ],
+  "type": "Script",
+}
+`;
+
+exports[`ast > command with one argument 1`] = `
+{
+  "commands": [
+    {
+      "name": {
+        "text": "echo",
+        "type": "Word",
+      },
+      "suffix": [
         {
-          file: {
-            text: "file.txt",
-            type: "Word",
-          },
-          op: {
-            text: ">",
-            type: "Great",
-          },
-          type: "Redirect",
+          "text": "world",
+          "type": "Word",
         },
       ],
-      type: "CompoundList",
+      "type": "Command",
     },
   ],
-  type: "Script",
+  "type": "Script",
 }
 `;
 
-snapshot[`ast 16`] = `
+exports[`ast > command with pre-assignment 1`] = `
 {
-  commands: [
+  "commands": [
     {
-      name: {
-        text: "echo",
-        type: "Word",
+      "name": {
+        "text": "run",
+        "type": "Word",
       },
-      suffix: [
+      "prefix": [
         {
-          text: "world",
-          type: "Word",
-        },
-        {
-          file: {
-            text: "file.txt",
-            type: "Word",
-          },
-          op: {
-            text: ">",
-            type: "Great",
-          },
-          type: "Redirect",
-        },
-        {
-          file: {
-            text: "input.dat",
-            type: "Word",
-          },
-          op: {
-            text: "<",
-            type: "Less",
-          },
-          type: "Redirect",
+          "text": "TEST=1",
+          "type": "AssignmentWord",
         },
       ],
-      type: "Command",
+      "type": "Command",
     },
   ],
-  type: "Script",
+  "type": "Script",
 }
 `;
 
-snapshot[`ast 17`] = `
+exports[`ast > command with redirection to file 1`] = `
 {
-  commands: [
+  "commands": [
     {
-      commands: [
+      "name": {
+        "text": "ls",
+        "type": "Word",
+      },
+      "suffix": [
         {
-          name: {
-            text: "echo",
-            type: "Word",
+          "file": {
+            "text": "file.txt",
+            "type": "Word",
           },
-          type: "Command",
-        },
-        {
-          name: {
-            text: "ls",
-            type: "Word",
+          "op": {
+            "text": ">",
+            "type": "Great",
           },
-          type: "Command",
+          "type": "Redirect",
         },
       ],
-      redirections: [
+      "type": "Command",
+    },
+  ],
+  "type": "Script",
+}
+`;
+
+exports[`ast > command with stderr append redirection to file 1`] = `
+{
+  "commands": [
+    {
+      "name": {
+        "text": "ls",
+        "type": "Word",
+      },
+      "suffix": [
         {
-          file: {
-            text: "file.txt",
-            type: "Word",
+          "file": {
+            "text": "file.txt",
+            "type": "Word",
           },
-          op: {
-            text: ">",
-            type: "Great",
+          "numberIo": {
+            "text": "2",
+            "type": "IoNumber",
           },
-          type: "Redirect",
-        },
-        {
-          file: {
-            text: "input.dat",
-            type: "Word",
+          "op": {
+            "text": ">>",
+            "type": "Dgreat",
           },
-          op: {
-            text: "<",
-            type: "Less",
-          },
-          type: "Redirect",
+          "type": "Redirect",
         },
       ],
-      type: "CompoundList",
+      "type": "Command",
     },
   ],
-  type: "Script",
+  "type": "Script",
 }
 `;
 
-snapshot[`ast 18`] = `
+exports[`ast > command with stderr redirection to file 1`] = `
 {
-  commands: [
+  "commands": [
     {
-      name: {
-        text: "echo",
-        type: "Word",
+      "name": {
+        "text": "ls",
+        "type": "Word",
       },
-      type: "Command",
-    },
-    {
-      name: {
-        text: "ls",
-        type: "Word",
-      },
-      type: "Command",
-    },
-  ],
-  type: "Script",
-}
-`;
-
-snapshot[`ast 19`] = `
-{
-  commands: [
-    {
-      async: true,
-      name: {
-        text: "echo",
-        type: "Word",
-      },
-      type: "Command",
-    },
-    {
-      name: {
-        text: "ls",
-        type: "Word",
-      },
-      type: "Command",
-    },
-  ],
-  type: "Script",
-}
-`;
-
-snapshot[`ast 20`] = `
-{
-  commands: [
-    {
-      async: true,
-      left: {
-        name: {
-          text: "echo",
-          type: "Word",
-        },
-        type: "Command",
-      },
-      op: "and",
-      right: {
-        name: {
-          text: "ls",
-          type: "Word",
-        },
-        type: "Command",
-      },
-      type: "LogicalExpression",
-    },
-  ],
-  type: "Script",
-}
-`;
-
-snapshot[`ast 21`] = `
-{
-  commands: [
-    {
-      async: true,
-      left: {
-        name: {
-          text: "echo",
-          type: "Word",
-        },
-        type: "Command",
-      },
-      op: "and",
-      right: {
-        name: {
-          text: "ls",
-          type: "Word",
-        },
-        type: "Command",
-      },
-      type: "LogicalExpression",
-    },
-    {
-      name: {
-        text: "ciao",
-        type: "Word",
-      },
-      type: "Command",
-    },
-  ],
-  type: "Script",
-}
-`;
-
-snapshot[`ast 22`] = `
-{
-  commands: [
-    {
-      async: true,
-      name: {
-        text: "echo",
-        type: "Word",
-      },
-      type: "Command",
-    },
-    {
-      name: {
-        text: "ls",
-        type: "Word",
-      },
-      type: "Command",
-    },
-  ],
-  type: "Script",
-}
-`;
-
-snapshot[`ast 23`] = `
-{
-  commands: [
-    {
-      name: {
-        text: "ls",
-        type: "Word",
-      },
-      suffix: [
+      "suffix": [
         {
-          file: {
-            text: "file.txt",
-            type: "Word",
+          "file": {
+            "text": "file.txt",
+            "type": "Word",
           },
-          op: {
-            text: ">",
-            type: "Great",
+          "numberIo": {
+            "text": "2",
+            "type": "IoNumber",
           },
-          type: "Redirect",
+          "op": {
+            "text": ">",
+            "type": "Great",
+          },
+          "type": "Redirect",
         },
       ],
-      type: "Command",
+      "type": "Command",
     },
   ],
-  type: "Script",
+  "type": "Script",
 }
 `;
 
-snapshot[`ast 24`] = `
+exports[`ast > command with stderr redirection to file 2`] = `
 {
-  commands: [
+  "commands": [
     {
-      name: {
-        text: "command",
-        type: "Word",
+      "name": {
+        "text": "ls",
+        "type": "Word",
       },
-      suffix: [
+      "suffix": [
         {
-          text: "foo",
-          type: "Word",
-        },
-        {
-          text: "--lol",
-          type: "Word",
+          "file": {
+            "text": "file.txt",
+            "type": "Word",
+          },
+          "numberIo": {
+            "text": "2",
+            "type": "IoNumber",
+          },
+          "op": {
+            "text": ">",
+            "type": "Great",
+          },
+          "type": "Redirect",
         },
       ],
-      type: "Command",
+      "type": "Command",
     },
   ],
-  type: "Script",
+  "type": "Script",
 }
 `;
 
-snapshot[`ast 25`] = `
+exports[`ast > command with stdin redirection from file 1`] = `
 {
-  commands: [
+  "commands": [
     {
-      name: {
-        text: "ls",
-        type: "Word",
+      "name": {
+        "text": "ls",
+        "type": "Word",
       },
-      suffix: [
+      "suffix": [
         {
-          file: {
-            text: "file.txt",
-            type: "Word",
+          "file": {
+            "text": "file.txt",
+            "type": "Word",
           },
-          numberIo: {
-            text: "2",
-            type: "IoNumber",
+          "op": {
+            "text": "<",
+            "type": "Less",
           },
-          op: {
-            text: ">",
-            type: "Great",
-          },
-          type: "Redirect",
+          "type": "Redirect",
         },
       ],
-      type: "Command",
+      "type": "Command",
     },
   ],
-  type: "Script",
+  "type": "Script",
 }
 `;
 
-snapshot[`ast 26`] = `
+exports[`ast > command with stdout and stderr append redirection to file 1`] = `
 {
-  commands: [
+  "commands": [
     {
-      name: {
-        text: "ls",
-        type: "Word",
+      "name": {
+        "text": "ls",
+        "type": "Word",
       },
-      suffix: [
+      "suffix": [
         {
-          file: {
-            text: "file.txt",
-            type: "Word",
+          "file": {
+            "text": "file.txt",
+            "type": "Word",
           },
-          op: {
-            text: ">",
-            type: "Great",
+          "op": {
+            "text": ">>",
+            "type": "Dgreat",
           },
-          type: "Redirect",
+          "type": "Redirect",
+        },
+        {
+          "file": {
+            "text": "1",
+            "type": "Word",
+          },
+          "numberIo": {
+            "text": "2",
+            "type": "IoNumber",
+          },
+          "op": {
+            "text": ">&",
+            "type": "Greatand",
+          },
+          "type": "Redirect",
         },
       ],
-      type: "Command",
+      "type": "Command",
     },
   ],
-  type: "Script",
+  "type": "Script",
 }
 `;
 
-snapshot[`ast 27`] = `
+exports[`ast > command with stdout and stderr redirection to file 1`] = `
 {
-  commands: [
+  "commands": [
     {
-      name: {
-        text: "ls",
-        type: "Word",
+      "name": {
+        "text": "ls",
+        "type": "Word",
       },
-      suffix: [
+      "suffix": [
         {
-          file: {
-            text: "file.txt",
-            type: "Word",
+          "file": {
+            "text": "file.txt",
+            "type": "Word",
           },
-          op: {
-            text: ">>",
-            type: "Dgreat",
+          "op": {
+            "text": ">",
+            "type": "Great",
           },
-          type: "Redirect",
+          "type": "Redirect",
+        },
+        {
+          "file": {
+            "text": "1",
+            "type": "Word",
+          },
+          "numberIo": {
+            "text": "2",
+            "type": "IoNumber",
+          },
+          "op": {
+            "text": ">&",
+            "type": "Greatand",
+          },
+          "type": "Redirect",
         },
       ],
-      type: "Command",
+      "type": "Command",
     },
   ],
-  type: "Script",
+  "type": "Script",
 }
 `;
 
-snapshot[`ast 28`] = `
+exports[`ast > command with stdout append redirection to file 1`] = `
 {
-  commands: [
+  "commands": [
     {
-      name: {
-        text: "ls",
-        type: "Word",
+      "name": {
+        "text": "ls",
+        "type": "Word",
       },
-      suffix: [
+      "suffix": [
         {
-          file: {
-            text: "file.txt",
-            type: "Word",
+          "file": {
+            "text": "file.txt",
+            "type": "Word",
           },
-          numberIo: {
-            text: "2",
-            type: "IoNumber",
+          "op": {
+            "text": ">>",
+            "type": "Dgreat",
           },
-          op: {
-            text: ">",
-            type: "Great",
-          },
-          type: "Redirect",
+          "type": "Redirect",
         },
       ],
-      type: "Command",
+      "type": "Command",
     },
   ],
-  type: "Script",
+  "type": "Script",
 }
 `;
 
-snapshot[`ast 29`] = `
+exports[`ast > command with stdout redirection to file 1`] = `
 {
-  commands: [
+  "commands": [
     {
-      name: {
-        text: "ls",
-        type: "Word",
+      "name": {
+        "text": "ls",
+        "type": "Word",
       },
-      suffix: [
+      "suffix": [
         {
-          file: {
-            text: "file.txt",
-            type: "Word",
+          "file": {
+            "text": "file.txt",
+            "type": "Word",
           },
-          numberIo: {
-            text: "2",
-            type: "IoNumber",
+          "op": {
+            "text": ">",
+            "type": "Great",
           },
-          op: {
-            text: ">>",
-            type: "Dgreat",
-          },
-          type: "Redirect",
+          "type": "Redirect",
         },
       ],
-      type: "Command",
+      "type": "Command",
     },
   ],
-  type: "Script",
+  "type": "Script",
 }
 `;
 
-snapshot[`ast 30`] = `
+exports[`ast > commands with AND \\n 1`] = `
 {
-  commands: [
+  "commands": [
     {
-      name: {
-        text: "ls",
-        type: "Word",
-      },
-      suffix: [
-        {
-          file: {
-            text: "file.txt",
-            type: "Word",
-          },
-          op: {
-            text: ">",
-            type: "Great",
-          },
-          type: "Redirect",
+      "left": {
+        "name": {
+          "text": "run",
+          "type": "Word",
         },
+        "type": "Command",
+      },
+      "op": "and",
+      "right": {
+        "name": {
+          "text": "stop",
+          "type": "Word",
+        },
+        "type": "Command",
+      },
+      "type": "LogicalExpression",
+    },
+  ],
+  "type": "Script",
+}
+`;
+
+exports[`ast > commands with AND 1`] = `
+{
+  "commands": [
+    {
+      "left": {
+        "name": {
+          "text": "run",
+          "type": "Word",
+        },
+        "type": "Command",
+      },
+      "op": "and",
+      "right": {
+        "name": {
+          "text": "stop",
+          "type": "Word",
+        },
+        "type": "Command",
+      },
+      "type": "LogicalExpression",
+    },
+  ],
+  "type": "Script",
+}
+`;
+
+exports[`ast > commands with OR 1`] = `
+{
+  "commands": [
+    {
+      "left": {
+        "name": {
+          "text": "run",
+          "type": "Word",
+        },
+        "type": "Command",
+      },
+      "op": "or",
+      "right": {
+        "name": {
+          "text": "cry",
+          "type": "Word",
+        },
+        "type": "Command",
+      },
+      "type": "LogicalExpression",
+    },
+  ],
+  "type": "Script",
+}
+`;
+
+exports[`ast > multi line commands 1`] = `
+{
+  "commands": [
+    {
+      "name": {
+        "text": "echo",
+        "type": "Word",
+      },
+      "type": "Command",
+    },
+    {
+      "name": {
+        "text": "ls",
+        "type": "Word",
+      },
+      "type": "Command",
+    },
+  ],
+  "type": "Script",
+}
+`;
+
+exports[`ast > no pre-assignment on suffix 1`] = `
+{
+  "commands": [
+    {
+      "name": {
+        "text": "echo",
+        "type": "Word",
+      },
+      "suffix": [
         {
-          file: {
-            text: "1",
-            type: "Word",
-          },
-          numberIo: {
-            text: "2",
-            type: "IoNumber",
-          },
-          op: {
-            text: ">&",
-            type: "Greatand",
-          },
-          type: "Redirect",
+          "text": "TEST=1",
+          "type": "Word",
         },
       ],
-      type: "Command",
+      "type": "Command",
     },
   ],
-  type: "Script",
+  "type": "Script",
 }
 `;
 
-snapshot[`ast 31`] = `
+exports[`ast > parse multiple suffix 1`] = `
 {
-  commands: [
+  "commands": [
     {
-      name: {
-        text: "ls",
-        type: "Word",
+      "name": {
+        "text": "command",
+        "type": "Word",
       },
-      suffix: [
+      "suffix": [
         {
-          file: {
-            text: "file.txt",
-            type: "Word",
-          },
-          op: {
-            text: ">>",
-            type: "Dgreat",
-          },
-          type: "Redirect",
+          "text": "foo",
+          "type": "Word",
         },
         {
-          file: {
-            text: "1",
-            type: "Word",
-          },
-          numberIo: {
-            text: "2",
-            type: "IoNumber",
-          },
-          op: {
-            text: ">&",
-            type: "Greatand",
-          },
-          type: "Redirect",
+          "text": "--lol",
+          "type": "Word",
         },
       ],
-      type: "Command",
+      "type": "Command",
     },
   ],
-  type: "Script",
+  "type": "Script",
 }
 `;
 
-snapshot[`ast 32`] = `
+exports[`ast > parse subshell 1`] = `
 {
-  commands: [
+  "commands": [
     {
-      name: {
-        text: "ls",
-        type: "Word",
-      },
-      suffix: [
-        {
-          file: {
-            text: "file.txt",
-            type: "Word",
-          },
-          op: {
-            text: "<",
-            type: "Less",
-          },
-          type: "Redirect",
-        },
-      ],
-      type: "Command",
-    },
-  ],
-  type: "Script",
-}
-`;
-
-snapshot[`ast 33`] = `
-{
-  commands: [
-    {
-      list: {
-        commands: [
+      "list": {
+        "commands": [
           {
-            name: {
-              text: "ls",
-              type: "Word",
+            "name": {
+              "text": "ls",
+              "type": "Word",
             },
-            type: "Command",
+            "type": "Command",
           },
         ],
-        type: "CompoundList",
+        "type": "CompoundList",
       },
-      type: "Subshell",
+      "type": "Subshell",
     },
   ],
-  type: "Script",
+  "type": "Script",
+}
+`;
+
+exports[`ast > pipelines 1`] = `
+{
+  "commands": [
+    {
+      "commands": [
+        {
+          "name": {
+            "text": "run",
+            "type": "Word",
+          },
+          "type": "Command",
+        },
+        {
+          "name": {
+            "text": "cry",
+            "type": "Word",
+          },
+          "type": "Command",
+        },
+      ],
+      "type": "Pipeline",
+    },
+  ],
+  "type": "Script",
+}
+`;
+
+exports[`ast > single line commands 1`] = `
+{
+  "commands": [
+    {
+      "name": {
+        "text": "echo",
+        "type": "Word",
+      },
+      "type": "Command",
+    },
+    {
+      "name": {
+        "text": "ls",
+        "type": "Word",
+      },
+      "type": "Command",
+    },
+  ],
+  "type": "Script",
+}
+`;
+
+exports[`ast > single line commands separated by & 1`] = `
+{
+  "commands": [
+    {
+      "async": true,
+      "name": {
+        "text": "echo",
+        "type": "Word",
+      },
+      "type": "Command",
+    },
+    {
+      "name": {
+        "text": "ls",
+        "type": "Word",
+      },
+      "type": "Command",
+    },
+  ],
+  "type": "Script",
+}
+`;
+
+exports[`ast > single line commands separated by &; 1`] = `
+{
+  "commands": [
+    {
+      "async": true,
+      "name": {
+        "text": "echo",
+        "type": "Word",
+      },
+      "type": "Command",
+    },
+    {
+      "name": {
+        "text": "ls",
+        "type": "Word",
+      },
+      "type": "Command",
+    },
+  ],
+  "type": "Script",
 }
 `;

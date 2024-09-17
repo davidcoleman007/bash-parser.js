@@ -1,8 +1,8 @@
 import bashParser from '~/parse.ts';
 import utils from './_utils.ts';
 
-Deno.test('comments', async (t) => {
-  await t.step('loc take into account line continuations', async () => {
+describe('comments', async (t) => {
+  it('loc take into account line continuations', async () => {
     const cmd = 'echo world #this is a comment\necho ciao';
     const result = await bashParser(cmd);
 

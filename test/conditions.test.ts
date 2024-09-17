@@ -1,137 +1,80 @@
-import { assertSnapshot } from '@std/testing/snapshot';
+import { describe, expect, it } from 'vitest';
 import bashParser from '~/parse.ts';
 
-Deno.test('conditions', async (t) => {
-  await t.step('if [ "$a" -eq 10 ]', async (t) => {
-    await assertSnapshot(
-      t,
-      await bashParser('if [ "$a" -eq 10 ]; then echo 1; fi'),
-    );
+describe('conditions', async (t) => {
+  it('if [ "$a" -eq 10 ]', async (t) => {
+    expect(await bashParser('if [ "$a" -eq 10 ]; then echo 1; fi')).toMatchSnapshot();
   });
 
-  await t.step('if [ "$a" -ne 10 ]', async (t) => {
-    await assertSnapshot(
-      t,
-      await bashParser('if [ "$a" -ne 10 ]; then echo 1; fi'),
-    );
+  it('if [ "$a" -ne 10 ]', async (t) => {
+    expect(await bashParser('if [ "$a" -ne 10 ]; then echo 1; fi')).toMatchSnapshot();
   });
 
-  await t.step('[ "$a" -gt 10 ]', async (t) => {
-    await assertSnapshot(
-      t,
-      await bashParser('if [ "$a" -gt 10 ]; then echo 1; fi'),
-    );
+  it('[ "$a" -gt 10 ]', async (t) => {
+    expect(await bashParser('if [ "$a" -gt 10 ]; then echo 1; fi')).toMatchSnapshot();
   });
 
-  await t.step('if [ "$a" -ge 10 ]', async (t) => {
-    await assertSnapshot(
-      t,
-      await bashParser('if [ "$a" -ge 10 ]; then echo 1; fi'),
-    );
+  it('if [ "$a" -ge 10 ]', async (t) => {
+    expect(await bashParser('if [ "$a" -ge 10 ]; then echo 1; fi')).toMatchSnapshot();
   });
 
-  await t.step('[ "$a" -lt 10 ]', async (t) => {
-    await assertSnapshot(
-      t,
-      await bashParser('if [ "$a" -lt 10 ]; then echo 1; fi'),
-    );
+  it('[ "$a" -lt 10 ]', async (t) => {
+    expect(await bashParser('if [ "$a" -lt 10 ]; then echo 1; fi')).toMatchSnapshot();
   });
 
-  await t.step('if [ "$a" -le 10 ]', async (t) => {
-    await assertSnapshot(
-      t,
-      await bashParser('if [ "$a" -le 10 ]; then echo 1; fi'),
-    );
+  it('if [ "$a" -le 10 ]', async (t) => {
+    expect(await bashParser('if [ "$a" -le 10 ]; then echo 1; fi')).toMatchSnapshot();
   });
 
-  await t.step('if [ "$a" == 10 ]', async (t) => {
-    await assertSnapshot(
-      t,
-      await bashParser('if [ "$a" == 10 ]; then echo 1; fi'),
-    );
+  it('if [ "$a" == 10 ]', async (t) => {
+    expect(await bashParser('if [ "$a" == 10 ]; then echo 1; fi')).toMatchSnapshot();
   });
 
-  await t.step('if [ "$a" != 10 ]', async (t) => {
-    await assertSnapshot(
-      t,
-      await bashParser('if [ "$a" != 10 ]; then echo 1; fi'),
-    );
+  it('if [ "$a" != 10 ]', async (t) => {
+    expect(await bashParser('if [ "$a" != 10 ]; then echo 1; fi')).toMatchSnapshot();
   });
 
-  await t.step('if [ ! "$a" = 10 ]', async (t) => {
-    await assertSnapshot(
-      t,
-      await bashParser('if [ ! "$a" = 10 ]; then echo 1; fi'),
-    );
+  it('if [ ! "$a" = 10 ]', async (t) => {
+    expect(await bashParser('if [ ! "$a" = 10 ]; then echo 1; fi')).toMatchSnapshot();
   });
 
-  await t.step('if [ -z "$a" ]', async (t) => {
-    await assertSnapshot(
-      t,
-      await bashParser('if [ -z "$a" ]; then echo 1; fi'),
-    );
+  it('if [ -z "$a" ]', async (t) => {
+    expect(await bashParser('if [ -z "$a" ]; then echo 1; fi')).toMatchSnapshot();
   });
 
-  await t.step('if [ -n "$a" ]', async (t) => {
-    await assertSnapshot(
-      t,
-      await bashParser('if [ -n "$a" ]; then echo 1; fi'),
-    );
+  it('if [ -n "$a" ]', async (t) => {
+    expect(await bashParser('if [ -n "$a" ]; then echo 1; fi')).toMatchSnapshot();
   });
 
-  await t.step('if [ -d "$a" ]', async (t) => {
-    await assertSnapshot(
-      t,
-      await bashParser('if [ -d "$a" ]; then echo 1; fi'),
-    );
+  it('if [ -d "$a" ]', async (t) => {
+    expect(await bashParser('if [ -d "$a" ]; then echo 1; fi')).toMatchSnapshot();
   });
 
-  await t.step('if [ -f "$a" ]', async (t) => {
-    await assertSnapshot(
-      t,
-      await bashParser('if [ -f "$a" ]; then echo 1; fi'),
-    );
+  it('if [ -f "$a" ]', async (t) => {
+    expect(await bashParser('if [ -f "$a" ]; then echo 1; fi')).toMatchSnapshot();
   });
 
-  await t.step('if [ -r "$a" ]', async (t) => {
-    await assertSnapshot(
-      t,
-      await bashParser('if [ -r "$a" ]; then echo 1; fi'),
-    );
+  it('if [ -r "$a" ]', async (t) => {
+    expect(await bashParser('if [ -r "$a" ]; then echo 1; fi')).toMatchSnapshot();
   });
 
-  await t.step('if [ -w "$a" ]', async (t) => {
-    await assertSnapshot(
-      t,
-      await bashParser('if [ -w "$a" ]; then echo 1; fi'),
-    );
+  it('if [ -w "$a" ]', async (t) => {
+    expect(await bashParser('if [ -w "$a" ]; then echo 1; fi')).toMatchSnapshot();
   });
 
-  await t.step('if [ -x "$a" ]', async (t) => {
-    await assertSnapshot(
-      t,
-      await bashParser('if [ -x "$a" ]; then echo 1; fi'),
-    );
+  it('if [ -x "$a" ]', async (t) => {
+    expect(await bashParser('if [ -x "$a" ]; then echo 1; fi')).toMatchSnapshot();
   });
 
-  await t.step('while [ "$a" -le 10 ]', async (t) => {
-    await assertSnapshot(
-      t,
-      await bashParser('while [ "$a" -le 10 ]; do echo 1; done'),
-    );
+  it('while [ "$a" -le 10 ]', async (t) => {
+    expect(await bashParser('while [ "$a" -le 10 ]; do echo 1; done')).toMatchSnapshot();
   });
 
-  await t.step('until [ "$a" -ge 10 ]', async (t) => {
-    await assertSnapshot(
-      t,
-      await bashParser('until [ "$a" -ge 10 ]; do echo 1; done'),
-    );
+  it('until [ "$a" -ge 10 ]', async (t) => {
+    expect(await bashParser('until [ "$a" -ge 10 ]; do echo 1; done')).toMatchSnapshot();
   });
 
-  await t.step('if [ "$(command)" -eq 1 ]', async (t) => {
-    await assertSnapshot(
-      t,
-      await bashParser('if [ "$(command)" -eq 1 ]; then echo 1; fi'),
-    );
+  it('if [ "$(command)" -eq 1 ]', async (t) => {
+    expect(await bashParser('if [ "$(command)" -eq 1 ]; then echo 1; fi')).toMatchSnapshot();
   });
 });

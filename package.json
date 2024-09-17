@@ -1,0 +1,49 @@
+{
+  "name": "@isdk/bash-parser",
+  "version": "0.9.3",
+  "homepage": "https://github.com/isdk/bash-parser.js",
+  "type": "module",
+  "dependencies": {
+    "@babel/parser": "^7.25.6"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/mod.d.ts",
+      "default": "./dist/mod.js"
+    }
+  },
+  "scripts": {
+    "build-fast": "tsup",
+    "build": "pnpm run build-fast --dts-resolve --dts && pnpm run doc:md",
+    "clean": "rm -fr web docs dist",
+    "doc": "typedoc --plugin none --out web",
+    "doc:md": "typedoc --plugin typedoc-plugin-markdown --out docs",
+    "style": "pnpm run format -c && pnpm run lint",
+    "style:fix": "pnpm run format:fix && pnpm run lint:fix",
+    "format": "prettier \"**/*.{ts,tsx,js,jsx,css,scss,sass,less,md}\"",
+    "format:fix": "pnpm run format --write",
+    "lint": "eslint .",
+    "lint:fix": "pnpm run lint --fix",
+    "test": "vitest run",
+    "release": "pnpm run clean && pnpm run build && git add -f docs && git ci -m 'docs: update API docs' && pnpm dlx commit-and-tag-version -s",
+    "release.alpha": "pnpm run release -- --prerelease alpha"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^3.6.2",
+    "@ts-jison/parser-generator": "0.4.1-alpha.2",
+    "@typescript-eslint/eslint-plugin": "^8.6.0",
+    "eslint": "9.10.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-tsdoc": "^0.3.0",
+    "prettier": "^3.3.3",
+    "terser": "^5.32.0",
+    "tsup": "^8.2.4",
+    "tsx": "^4.19.1",
+    "type-fest": "^4.26.1",
+    "typedoc": "^0.26.7",
+    "typedoc-plugin-markdown": "^4.2.7",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.6",
+    "vitest": "^2.1.1"
+  }
+}

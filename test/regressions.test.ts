@@ -1,8 +1,8 @@
 import bashParser from '~/parse.ts';
 import utils from './_utils.ts';
 
-Deno.test('regressions', async (t) => {
-  await t.step('Redirect should be allowed immediately following argument', async () => {
+describe('regressions', async (t) => {
+  it('Redirect should be allowed immediately following argument', async () => {
     const result = await bashParser('echo foo>file.txt');
 
     utils.checkResults(result, {
@@ -22,7 +22,7 @@ Deno.test('regressions', async (t) => {
     });
   });
 
-  await t.step('Equal sign should be allowed in arguments', async () => {
+  it('Equal sign should be allowed in arguments', async () => {
     const result = await bashParser('echo foo=bar');
     utils.checkResults(result, {
       type: 'Script',

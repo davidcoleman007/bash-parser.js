@@ -1,8 +1,8 @@
 import bashParser from '~/parse.ts';
 import utils, { mkloc2 as mkloc } from './_utils.ts';
 
-Deno.test('loc-case', async (t) => {
-  await t.step('case statement has loc', async () => {
+describe('loc-case', async (t) => {
+  it('case statement has loc', async () => {
     const cmd = `case foo in
  * )
   echo bar;;

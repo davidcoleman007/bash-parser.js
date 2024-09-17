@@ -1,8 +1,8 @@
 import bashParser from '~/parse.ts';
 import utils from './_utils.ts';
 
-Deno.test('loc-for', async (t) => {
-  await t.step('loc in for statement', async () => {
+describe('loc-for', async (t) => {
+  it('loc in for statement', async () => {
     const cmd = `for x in a b c; do
  echo $x;
 done
@@ -169,7 +169,7 @@ done
     utils.checkResults(result.commands[0], expected);
   });
 
-  await t.step('loc in default for statement', async () => {
+  it('loc in default for statement', async () => {
     const cmd = `for x do
  echo $x;
 done

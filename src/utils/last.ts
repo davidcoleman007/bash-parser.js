@@ -1,4 +1,4 @@
-import { assert } from '@std/assert';
+import { assert } from '~/utils/assert';
 
 const last = <T>(list: T[]): T | null => {
   assert(Array.isArray(list), 'argument must be be an array');

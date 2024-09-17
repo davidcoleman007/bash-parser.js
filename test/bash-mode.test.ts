@@ -1,8 +1,8 @@
 import bashParser from '~/parse.ts';
 import utils from './_utils.ts';
 
-Deno.test('bash-mode', async (t) => {
-  await t.step('alias on reserved word', async () => {
+describe('bash-mode', async (t) => {
+  it('alias on reserved word', async () => {
     const result = await bashParser('if world', {
       mode: 'bash',
       resolveAlias: async (name) => {
@@ -19,7 +19,7 @@ Deno.test('bash-mode', async (t) => {
     });
   });
 
-  await t.step('parameter substitution with Substring Expansion', async () => {
+  it('parameter substitution with Substring Expansion', async () => {
     const result = await bashParser('echo ${text:2:4}', { mode: 'bash' });
 
     utils.checkResults((result as any).commands[0].suffix[0].expansion[0], {
@@ -35,7 +35,7 @@ Deno.test('bash-mode', async (t) => {
     });
   });
 
-  await t.step('parameter substitution with prefix', async () => {
+  it('parameter substitution with prefix', async () => {
     const result = await bashParser('echo ${!text*}', { mode: 'bash' });
     utils.checkResults((result as any).commands[0].suffix[0].expansion[0], {
       loc: {
@@ -49,7 +49,7 @@ Deno.test('bash-mode', async (t) => {
     });
   });
 
-  await t.step('parameter substitution with prefix and word expansion', async () => {
+  it('parameter substitution with prefix and word expansion', async () => {
     const result = await bashParser('echo ${!text@}', { mode: 'bash' });
 
     utils.checkResults((result as any).commands[0].suffix[0].expansion[0], {
@@ -64,7 +64,7 @@ Deno.test('bash-mode', async (t) => {
     });
   });
 
-  await t.step('parameter substitution: length is optional', async () => {
+  it('parameter substitution: length is optional', async () => {
     const result = await bashParser('echo ${text:2}', { mode: 'bash' });
 
     utils.checkResults((result as any).commands[0].suffix[0].expansion[0], {
@@ -79,7 +79,7 @@ Deno.test('bash-mode', async (t) => {
     });
   });
 
-  await t.step('parameter substitution with string replacement', async () => {
+  it('parameter substitution with string replacement', async () => {
     const result = await bashParser('echo ${var/a/b}', { mode: 'bash' });
     utils.checkResults((result as any).commands[0].suffix[0].expansion[0], {
       loc: {
@@ -95,7 +95,7 @@ Deno.test('bash-mode', async (t) => {
     });
   });
 
-  await t.step('parameter substitution with string replacement - globally', async () => {
+  it('parameter substitution with string replacement - globally', async () => {
     const result = await bashParser('echo ${var//a/b}', { mode: 'bash' });
     utils.checkResults((result as any).commands[0].suffix[0].expansion[0], {
       loc: {
@@ -111,7 +111,7 @@ Deno.test('bash-mode', async (t) => {
     });
   });
 
-  await t.step('parameter substitution with array indices', async () => {
+  it('parameter substitution with array indices', async () => {
     const result = await bashParser('echo ${!text[*]}', { mode: 'bash' });
 
     utils.checkResults((result as any).commands[0].suffix[0].expansion[0], {
@@ -126,7 +126,7 @@ Deno.test('bash-mode', async (t) => {
     });
   });
 
-  await t.step('parameter substitution with array indices and word expansion', async () => {
+  it('parameter substitution with array indices and word expansion', async () => {
     const result = await bashParser('echo ${!text[@]}', { mode: 'bash' });
 
     utils.checkResults((result as any).commands[0].suffix[0].expansion[0], {
@@ -141,7 +141,7 @@ Deno.test('bash-mode', async (t) => {
     });
   });
 
-  await t.step('parameter substitution with case change upper case and pattern', async () => {
+  it('parameter substitution with case change upper case and pattern', async () => {
     const result = await bashParser('echo ${text^t}', { mode: 'bash' });
 
     utils.checkResults((result as any).commands[0].suffix[0].expansion[0], {
@@ -158,7 +158,7 @@ Deno.test('bash-mode', async (t) => {
     });
   });
 
-  await t.step('parameter substitution with case change upper case globally and pattern', async () => {
+  it('parameter substitution with case change upper case globally and pattern', async () => {
     const result = await bashParser('echo ${text^^t}', { mode: 'bash' });
 
     utils.checkResults((result as any).commands[0].suffix[0].expansion[0], {
@@ -175,7 +175,7 @@ Deno.test('bash-mode', async (t) => {
     });
   });
 
-  await t.step('parameter substitution with case change lower case and pattern', async () => {
+  it('parameter substitution with case change lower case and pattern', async () => {
     const result = await bashParser('echo ${text,t}', { mode: 'bash' });
 
     utils.checkResults((result as any).commands[0].suffix[0].expansion[0], {
@@ -192,7 +192,7 @@ Deno.test('bash-mode', async (t) => {
     });
   });
 
-  await t.step('parameter substitution with case change lower case globally and pattern', async () => {
+  it('parameter substitution with case change lower case globally and pattern', async () => {
     const result = await bashParser('echo ${text,,t}', { mode: 'bash' });
 
     utils.checkResults((result as any).commands[0].suffix[0].expansion[0], {
@@ -209,7 +209,7 @@ Deno.test('bash-mode', async (t) => {
     });
   });
 
-  await t.step('parameter substitution with case change upper case and default pattern', async () => {
+  it('parameter substitution with case change upper case and default pattern', async () => {
     const result = await bashParser('echo ${text^}', { mode: 'bash' });
     utils.checkResults((result as any).commands[0].suffix[0].expansion[0], {
       loc: {
@@ -225,7 +225,7 @@ Deno.test('bash-mode', async (t) => {
     });
   });
 
-  await t.step('parameter substitution with case change upper case globally and default pattern', async () => {
+  it('parameter substitution with case change upper case globally and default pattern', async () => {
     const result = await bashParser('echo ${text^^}', { mode: 'bash' });
 
     utils.checkResults((result as any).commands[0].suffix[0].expansion[0], {
@@ -242,7 +242,7 @@ Deno.test('bash-mode', async (t) => {
     });
   });
 
-  await t.step('parameter substitution with case change lower case and default pattern', async () => {
+  it('parameter substitution with case change lower case and default pattern', async () => {
     const result = await bashParser('echo ${text,}', { mode: 'bash' });
 
     utils.checkResults((result as any).commands[0].suffix[0].expansion[0], {
@@ -259,7 +259,7 @@ Deno.test('bash-mode', async (t) => {
     });
   });
 
-  await t.step('parameter substitution with case change lower case globally and default pattern', async () => {
+  it('parameter substitution with case change lower case globally and default pattern', async () => {
     const result = await bashParser('echo ${text,,}', { mode: 'bash' });
     utils.checkResults((result as any).commands[0].suffix[0].expansion[0], {
       loc: {
@@ -275,7 +275,7 @@ Deno.test('bash-mode', async (t) => {
     });
   });
 
-  await t.step('parameter substitution with transformation:quoted', async () => {
+  it('parameter substitution with transformation:quoted', async () => {
     const result = await bashParser('echo ${text@Q}', { mode: 'bash' });
     utils.checkResults((result as any).commands[0].suffix[0].expansion[0], {
       loc: {
@@ -289,7 +289,7 @@ Deno.test('bash-mode', async (t) => {
     });
   });
 
-  await t.step('parameter substitution with transformation:escape', async () => {
+  it('parameter substitution with transformation:escape', async () => {
     const result = await bashParser('echo ${text@E}', { mode: 'bash' });
     utils.checkResults((result as any).commands[0].suffix[0].expansion[0], {
       loc: {
@@ -303,7 +303,7 @@ Deno.test('bash-mode', async (t) => {
     });
   });
 
-  await t.step('parameter substitution with transformation:prompt', async () => {
+  it('parameter substitution with transformation:prompt', async () => {
     const result = await bashParser('echo ${text@P}', { mode: 'bash' });
     utils.checkResults((result as any).commands[0].suffix[0].expansion[0], {
       loc: {
@@ -317,7 +317,7 @@ Deno.test('bash-mode', async (t) => {
     });
   });
 
-  await t.step('parameter substitution with transformation:assignment', async () => {
+  it('parameter substitution with transformation:assignment', async () => {
     const result = await bashParser('echo ${text@A}', { mode: 'bash' });
     utils.checkResults((result as any).commands[0].suffix[0].expansion[0], {
       loc: {
@@ -331,7 +331,7 @@ Deno.test('bash-mode', async (t) => {
     });
   });
 
-  await t.step('parameter substitution with transformation:flags', async () => {
+  it('parameter substitution with transformation:flags', async () => {
     const result = await bashParser('echo ${text@a}', { mode: 'bash' });
 
     utils.checkResults((result as any).commands[0].suffix[0].expansion[0], {
@@ -346,7 +346,7 @@ Deno.test('bash-mode', async (t) => {
     });
   });
 
-  await t.step('parameter substitution with indirection', async () => {
+  it('parameter substitution with indirection', async () => {
     const result = await bashParser('echo ${!text}', { mode: 'bash' });
 
     utils.checkResults((result as any).commands[0].suffix[0].expansion[0], {

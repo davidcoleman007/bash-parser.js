@@ -1,9 +1,10 @@
+import { describe, it } from 'vitest';
 import type { AstNodeCommand } from '~/ast/types.ts';
 import bashParser from '~/parse.ts';
 import utils from './_utils.ts';
 
-Deno.test('alias-substitution', async (t) => {
-  await t.step('alias with no argument', async () => {
+describe('alias-substitution', () => {
+  it('alias with no argument', async () => {
     const result = await bashParser('thisIsAlias world', {
       resolveAlias: async (name) => name === 'thisIsAlias' ? 'test-value' : undefined,
     });
@@ -17,7 +18,7 @@ Deno.test('alias-substitution', async (t) => {
     });
   });
 
-  await t.step('alias with duplicating stream redirection', async () => {
+  it('alias with duplicating stream redirection', async () => {
     const result = await bashParser('2>&1 world', {
       resolveAlias: async (name) => name === 'world' ? 'test-value' : undefined,
     });
@@ -28,7 +29,7 @@ Deno.test('alias-substitution', async (t) => {
     );
   });
 
-  await t.step('alias with arguments', async () => {
+  it('alias with arguments', async () => {
     const result = await bashParser('thisIsAlias world', {
       resolveAlias: async (name) => name === 'thisIsAlias' ? 'test-value earth' : undefined,
     });
@@ -45,7 +46,7 @@ Deno.test('alias-substitution', async (t) => {
     });
   });
 
-  await t.step('alias with prefixes', async () => {
+  it('alias with prefixes', async () => {
     const result = await bashParser('thisIsAlias world', {
       resolveAlias: async (name) => name === 'thisIsAlias' ? 'a=42 test-value' : undefined,
     });
@@ -60,7 +61,7 @@ Deno.test('alias-substitution', async (t) => {
     });
   });
 
-  await t.step('recursive alias with prefixes', async () => {
+  it('recursive alias with prefixes', async () => {
     const result = await bashParser('thisIsAlias world', {
       resolveAlias: async (name) => {
         if (name === 'thisIsAlias') {
@@ -87,7 +88,7 @@ Deno.test('alias-substitution', async (t) => {
     });
   });
 
-  await t.step('guarded against infinite loops', async () => {
+  it('guarded against infinite loops', async () => {
     const result = await bashParser('thisIsAlias world', {
       resolveAlias: async (name) => {
         if (name === 'thisIsAlias') {

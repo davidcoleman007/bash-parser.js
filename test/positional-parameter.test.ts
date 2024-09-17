@@ -1,8 +1,8 @@
 import bashParser from '~/parse.ts';
 import utils from './_utils.ts';
 
-Deno.test('positional-parameter', async (t) => {
-  await t.step('positional parameter with word following', async () => {
+describe('positional-parameter', async (t) => {
+  it('positional parameter with word following', async () => {
     const result = await bashParser('echoword=$1ciao');
 
     utils.checkResults((result as any).commands[0].prefix, [{
@@ -20,7 +20,7 @@ Deno.test('positional-parameter', async (t) => {
     }]);
   });
 
-  await t.step('positional parameter in braces', async () => {
+  it('positional parameter in braces', async () => {
     const result = await bashParser('echoword=${11}test');
     utils.checkResults(result, {
       type: 'Script',
@@ -45,7 +45,7 @@ Deno.test('positional-parameter', async (t) => {
     });
   });
 
-  await t.step('positional parameter without braces', async () => {
+  it('positional parameter without braces', async () => {
     const result = await bashParser('echoword=$1');
     // console.log(JSON.stringify(result, null, 5))
     utils.checkResults(result, {
@@ -69,7 +69,7 @@ Deno.test('positional-parameter', async (t) => {
     });
   });
 
-  await t.step('positional parameter without braces allow one digit only', async () => {
+  it('positional parameter without braces allow one digit only', async () => {
     const result = await bashParser('echoword=$11');
     // console.log(JSON.stringify(result, null, 5))
     utils.checkResults(result, {

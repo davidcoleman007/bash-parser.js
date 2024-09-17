@@ -1,8 +1,8 @@
 import bashParser from '~/parse.ts';
 import utils from './_utils.ts';
 
-Deno.test('while-until', async (t) => {
-  await t.step('parse while', async () => {
+describe('while-until', async (t) => {
+  it('parse while', async () => {
     const result = await bashParser('while true; do sleep 1; done');
 
     utils.checkResults(
@@ -31,7 +31,7 @@ Deno.test('while-until', async (t) => {
     );
   });
 
-  await t.step('parse until', async () => {
+  it('parse until', async () => {
     const result = await bashParser('until true; do sleep 1; done');
     // console.log(inspect(result, {depth:null}))
     utils.checkResults(

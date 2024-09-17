@@ -2,8 +2,8 @@ import utils from './_utils.ts';
 // const mkloc = require('./_utils').mkloc2;
 import bashParser from '~/parse.ts';
 
-Deno.test('loc-line-continuations', async (t) => {
-  await t.step('empty line after line continuation', async () => {
+describe('loc-line-continuations', async (t) => {
+  it('empty line after line continuation', async () => {
     const cmd = `echo \\\n\n\necho there`;
     const result = await bashParser(cmd);
 
@@ -35,7 +35,7 @@ Deno.test('loc-line-continuations', async (t) => {
     utils.checkResults(result, expected);
   });
 
-  await t.step('loc take into account line continuations', async () => {
+  it('loc take into account line continuations', async () => {
     const cmd = 'echo \\\nworld';
     const result = await bashParser(cmd, { insertLOC: true });
 
