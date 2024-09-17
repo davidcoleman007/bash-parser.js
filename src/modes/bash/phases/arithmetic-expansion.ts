@@ -7,7 +7,7 @@ function parseArithmeticAST(xp: Expansion) {
   let AST;
   try {
     AST = parse(xp.expression!);
-  } catch (err) {
+  } catch (err: any) {
     throw new SyntaxError(`Cannot parse arithmetic expression "${xp.expression}": ${err.message}`);
   }
 
