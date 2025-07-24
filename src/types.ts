@@ -1,13 +1,16 @@
 /**
  * Type definitions for bashcodeshift
+ * A jscodeshift-like toolkit for bash script transformations
  */
 
-// AST Node Types
+// Basic AST node interface
 export interface ASTNode {
   type: string;
   loc?: Location;
+  [key: string]: any;
 }
 
+// Location information
 export interface Location {
   start: Position;
   end: Position;
@@ -18,16 +21,20 @@ export interface Position {
   column: number;
 }
 
+// AST Node Types (similar to jscodeshift node constructors)
 export interface CommandNode extends ASTNode {
   type: 'Command';
   name: string;
   arguments: string[];
+  redirects?: RedirectNode[];
 }
 
 export interface VariableNode extends ASTNode {
   type: 'Variable';
   name: string;
   value: string;
+  export?: boolean;
+  readonly?: boolean;
 }
 
 export interface ConditionalNode extends ASTNode {
@@ -49,16 +56,31 @@ export interface FunctionNode extends ASTNode {
   type: 'Function';
   name: string;
   body: ASTNode[];
+  parameters?: string[];
 }
 
 export interface PipelineNode extends ASTNode {
   type: 'Pipeline';
   commands: CommandNode[];
+  negated?: boolean;
+}
+
+export interface RedirectNode extends ASTNode {
+  type: 'Redirect';
+  operator: string;
+  target: string;
+  fd?: number;
+}
+
+export interface SubshellNode extends ASTNode {
+  type: 'Subshell';
+  body: ASTNode[];
 }
 
 export interface CommentNode extends ASTNode {
   type: 'Comment';
   value: string;
+  kind: 'line' | 'block';
 }
 
 export interface ProgramNode extends ASTNode {
@@ -67,56 +89,52 @@ export interface ProgramNode extends ASTNode {
   sourceType: 'script';
 }
 
-// API Types
+// File information passed to transforms
 export interface FileInfo {
-  source: string;
   path: string;
+  source: string;
+  name: string;
 }
 
-/**
- * Transform API provided to transform functions
- */
+// Transform API (similar to jscodeshift API)
 export interface TransformAPI {
   b: (source: string) => BashCodeshiftAPI;
   stats: TransformStats;
   report: (message: string) => void;
 }
 
+// Transform statistics
 export interface TransformStats {
   processed: number;
   changed: number;
   errors: number;
 }
 
-/**
- * bashcodeshift API interface
- */
+// bashcodeshift API interface (similar to jscodeshift API)
 export interface BashCodeshiftAPI {
-  // AST node constructors
+  // AST node constructors (like j.ClassDeclaration, j.MethodDefinition)
   Command: (props: Partial<CommandNode>) => CommandNode;
   Variable: (props: Partial<VariableNode>) => VariableNode;
   Conditional: (props: Partial<ConditionalNode>) => ConditionalNode;
   Loop: (props: Partial<LoopNode>) => LoopNode;
   Function: (props: Partial<FunctionNode>) => FunctionNode;
   Pipeline: (props: Partial<PipelineNode>) => PipelineNode;
+  Redirect: (props: Partial<RedirectNode>) => RedirectNode;
+  Subshell: (props: Partial<SubshellNode>) => SubshellNode;
   Comment: (props: Partial<CommentNode>) => CommentNode;
 
-  // Collection methods
-  find: (nodeType: string, filter?: Record<string, any>) => NodePath[];
+  // Collection methods (identical to jscodeshift)
+  find: (nodeType: string | any, filter?: Record<string, any>) => NodePath[];
   filter: (collection: NodePath[], predicate: (path: NodePath) => boolean) => NodePath[];
   forEach: (collection: NodePath[], callback: (path: NodePath) => void) => void;
   map: <T>(collection: NodePath[], callback: (path: NodePath) => T) => T[];
-
-  // Node manipulation
-  replace: (path: NodePath, newNode: ASTNode) => void;
-  insertBefore: (path: NodePath, newNode: ASTNode) => void;
-  insertAfter: (path: NodePath, newNode: ASTNode) => void;
-  remove: (path: NodePath) => void;
+  size: (collection: NodePath[]) => number;
 
   // Source generation
   toSource: (options?: SourceOptions) => string;
 }
 
+// Node path (similar to jscodeshift NodePath)
 export interface NodePath {
   value: ASTNode;
   path: PathItem[];
@@ -124,46 +142,45 @@ export interface NodePath {
   insertBefore: (newNode: ASTNode) => void;
   insertAfter: (newNode: ASTNode) => void;
   remove: () => void;
+  prune: () => void;
 }
 
+// Path item for AST traversal
 export interface PathItem {
   node: ASTNode;
   index: number;
 }
 
+// Source generation options
 export interface SourceOptions {
   quote?: 'single' | 'double';
   indent?: number;
+  lineEnding?: '\n' | '\r\n';
 }
 
-// Transform Function Type
-export type TransformFunction = (
-  fileInfo: FileInfo,
-  api: TransformAPI,
-  options: Record<string, any>
-) => string | Promise<string>;
+// Transform function signature
+export interface TransformFunction {
+  (fileInfo: FileInfo, api: TransformAPI, options: Record<string, any>): string | Promise<string>;
+}
 
-// Runner Types
+// Runner options
 export interface RunnerOptions {
   dry?: boolean;
   print?: boolean;
   verbose?: boolean;
   ignorePattern?: string;
   parser?: string;
+  [key: string]: any;
 }
 
+// Runner statistics
 export interface RunnerStats {
   processed: number;
   changed: number;
   errors: number;
 }
 
-// Parser Types
-export interface ParserOptions {
-  sourceType?: 'script' | 'module';
-}
-
-// Utility Types
+// Utility types
 export interface ParsedArguments {
   options: Record<string, any>;
   positional: string[];
@@ -171,18 +188,14 @@ export interface ParsedArguments {
 
 export type CommandType = 'builtin' | 'common' | 'custom';
 
-// Tree-sitter Types
-export interface TreeSitterNode {
+// @isdk/bash-parser integration types
+export interface BashParserAST {
   type: string;
-  text: string;
-  startPosition: TreeSitterPosition;
-  endPosition: TreeSitterPosition;
-  startIndex: number;
-  endIndex: number;
-  children: TreeSitterNode[];
+  [key: string]: any;
 }
 
-export interface TreeSitterPosition {
-  row: number;
-  column: number;
+export interface ParserOptions {
+  locations?: boolean;
+  comments?: boolean;
+  ranges?: boolean;
 }

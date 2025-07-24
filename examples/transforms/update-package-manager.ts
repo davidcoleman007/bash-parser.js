@@ -12,9 +12,9 @@ const transform: TransformFunction = (fileInfo, api, options) => {
   const { b } = api;
 
   const ast = b(source);
-  const npmCommands = ast.find('Command', { name: 'npm' });
 
-  npmCommands.forEach(path => {
+  // Find all npm commands and convert to yarn
+  ast.find('Command', { name: 'npm' }).forEach(path => {
     const command = path.value as any;
     const args = command.arguments;
 

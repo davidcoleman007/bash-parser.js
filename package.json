@@ -1,7 +1,7 @@
 {
   "name": "bashcodeshift",
   "version": "0.1.0",
-  "description": "A JavaScript codemod toolkit for bash scripts",
+  "description": "A jscodeshift-like toolkit for bash script transformations",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
@@ -25,7 +25,8 @@
     "transform",
     "ast",
     "shell",
-    "script"
+    "script",
+    "codeshift"
   ],
   "author": "David Coleman <dcoleman@adobe.com>",
   "license": "MIT",
@@ -33,8 +34,7 @@
     "commander": "^11.0.0",
     "glob": "^10.3.0",
     "chalk": "^5.2.0",
-    "tree-sitter": "^0.20.0",
-    "tree-sitter-bash": "^0.20.0",
+    "@isdk/bash-parser": "^1.0.0",
     "fs-extra": "^11.1.0"
   },
   "devDependencies": {

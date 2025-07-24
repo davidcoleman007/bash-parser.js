@@ -6,11 +6,20 @@ import {
   SourceOptions,
   ASTNode,
   ProgramNode,
-  TransformFunction
+  TransformFunction,
+  CommandNode,
+  VariableNode,
+  ConditionalNode,
+  LoopNode,
+  FunctionNode,
+  PipelineNode,
+  RedirectNode,
+  SubshellNode,
+  CommentNode
 } from '../types';
 
 /**
- * AST Transformer with bashcodeshift-like API
+ * AST Transformer with jscodeshift-like API
  */
 export class Transformer {
   private parser: BashParser;
@@ -33,9 +42,9 @@ export class Transformer {
   }
 
   /**
-   * Create bashcodeshift-like API
+   * Create jscodeshift-like API
    * @param source - Source code
-   * @returns bashcodeshift API
+   * @returns jscodeshift-like API
    */
   b(source: string): BashCodeshiftAPI {
     const ast = this.parser.parse(source);
@@ -44,33 +53,30 @@ export class Transformer {
   }
 
   /**
-   * Create bashcodeshift-compatible API
+   * Create jscodeshift-compatible API
    * @param ast - AST object
    * @param _source - Original source code (unused in current implementation)
-   * @returns bashcodeshift API
+   * @returns jscodeshift-like API
    */
   private createBashCodeshiftAPI(ast: ProgramNode, _source: string): BashCodeshiftAPI {
     const api: BashCodeshiftAPI = {
-      // AST node constructors
-      Command: (props) => ({ type: 'Command', ...props } as any),
-      Variable: (props) => ({ type: 'Variable', ...props } as any),
-      Conditional: (props) => ({ type: 'Conditional', ...props } as any),
-      Loop: (props) => ({ type: 'Loop', ...props } as any),
-      Function: (props) => ({ type: 'Function', ...props } as any),
-      Pipeline: (props) => ({ type: 'Pipeline', ...props } as any),
-      Comment: (props) => ({ type: 'Comment', ...props } as any),
+      // AST node constructors (like j.ClassDeclaration, j.MethodDefinition)
+      Command: (props) => ({ type: 'Command', name: '', arguments: [], ...props } as CommandNode),
+      Variable: (props) => ({ type: 'Variable', name: '', value: '', ...props } as VariableNode),
+      Conditional: (props) => ({ type: 'Conditional', condition: '', consequent: [], ...props } as ConditionalNode),
+      Loop: (props) => ({ type: 'Loop', kind: 'for', body: [], ...props } as LoopNode),
+      Function: (props) => ({ type: 'Function', name: '', body: [], ...props } as FunctionNode),
+      Pipeline: (props) => ({ type: 'Pipeline', commands: [], ...props } as PipelineNode),
+      Redirect: (props) => ({ type: 'Redirect', operator: '', target: '', ...props } as RedirectNode),
+      Subshell: (props) => ({ type: 'Subshell', body: [], ...props } as SubshellNode),
+      Comment: (props) => ({ type: 'Comment', value: '', kind: 'line', ...props } as CommentNode),
 
-      // Collection methods
-      find: (nodeType: any, filter: any = {}) => this.findNodes(ast, nodeType, filter),
+      // Collection methods (identical to jscodeshift)
+      find: (nodeType: string | any, filter: Record<string, any> = {}) => this.findNodes(ast, nodeType, filter),
       filter: (collection: NodePath[], predicate: (path: NodePath) => boolean) => this.filterCollection(collection, predicate),
       forEach: (collection: NodePath[], callback: (path: NodePath) => void) => this.forEachCollection(collection, callback),
       map: <T>(collection: NodePath[], callback: (path: NodePath) => T) => this.mapCollection(collection, callback),
-
-      // Node manipulation
-      replace: (path: NodePath, newNode: ASTNode) => this.replaceNode(path, newNode),
-      insertBefore: (path: NodePath, newNode: ASTNode) => this.insertBeforeNode(path, newNode),
-      insertAfter: (path: NodePath, newNode: ASTNode) => this.insertAfterNode(path, newNode),
-      remove: (path: NodePath) => this.removeNode(path),
+      size: (collection: NodePath[]) => this.sizeCollection(collection),
 
       // Source generation
       toSource: (options: SourceOptions = {}) => this.generateSource(ast, options)
@@ -86,7 +92,7 @@ export class Transformer {
    * @param filter - Filter criteria
    * @returns Collection of matching nodes
    */
-  private findNodes(ast: ProgramNode, nodeType: any, filter: any = {}): NodePath[] {
+  private findNodes(ast: ProgramNode, nodeType: string | any, filter: Record<string, any> = {}): NodePath[] {
     const collection: NodePath[] = [];
     this.walkAST(ast, (node: any, path: PathItem[]) => {
       if (node.type === nodeType && this.matchesFilter(node, filter)) {
@@ -96,7 +102,8 @@ export class Transformer {
           replace: (newNode: ASTNode) => this.replaceNode({ value: node, path: path } as NodePath, newNode),
           insertBefore: (newNode: ASTNode) => this.insertBeforeNode({ value: node, path: path } as NodePath, newNode),
           insertAfter: (newNode: ASTNode) => this.insertAfterNode({ value: node, path: path } as NodePath, newNode),
-          remove: () => this.removeNode({ value: node, path: path } as NodePath)
+          remove: () => this.removeNode({ value: node, path: path } as NodePath),
+          prune: () => this.pruneNode({ value: node, path: path } as NodePath)
         });
       }
     });
@@ -125,7 +132,7 @@ export class Transformer {
    * @param filter - Filter criteria
    * @returns True if matches
    */
-  private matchesFilter(node: any, filter: any): boolean {
+  private matchesFilter(node: any, filter: Record<string, any>): boolean {
     return Object.keys(filter).every(key => {
       if (key === 'arguments' && Array.isArray(filter[key])) {
         return this.arraysEqual(node.arguments, filter[key]);
@@ -173,6 +180,15 @@ export class Transformer {
    */
   private mapCollection<T>(collection: NodePath[], callback: (path: NodePath) => T): T[] {
     return collection.map(callback);
+  }
+
+  /**
+   * Get collection size
+   * @param collection - Node collection
+   * @returns Collection size
+   */
+  private sizeCollection(collection: NodePath[]): number {
+    return collection.length;
   }
 
   /**
@@ -247,6 +263,15 @@ export class Transformer {
   }
 
   /**
+   * Prune node (remove and clean up)
+   * @param path - Node path
+   */
+  private pruneNode(path: NodePath): void {
+    this.removeNode(path);
+    // Additional cleanup logic could be added here
+  }
+
+  /**
    * Get node at path
    * @param path - Node path
    * @returns Node at path
@@ -282,39 +307,66 @@ export class Transformer {
    * @returns Source code
    */
   private astToSource(node: any, options: SourceOptions = {}): string {
+    const indent = options.indent || 0;
+    const lineEnding = options.lineEnding || '\n';
+
     switch (node.type) {
       case 'Program':
-        return node.body.map((child: any) => this.astToSource(child, options)).join('\n');
+        return node.body.map((child: any) => this.astToSource(child, options)).join(lineEnding);
 
       case 'Command':
-        return `${node.name} ${node.arguments.join(' ')}`;
+        let cmd = node.name;
+        if (node.arguments && node.arguments.length > 0) {
+          cmd += ' ' + node.arguments.join(' ');
+        }
+        if (node.redirects && node.redirects.length > 0) {
+          cmd += ' ' + node.redirects.map((r: any) => this.astToSource(r, options)).join(' ');
+        }
+        return cmd;
 
       case 'Variable':
-        return `${node.name}=${node.value}`;
+        let varStr = node.name;
+        if (node.export) varStr = 'export ' + varStr;
+        if (node.readonly) varStr = 'readonly ' + varStr;
+        return `${varStr}=${node.value}`;
 
       case 'Conditional':
-        let result = `if ${node.condition}; then\n`;
-        result += node.consequent.map((child: any) => `  ${this.astToSource(child, options)}`).join('\n');
+        let result = `if ${node.condition}; then${lineEnding}`;
+        result += node.consequent.map((child: any) => '  ' + this.astToSource(child, options)).join(lineEnding);
         if (node.alternate) {
-          result += '\nelse\n';
-          result += node.alternate.map((child: any) => `  ${this.astToSource(child, options)}`).join('\n');
+          result += `${lineEnding}else${lineEnding}`;
+          result += node.alternate.map((child: any) => '  ' + this.astToSource(child, options)).join(lineEnding);
         }
-        result += '\nfi';
+        result += `${lineEnding}fi`;
         return result;
 
       case 'Loop':
         if (node.kind === 'for') {
-          return `for ${node.variable}; do\n  ${node.body.map((child: any) => this.astToSource(child, options)).join('\n  ')}\ndone`;
+          return `for ${node.variable}; do${lineEnding}  ${node.body.map((child: any) => this.astToSource(child, options)).join(lineEnding + '  ')}${lineEnding}done`;
         } else if (node.kind === 'while') {
-          return `while ${node.condition}; do\n  ${node.body.map((child: any) => this.astToSource(child, options)).join('\n  ')}\ndone`;
+          return `while ${node.condition}; do${lineEnding}  ${node.body.map((child: any) => this.astToSource(child, options)).join(lineEnding + '  ')}${lineEnding}done`;
         }
         break;
 
       case 'Function':
-        return `function ${node.name}() {\n  ${node.body.map((child: any) => this.astToSource(child, options)).join('\n  ')}\n}`;
+        return `function ${node.name}() {${lineEnding}  ${node.body.map((child: any) => this.astToSource(child, options)).join(lineEnding + '  ')}${lineEnding}}`;
 
       case 'Pipeline':
-        return node.commands.map((cmd: any) => this.astToSource(cmd, options)).join(' | ');
+        let pipeline = node.commands.map((cmd: any) => this.astToSource(cmd, options)).join(' | ');
+        if (node.negated) pipeline = '!' + pipeline;
+        return pipeline;
+
+      case 'Redirect':
+        let redirect = '';
+        if (node.fd !== undefined) redirect += node.fd;
+        redirect += node.operator + node.target;
+        return redirect;
+
+      case 'Subshell':
+        return `(${node.body.map((child: any) => this.astToSource(child, options)).join('; ')})`;
+
+      case 'Comment':
+        return node.kind === 'line' ? `# ${node.value}` : `# ${node.value}`;
 
       default:
         return '';
