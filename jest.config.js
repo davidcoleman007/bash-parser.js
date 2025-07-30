@@ -11,16 +11,11 @@ module.exports = {
     '!src/**/*.test.ts',
     '!src/**/*.spec.ts'
   ],
-  coverageDirectory: 'coverage',
-  coverageReporters: ['text', 'lcov', 'html'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   transform: {
-    '^.+\\.ts$': 'ts-jest'
-  },
-  moduleFileExtensions: ['ts', 'js', 'json'],
-  globals: {
-    'ts-jest': {
+    '^.+\\.ts$': ['ts-jest', {
       tsconfig: 'tsconfig.json'
-    }
-  }
+    }]
+  },
+  moduleFileExtensions: ['ts', 'js', 'json']
 };

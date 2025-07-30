@@ -1,24 +1,21 @@
-/**
- * BashCodeshift - A JavaScript codemod toolkit for bash scripts
- * @module bashcodeshift
- */
+// Main exports for bashcodeshift
+export { b, BashCodeshiftAPI } from './core/api';
+export { TransformRunner, TransformFunction, TransformAPI } from './core/runner';
+export { FileManager, FileInfo } from './core/file-manager';
 
-import { BashParser } from './core/parser';
-import { Transformer } from './core/transformer';
-import { Runner } from './core/runner';
-import * as utils from './core/utils';
-
-// Export types
-export * from './types';
-
-// Export core classes
-export { BashParser as Parser, Transformer, Runner, utils };
-
-// Export convenience methods
-export const parse = (source: string) => new BashParser().parse(source);
-export const transform = (ast: any, transformFn: any) => {
-  const transformer = new Transformer();
-  return transformer.transform(ast, transformFn);
-};
-export const run = (transformPath: string, filePaths: string | string[], options: any) =>
-  new Runner().run(transformPath, filePaths, options);
+// Re-export types from bash-traverse for convenience
+export type {
+  Program,
+  ASTNode,
+  NodePath,
+  Visitor,
+  Command,
+  VariableAssignment,
+  FunctionDefinition,
+  IfStatement,
+  ForStatement,
+  WhileStatement,
+  Pipeline,
+  Comment,
+  Word
+} from 'bash-traverse';

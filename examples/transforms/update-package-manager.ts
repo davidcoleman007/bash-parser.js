@@ -5,51 +5,53 @@
  * It handles common npm commands and converts them to their yarn equivalents.
  */
 
-import { TransformFunction } from '../../src/types';
+import { TransformFunction } from '../../src/core/runner';
 
-const transform: TransformFunction = (fileInfo, api, options) => {
-  const { source } = fileInfo;
-  const { b } = api;
+const transform: TransformFunction = async (fileInfo, api, options) => {
+  const j = api.b(fileInfo.source);
 
-  const ast = b(source);
+  // Find all npm commands
+  const npmCommands = j.findCommands('npm');
 
-  // Find all npm commands and convert to yarn
-  ast.find('Command', { name: 'npm' }).forEach(path => {
-    const command = path.value as any;
-    const args = command.arguments;
+  // Transform each npm command
+  j.forEach(npmCommands, path => {
+    const command = path.node;
+
+    // Filter out spaces and get actual arguments
+    const args = command.arguments
+      .filter((arg: any) => arg.text !== ' ')
+      .map((arg: any) => arg.text);
 
     if (args.length > 0) {
       const firstArg = args[0];
       switch (firstArg) {
         case 'install':
-          command.name = 'yarn';
-          command.arguments = args.slice(1);
+          command.name.text = 'yarn';
+          // Remove the 'install' argument
+          command.arguments = command.arguments.filter((arg: any) => arg.text !== 'install');
           break;
         case 'uninstall':
-          command.name = 'yarn';
-          command.arguments = ['remove', ...args.slice(1)];
+          command.name.text = 'yarn';
+          // Replace 'uninstall' with 'remove'
+          command.arguments = command.arguments.map((arg: any) =>
+            arg.text === 'uninstall' ? { type: 'Word', text: 'remove' } : arg
+          );
           break;
         case 'run':
-          command.name = 'yarn';
-          break;
         case 'start':
-          command.name = 'yarn';
-          break;
         case 'test':
-          command.name = 'yarn';
-          break;
         case 'build':
-          command.name = 'yarn';
+          command.name.text = 'yarn';
           break;
         default:
-          command.name = 'yarn';
+          command.name.text = 'yarn';
       }
     } else {
-      command.name = 'yarn';
+      command.name.text = 'yarn';
     }
   });
 
-  return ast.toSource();
+  return j.toSource();
 };
 
 export default transform;

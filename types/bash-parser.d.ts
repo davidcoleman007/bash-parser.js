@@ -8,11 +8,17 @@ declare module '@isdk/bash-parser' {
     [key: string]: any;
   }
 
-  export interface ParserOptions {
-    locations?: boolean;
-    comments?: boolean;
-    ranges?: boolean;
+  export interface Options {
+    mode?: string;
+    insertLOC?: boolean;
+    resolveAlias?: (name: string) => Promise<string | undefined>;
+    resolveEnv?: (name: string) => Promise<string | null>;
+    resolvePath?: (text: string) => Promise<string>;
+    resolveHomeUser?: (username: string | null) => Promise<string>;
+    resolveParameter?: (parameter: string) => Promise<string>;
+    execCommand?: (command: string, scriptAST: any) => Promise<string>;
+    runArithmeticExpression?: (expression: string, arithmeticAST: any) => Promise<string>;
   }
 
-  export function parse(source: string, options?: ParserOptions): BashParserAST;
+  export function parse(source: string, options?: Options): Promise<BashParserAST>;
 }

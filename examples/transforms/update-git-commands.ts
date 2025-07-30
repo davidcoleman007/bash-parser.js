@@ -1,43 +1,61 @@
-import { TransformFunction } from '../../src/types';
+/**
+ * Transform: Update Git Commands
+ *
+ * This transform updates git commands to use modern syntax:
+ * - git checkout -> git switch
+ * - git checkout -b -> git switch -c
+ * - git branch -d -> git branch --delete
+ */
 
-const transform: TransformFunction = (fileInfo, api, options) => {
-  const { source } = fileInfo;
-  const { b } = api;
+import { TransformFunction } from '../../src/core/runner';
 
-  const ast = b(source);
-  const gitCommands = ast.find('Command', { name: 'git' });
+const transform: TransformFunction = async (fileInfo, api, options) => {
+  const j = api.b(fileInfo.source);
 
-  gitCommands.forEach(path => {
-    const command = path.value as any;
-    const args = command.arguments;
+  // Find all git commands
+  const gitCommands = j.findCommands('git');
+
+  // Transform each git command
+  j.forEach(gitCommands, path => {
+    const command = path.node;
+    const args = command.arguments
+      .filter((arg: any) => arg.text !== ' ')
+      .map((arg: any) => arg.text);
 
     if (args.length > 0) {
       const firstArg = args[0];
-
-      // Update deprecated git commands
       switch (firstArg) {
         case 'checkout':
-          // git checkout -b <branch> -> git switch -c <branch>
-          if (args.length > 2 && args[1] === '-b') {
-            command.arguments = ['switch', '-c', ...args.slice(2)];
-          }
-          // git checkout <branch> -> git switch <branch>
-          else if (args.length > 1 && !args[1].startsWith('-')) {
-            command.arguments = ['switch', ...args.slice(1)];
+          if (args.length > 1 && args[1] === '-b') {
+            // git checkout -b <branch> -> git switch -c <branch>
+            command.name.text = 'git';
+            command.arguments = command.arguments.map((arg: any) => {
+              if (arg.text === 'checkout') return { type: 'Word', text: 'switch' };
+              if (arg.text === '-b') return { type: 'Word', text: '-c' };
+              return arg;
+            });
+          } else if (args.length > 1 && !args[1].startsWith('-')) {
+            // git checkout <branch> -> git switch <branch>
+            command.arguments = command.arguments.map((arg: any) => {
+              if (arg.text === 'checkout') return { type: 'Word', text: 'switch' };
+              return arg;
+            });
           }
           break;
-
         case 'branch':
-          // git branch -m <old> <new> -> git branch -m <new>
-          if (args.length > 2 && args[1] === '-m') {
-            command.arguments = ['branch', '-m', args[2]];
+          if (args.length > 1 && args[1] === '-d') {
+            // git branch -d -> git branch --delete
+            command.arguments = command.arguments.map((arg: any) => {
+              if (arg.text === '-d') return { type: 'Word', text: '--delete' };
+              return arg;
+            });
           }
           break;
       }
     }
   });
 
-  return ast.toSource();
+  return j.toSource();
 };
 
 export default transform;
