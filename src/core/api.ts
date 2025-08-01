@@ -98,6 +98,169 @@ export class BashCodeshiftAPI {
     return this.ast;
   }
 
+  /**
+   * Insert a node after the current node in the AST
+   * This works at the statement level, not the command level
+   */
+  insertAfter(path: NodePath, node: ASTNode): void {
+    if (!path.parent || path.parentKey === null || path.parentIndex === null) {
+      throw new Error('Cannot insert after node without parent context');
+    }
+
+    const parent = path.parent.node as any;
+    const parentKey = path.parentKey;
+    const parentIndex = path.parentIndex;
+
+    if (Array.isArray(parent[parentKey])) {
+      // Insert into array (e.g., ast.body)
+      parent[parentKey].splice(parentIndex + 1, 0, node);
+    } else {
+      throw new Error('Cannot insert after node in non-array parent');
+    }
+  }
+
+  /**
+   * Insert a node before the current node in the AST
+   * This works at the statement level, not the command level
+   */
+  insertBefore(path: NodePath, node: ASTNode): void {
+    if (!path.parent || path.parentKey === null || path.parentIndex === null) {
+      throw new Error('Cannot insert before node without parent context');
+    }
+
+    const parent = path.parent.node as any;
+    const parentKey = path.parentKey;
+    const parentIndex = path.parentIndex;
+
+    if (Array.isArray(parent[parentKey])) {
+      // Insert into array (e.g., ast.body)
+      parent[parentKey].splice(parentIndex, 0, node);
+    } else {
+      throw new Error('Cannot insert before node in non-array parent');
+    }
+  }
+
+  /**
+   * Find the statement containing a command
+   */
+  findStatementForCommand(commandPath: NodePath): NodePath | null {
+    // Walk up the tree to find the statement that contains this command
+    let current = commandPath;
+    while (current.parent) {
+      if (current.parent.node.type === 'Statement' ||
+          current.parent.node.type === 'Program') {
+        return current.parent;
+      }
+      current = current.parent;
+    }
+    return null;
+  }
+
+  /**
+   * Create a newline node
+   */
+  createNewline(): ASTNode {
+    return { type: 'Newline' };
+  }
+
+  /**
+   * Create a command node with proper spacing
+   */
+  createCommand(name: string, ...args: string[]): ASTNode {
+    const arguments_ = [];
+
+    for (let i = 0; i < args.length; i++) {
+      if (i > 0) {
+        arguments_.push({ type: 'Space', value: ' ' });
+      }
+      arguments_.push({ type: 'Word', text: args[i] });
+    }
+
+    return {
+      type: 'Command',
+      name: { type: 'Word', text: name },
+      arguments: arguments_.length > 0 ? [{ type: 'Space', value: ' ' }, ...arguments_] : [],
+      redirects: []
+    };
+  }
+
+  /**
+   * Insert commands after a specific command with proper newlines
+   * This is a convenience method that handles the AST manipulation correctly
+   */
+  insertCommandsAfter(commandPath: NodePath, commands: string[]): void {
+    const ast = this.ast;
+
+    // Find the command in the AST body
+    let commandIndex = -1;
+
+    for (let i = 0; i < ast.body.length; i++) {
+      const node = ast.body[i];
+      if (node.type === 'Command' && node === commandPath.node) {
+        commandIndex = i;
+        break;
+      }
+    }
+
+    if (commandIndex === -1) {
+      throw new Error('Could not find command in AST body');
+    }
+
+    // Find the next newline after the command
+    let insertIndex = commandIndex + 1;
+    while (insertIndex < ast.body.length && ast.body[insertIndex].type !== 'Newline') {
+      insertIndex++;
+    }
+
+    // If we found a newline, insert after it; otherwise insert after the command
+    if (insertIndex < ast.body.length && ast.body[insertIndex].type === 'Newline') {
+      insertIndex++;
+    }
+
+    // Create command nodes
+    const commandNodes = commands.map(command => {
+      const parts = command.split(' ');
+      const name = parts[0];
+      const args = parts.slice(1);
+
+      const arguments_ = [];
+      for (let i = 0; i < args.length; i++) {
+        if (i > 0) {
+          arguments_.push({ type: 'Space', value: ' ' });
+        }
+        arguments_.push({ type: 'Word', text: args[i] });
+      }
+
+      return {
+        type: 'Command',
+        name: { type: 'Word', text: name },
+        arguments: [
+          { type: 'Space', value: ' ' },
+          ...arguments_,
+        ],
+        redirects: [],
+      };
+    });
+
+    // Insert commands with proper newlines
+    commandNodes.forEach((command, index) => {
+      // Insert a newline before each command (except the first one)
+      if (index > 0) {
+        const newline = { type: 'Newline' };
+        ast.body.splice(insertIndex, 0, newline as any);
+        insertIndex++;
+      }
+
+      // Insert the command
+      ast.body.splice(insertIndex, 0, command as any);
+      insertIndex++;
+    });
+
+    // Add a final newline after the last command
+    const finalNewline = { type: 'Newline' };
+    ast.body.splice(insertIndex, 0, finalNewline as any);
+  }
+
   // Node constructors (similar to jscodeshift)
   Command(props: { name: string; arguments?: string[]; redirects?: any[] }): ASTNode {
     return {

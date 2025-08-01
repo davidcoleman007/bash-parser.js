@@ -108,4 +108,44 @@ describe('BashCodeshiftAPI', () => {
       expect((func as any).name.text).toBe('test');
     });
   });
+
+  describe('insertCommandsAfter', () => {
+    it('should insert commands with proper newlines after a command', () => {
+      const source = `#!/bin/bash
+npm run build
+echo "Build completed"`;
+
+      const j = new BashCodeshiftAPI(source);
+
+      // Find the npm run build command
+      const buildCommands = j.findCommands('npm');
+      const npmRunBuild = buildCommands.filter((path: any) => {
+        const args = path.node.arguments
+          .filter((arg: any) => arg.text !== ' ')
+          .map((arg: any) => arg.text);
+        return args[0] === 'run' && args[1] === 'build';
+      });
+
+      expect(npmRunBuild.length).toBe(1);
+
+      // Insert commands after the build command
+      const commandsToAdd = [
+        'npx rollup-uitests --batchSize=10 --debug',
+        'npx rollup-pageobjects'
+      ];
+
+      j.insertCommandsAfter(npmRunBuild[0], commandsToAdd);
+
+      const result = j.toSource();
+
+      // Verify the output has proper newlines
+      expect(result).toContain('npm run build\n');
+      expect(result).toContain('npx rollup-uitests --batchSize=10 --debug\n');
+      expect(result).toContain('npx rollup-pageobjects\n');
+      expect(result).toContain('echo "Build completed"');
+
+      // Verify there are no commands without newlines
+      expect(result).not.toContain('npm run buildnpx');
+    });
+  });
 });
